@@ -1,0 +1,12 @@
+venv
+*.pyc
+staticfiles
+.env
+db.sqlite3
+dump.sql
+.DS_store
+node_modules
+webpack.nohup
+rideshare/static/rideshare/dist
+cli.py
+curl

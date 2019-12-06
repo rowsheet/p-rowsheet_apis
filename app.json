@@ -1,0 +1,15 @@
+{
+    "name": "RowSheet APIs",
+    "description": "APIs by RowSheet",
+    "image": "heroku/python",
+    "repository": "https://github.com/rowsheet/rowsheet_apis",
+    "keywords": ["rowsheet"],
+    "addons": [ "heroku-postgresql" ],
+    "copyright": {
+        "year": 2019,
+        "author": "Alexander Kleinhans",
+        "company", "RowSheet LLC",
+        "contact": "alex@rowsheet.com",
+        "website": "www.rowsheet.com"
+    }
+}
