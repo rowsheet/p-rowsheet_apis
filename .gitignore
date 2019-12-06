@@ -10,3 +10,4 @@ webpack.nohup
 rideshare/static/rideshare/dist
 cli.py
 curl
+api_spec
