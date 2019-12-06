@@ -6,10 +6,9 @@ from rowsheet.api import handle
 
 admin.autodiscover()
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     url(r"^accounts/", include("allauth.urls")),
     url(r"^docs/", include("rowsheet.urls")),
-    path("", handle),
+    path("<version>/<service>/<module>/<method>", handle),
 ]

@@ -1,35 +1,41 @@
 import yaml
 import json
+import os
 try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
 
 class APISpec:
-    def __init__(self):
-        self.config_dict = None
+    def __init__(self, api_dir):
+        self.spec = None
+        spec_files = [f for f in os.listdir(api_dir) if f.endswith('.yaml')]
+        for spec_file in spec_files:
+            self.parse_config_file(os.path.join(api_dir, spec_file))
 
-    def parse_config_string(self, config_string):
-        # Parse the yaml string.
+    def parse_config_string(self, version, config_string):
         fd = StringIO(config_string)
-        self.config_dict = yaml.safe_load(fd)
+        loaded = yaml.safe_load(fd)
+        if self.spec is None:
+            self.spec = {}
+        self.spec[version] = loaded
 
     def parse_config_file(self, filepath):
+        version = os.path.basename(filepath).split(".")[0]
         with open(filepath, "r") as config_file:
             config_string = config_file.read()
-            self.parse_config_string(config_string)
+            self.parse_config_string(version, config_string)
 
     def get_config(self):
-        return self.config_dict
+        return self.spec
 
     def dump_json(self):
-        dump = json.dumps(self.config_dict, indent=4, sort_keys=False)
+        dump = json.dumps(self.spec, indent=4, sort_keys=False)
         return dump
 
 if __name__ == "__main__":
 
-    api_spec = APISpec()
-    api_spec.parse_config_file("../api_spec/v1.yaml")
+    api_spec = APISpec("../api/")
     print(api_spec.dump_json())
     exit()
 
