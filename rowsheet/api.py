@@ -110,16 +110,12 @@ def handle(request, version, service, module, command):
                                 errors[param_name] = str(ex)
         if errors != {}:
             return JsonResponse({"error": "Bad request parameters", "errors": errors}, status=400)
+
     auth_header = request.headers.get('Authorization')
     bearer_token = parse_auth_bearer(auth_header)
     session_valid = request.session.exists(bearer_token)
-    return JsonResponse({
-        "message": "Success! You've reached a valid (but unimplemented) API route.",
-        "your_request": {
-            "args": args,
-            "auth": {
-                "session_valid": session_valid,
-                "bearer_token": bearer_token,
-            },
-        },
-    }, status=200)
+
+    import importlib
+    module = importlib.import_module("api.v1")
+    method = getattr(module, command)
+    return method(**args)

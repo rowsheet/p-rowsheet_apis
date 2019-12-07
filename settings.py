@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rowsheet",         # Core application.
+    "api",              # API config and entrypoints.
 ]
 
 MIDDLEWARE = [

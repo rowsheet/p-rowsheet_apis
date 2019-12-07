@@ -41,23 +41,24 @@ services:
             method: POST
   riders:
     modules:
-      accounts:
+      account:
         commands:
-          account:
-            method: GET
-            auth: rider
-          profile:
-            method: GET
-            auth: rider
-          trusted_contacts:
-            method: GET
-            auth: rider
           set_phone_number:
             method: POST
             auth: rider
             params:
               phone_number:
                 type: int 
+          verify:
+            method: POST
+            auth: rider
+            params:
+              verification_code:
+                type: int
+          profile:
+            method: GET
+            auth: rider
+            description: Loads the profile-page information particular rider associated with the request's BEARER_TOKEN.
           set_profile:
             method: POST
             auth: rider
@@ -70,12 +71,9 @@ services:
                 type: str
               photo_filename:
                 type: str
-          verify:
-            method: POST
+          trusted_contacts:
+            method: GET
             auth: rider
-            params:
-              verification_code:
-                type: int
           add_trusted_contact:
             method: POST
             auth: rider
@@ -84,8 +82,14 @@ services:
                 type: str
               contact_phone_number:
                 type: int
-          past_rides:
+          remove_trusted_contact:
             method: POST
+            auth: rider
+            params:
+              id:
+                type: int
+          past_rides:
+            method: GET
             auth: rider
             params:
               limit:
@@ -103,9 +107,11 @@ services:
       payments:
         commands:
           set_paypal:
-            status: todo
+            method: POST
+            auth: rider
           set_apple_pay:
-            status: todo
+            method: POST
+            auth: rider
           set_credit_card:
             method: POST
             auth: rider
@@ -153,7 +159,7 @@ services:
       settings:
         commands:
           settings:
-            method: POST
+            method: GET
             auth: rider
             params:
           set_accessibility_requirement:
@@ -176,7 +182,7 @@ services:
             params:
               error:
                 type: Error
-          911_assistance_opened:
+          emergency_assistance_opened:
             method: POST
             auth: rider
             params:
@@ -186,7 +192,7 @@ services:
                 type: float
               lng :
                 type: float
-          911_assistance_called:
+          emergency_assistance_called:
             method: POST
             auth: rider
             params:
@@ -207,30 +213,39 @@ services:
           search_location:
             method: GET
             auth: rider
-          location_query:
+          search_location:
+            method: GET
             type: str
             auth: rider
           ride_status:
-            method: POST
+            method: GET
             auth: rider
             params:
               ride_token:
                 type: RideToken
           current_location_availibility:
-            method: POST
+            method: GET
             auth: rider
             params:
               lat:
                 type: float
               lng:
                 type: float
-          ride_request_estimate:
-            method: POST
+          ride_cost_estimate:
+            method: GET
             auth: rider
             params:
-              ride_token:
-                type: RideToken
-          set_ride_request:
+              start_lat:
+                type: float
+              start_lng:
+                type: float
+              end_lat:
+                type: float
+              end_lng:
+                type: float
+              time_from_now:
+                type: int
+          create_ride_request:
             method: POST
             auth: rider
             params:
@@ -244,12 +259,23 @@ services:
                 type: float
               time_from_now:
                 type: int
-          unset_ride_request:
+          cancel_ride_request:
             method: POST
             auth: rider
             params:
               ride_token:
                 type: RideToken
+          set_verification_code:
+            method: POST
+            auth: rider
+            params:
+              color:
+                type: str
+              number:
+                type: int
+          confirm_verification_code:
+            method: POST
+            auth: rider
           set_a_driver_tip:
             method: POST
             auth: rider

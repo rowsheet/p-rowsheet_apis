@@ -5,6 +5,8 @@ from django.urls import path
 from django.template import loader
 from rowsheet.APISpec import APISpec
 
+DEV_MODE = True
+
 api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
 
 config = {
@@ -12,11 +14,21 @@ config = {
 }
 
 def render_api_spec(request, version=None):
+
+    # Hot-reload if DEV_MODE == True
+    if DEV_MODE == True:
+        api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
+
     if version is None:
         return JsonResponse({"error", "You must specify a url version in the path."}, 400)
     return JsonResponse(api_spec.get_config().get(version))
 
 def index(request, version="v1"):
+
+    # Hot-reload if DEV_MODE == True
+    if DEV_MODE == True:
+        api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
+
     template = loader.get_template("rowsheet/index.html")
     context = {
         "version": version,
