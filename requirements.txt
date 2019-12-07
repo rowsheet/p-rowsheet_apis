@@ -4,4 +4,4 @@ django-heroku
 python-dotenv
 django-allauth
 termcolor
-yaml
+pyyaml
