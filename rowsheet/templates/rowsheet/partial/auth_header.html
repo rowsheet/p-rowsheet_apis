@@ -1,0 +1,29 @@
+<div style="background: #eef6e4; padding-left: 15px;">
+{% if request.user.is_authenticated == True %}
+    <div>
+        <!--
+        <a onclick="rowsheet.sidebar.toggle()">
+            <i class="material-icons">menu</i>
+        </a>
+        -->
+        <h5 style="width: fit-content;display: inline-block;margin: 0px;
+            line-height: 50px;">
+            You're logged in</h5>
+        <a style="margin: 9px;" class="btn btn-sm btn-primary float-right"
+            href="/accounts/logout">Logout</a>
+    </div>
+{% else %}
+    <div>
+        <!--
+        <a onclick="rowsheet.sidebar.toggle()">
+            <i class="material-icons">menu</i>
+        </a>
+        -->
+        <h5 style="width: fit-content;display: inline-block;margin: 0px;
+            line-height: 50px;">
+            You're logged out</h5>
+        <a style="margin: 9px;" class="btn btn-sm btn-primary float-right"
+            href="/accounts/login">Login</a>
+    </div>
+{% endif %}
+</div>

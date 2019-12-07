@@ -1,0 +1,38 @@
+{% load api_spec %}
+{% load basic %}
+<div id="api_spec_toc">
+    {% for skey, service in api_spec.services.items %}
+    <a href="#"
+        class="scrollspy api_toc_link api_user_group"
+        data-toggle="collapse"
+        data-target="#{{ skey }}">
+        {% replace skey "_" " " %}
+    </a>
+    <div id="{{ skey }}"
+        class="collapse show api_toc_content">
+        {% for mkey , module in service.modules.items %}
+        <a href="#"
+            id="show_{{ skey }}_{{ mkey }}"
+            class="scrollspy api_toc_link api_module collapsed mod_link"
+            data-toggle="collapse"
+            data-target="#{{ skey }}{{ mkey }}">
+                {% replace mkey "_" " " %}
+        </a>
+        <div id="{{ skey }}{{ mkey }}"
+            data-parent="#api_spec_toc"
+            class="collapse api_toc_content api_command_content"
+            style="overflow: scroll;">
+            {% for ckey, command in module.commands.items %}
+            <a href="#{% api_spec_guid skey mkey ckey %}"
+                data-show-key="{{ skey }}_{{ mkey }}"
+                class="scrollspy api_toc_link api_command">
+                <span class="api_spec_main_title_ref monospace">
+                {{ ckey }}()
+                </span>
+            </a>
+        {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

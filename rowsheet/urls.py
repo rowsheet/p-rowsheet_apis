@@ -2,18 +2,32 @@ import os
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
 from django.urls import path
+from django.template import loader
 from rowsheet.APISpec import APISpec
 
-# Search for APISpec config files in BASE_DIR/api_spec/[version].yaml.
-def api_spec(request, version=None):
-    api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
+api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
+
+config = {
+    "sidebar_width": 300,
+}
+
+def render_api_spec(request, version=None):
+    if version is None:
+        return JsonResponse({"error", "You must specify a url version in the path."}, 400)
     return JsonResponse(api_spec.get_config().get(version))
 
-def index(request):
-    return HttpResponse("RowSheet APIs")
+def index(request, version="v1"):
+    template = loader.get_template("rowsheet/index.html")
+    context = {
+        "version": version,
+        "api_spec": api_spec.get_config()[version],
+        "config": config,
+    }
+    return HttpResponse(template.render(context, request))
 
 urlpatterns = [
     path("", index),
-    path("api_spec/<version>", api_spec),
-    path("api_spec/", api_spec),
+    path("<version>", index),
+    path("api_spec/<version>", render_api_spec),
+    path("api_spec/", render_api_spec),
 ]

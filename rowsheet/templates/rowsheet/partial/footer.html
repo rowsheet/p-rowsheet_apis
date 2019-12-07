@@ -1,0 +1,17 @@
+{% if request.user.is_authenticated == True %}
+    <div style="padding-left: 15px;">
+        <h5 style="width: fit-content;display: inline-block;margin: 0px;
+            line-height: 50px;">
+            You're logged in</h5>
+        <a style="margin: 9px;" class="btn btn-sm btn-primary float-right"
+            href="/accounts/logout">Logout</a>
+    </div>
+{% else %}
+    <div style="padding-left: 15px;">
+        <h5 style="width: fit-content;display: inline-block;margin: 0px;
+            line-height: 50px;">
+            You're logged out</h5>
+        <a style="margin: 9px;" class="btn btn-sm btn-primary float-right"
+            href="/accounts/login">Login</a>
+    </div>
+{% endif %}

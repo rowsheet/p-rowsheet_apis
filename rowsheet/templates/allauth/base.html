@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{% block head_title %}{% endblock %}</title>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJiQGDktXPT0fGeTMa6bVCS1mZ9LnXj-8"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,400,700&display=swap" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <style>@keyframes hidePreloader{0%{width:100%;height:100%}100%{width:0;height:0}}body>div.preloader{position:fixed;background:#fff;width:100%;height:100%;z-index:1071;opacity:0;transition:opacity .5s ease;overflow:hidden;pointer-events:none;display:flex;align-items:center;justify-content:center}body:not(.loaded)>div.preloader{opacity:1}body:not(.loaded){overflow:hidden}body.loaded>div.preloader{animation:hidePreloader .5s linear .5s forwards}</style>
+        <script>window.addEventListener("load",function(){setTimeout(function(){document.querySelector("body").classList.add("loaded")},300)})</script>
+
+<link href="/static/auth.css" rel="stylesheet">
+
+        {% block extra_head %}
+        {% endblock %}
+    </head>
+    <body>
+        <!-- PRELOADER -->
+        <div class=preloader>
+            <div class="spinner-border text-primary" role=status>
+                <span class=sr-only>Loading...</span>
+            </div>
+        </div>
+        <div id="App">
+            {% block body %}
+
+            {% if messages %}
+            <div id="messages">
+                {% for message in messages %}
+                <div class="message">{{message}}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-12">
+                    <ul id="auth_menu">
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+                        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+                        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% block content %}
+            {% endblock %}
+            {% endblock %}
+            {% block extra_body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

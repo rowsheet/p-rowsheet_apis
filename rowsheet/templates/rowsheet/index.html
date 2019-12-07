@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=1000, initial-scale=1, shrink-to-fit=no">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200,300,400,500,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/static/rowsheet/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/rowsheet/keep.css">
+        <link rel="stylesheet" href="/static/rowsheet/style.css">
+        <script src="/static/rowsheet/jquery.min.js"></script>
+        <script src="/static/rowsheet/bootstrap.min.js"></script>
+        <script src="/static/rowsheet/popper.min.js"></script>
+        <script src="/static/rowsheet/rowsheet.js"></script>
+        <script src="/static/rowsheet/main.js"></script>
+        <style>@keyframes hidePreloader{0%{width:100%;height:100%}100%{width:0;height:0}}body>div.preloader{position:fixed;background:#fff;width:100%;height:100%;z-index:1071;opacity:0;transition:opacity .5s ease;overflow:hidden;pointer-events:none;display:flex;align-items:center;justify-content:center}body:not(.loaded)>div.preloader{opacity:1}body:not(.loaded){overflow:hidden}body.loaded>div.preloader{animation:hidePreloader .5s linear .5s forwards}</style>
+        <script>window.addEventListener("load",function(){setTimeout(function(){document.querySelector("body").classList.add("loaded")},300)})</script>
+    </head>
+    <body class="sidebar_on">
+        <!-- PRELOADER -->
+        <div class=preloader>
+            <div class="spinner-border text-primary" role=status>
+                <span class=sr-only>Loading...</span>
+            </div>
+        </div>
+        <div id="wrapper">
+            <div id="sidebar">
+                <div id="sidebar_body">
+                    {% include "rowsheet/partial/auth_user_info.html" %}
+                </div>
+                <div id="sidebar_footer">
+                    {% include "rowsheet/partial/footer.html" %}
+                </div>
+            </div>
+            <div id="main">
+                {% include "rowsheet/partial/auth_header.html" %}
+                {% include "rowsheet/partial/api_spec.html" %}
+            </div>
+        </div>
+        <link rel="stylesheet" href="/static/rowsheet/trail.css">
+    </body>
+</html>

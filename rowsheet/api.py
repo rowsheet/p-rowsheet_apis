@@ -1,11 +1,24 @@
 import os
+import base64
 from django.http import JsonResponse
 from django.conf import settings
-from rowsheet.api_error_responses import HandleInvalidRequest
+from django.views.decorators.csrf import csrf_exempt
 from rowsheet import APIRequest
 from rowsheet.APISpec import APISpec
 
 api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
+
+def parse_auth_bearer(auth_header):
+    if auth_header is None:
+        return None
+
+    # Remove "Basic " to isolate credentials.
+    encoded_credentials = auth_header.split(' ')[1]
+    decoded_credentials = base64.b64decode(encoded_credentials).decode("utf-8").split(':')
+
+    # Remove the square brackets around username.
+    bearer = decoded_credentials[0][1:-1]
+    return bearer
 
 def assert_range(value, min_val, max_val):
     if max_val is not None:
@@ -15,7 +28,8 @@ def assert_range(value, min_val, max_val):
         if value < min_val:
             raise ValueError("Value too small (min %s)" % min_val)
 
-def handle(request, version, service, module, method):
+@csrf_exempt
+def handle(request, version, service, module, command):
 
     api_version = api_spec.spec.get(version)
     if api_version is None:
@@ -26,21 +40,21 @@ def handle(request, version, service, module, method):
     api_module = api_service.get("modules").get(module)
     if api_module is None:
         return JsonResponse({"error": "Unknown API module."}, status=404)
-    api_method = api_module.get("methods").get(method)
-    if api_method is None:
-        return JsonResponse({"error": "Unknown API method."}, status=404)
-    if request.method != api_method.get("method"): # Note: http method
+    api_command = api_module.get("commands").get(command)
+    if api_command is None:
+        return JsonResponse({"error": "Unknown API command."}, status=404)
+    if request.method != api_command.get("method"):
         return JsonResponse({"error":
-            "Invalid method, should be '%s'" % api_method.get("method")},status=400)
+            "Invalid http method, should be '%s'" % api_command.get("method")},status=400)
     if request.method == "GET":
         raw_args = { key : val for key, val in request.GET.items()}
     if request.method == "POST":
         raw_args = { key : val for key, val in request.POST.items()}
-    if api_method.get("params") is not None:
-        params = api_method.get("params")
+    if api_command.get("params") is not None:
+        params = api_command.get("params")
         args = {}
         errors = {}
-        for param_name, param in api_method.get("params").items():
+        for param_name, param in api_command.get("params").items():
             raw_param = raw_args.get(param_name)
             if raw_param is None:
                 if param.get("required") == True:
@@ -96,5 +110,16 @@ def handle(request, version, service, module, method):
                                 errors[param_name] = str(ex)
         if errors != {}:
             return JsonResponse({"error": "Bad request parameters", "errors": errors}, status=400)
-        return JsonResponse(args, status=200)
-    return JsonResponse({"data": "OK."}, status=200)
+    auth_header = request.headers.get('Authorization')
+    bearer_token = parse_auth_bearer(auth_header)
+    session_valid = request.session.exists(bearer_token)
+    return JsonResponse({
+        "message": "Success! You've reached a valid (but unimplemented) API route.",
+        "your_request": {
+            "args": args,
+            "auth": {
+                "session_valid": session_valid,
+                "bearer_token": bearer_token,
+            },
+        },
+    }, status=200)

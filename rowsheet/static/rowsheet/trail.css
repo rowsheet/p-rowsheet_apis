@@ -1,0 +1,300 @@
+strong {
+    font-weight: 500;
+}
+.api_command_content * {
+    color: #f5faf7;
+}
+.api_command_content {
+    background: #596980;
+}
+.api_command_content > .api_command:first-child {
+    padding-top: 15px;
+}
+.api_command_content > .api_command:last-child {
+    padding-bottom: 15px;
+}
+.api_command {
+    padding: 0px 0px 3px 15px;
+}
+.api_module {
+    text-transform: capitalize;
+    padding: 5px 0px 5px 15px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+.api_user_group {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.5;
+    padding: 10px 0px 10px 15px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+a.api_toc_link {
+    display: block;
+    color: #596980;
+}
+.code_dark {
+    background: #596980;
+}
+.code_dark * {
+    color: white !important;
+}
+.scrollspy_target .api_spec_main_title_ref {
+    background: #8bcb8d;
+    border-radius: 3px;
+    color: white;
+    overflow: scroll;
+    font-weight: 500;
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: -5px;
+}
+tbody.module_overview tr td:last-child {
+    width: 100%;
+}
+table.module_overview_table thead * {
+    font-weight: 400;
+    font-size: 15px;
+}
+table.module_overview_table {
+    display: block;
+    overflow: hidden;
+}
+tbody.module_overview {
+    font-size: 13px;
+    border: 1px solid #e7eaec;
+    border-radius: 5px;
+    display: block;
+    overflow: hidden;
+}
+tbody.module_overview tr:nth-child(odd) {
+    background: rgb(236, 245, 240);
+}
+tbody.module_overview tr:nth-child(even) {
+    background: #f5faf7;
+}
+tbody.module_overview tr td:first-child {
+    width: 300px !important;
+    display: block;
+    padding-left: 15px;
+}
+table.module_overview_table thead tr td:first-child {
+    width: 300px;
+}
+table.module_overview_table thead tr td {
+    padding-left: 15px;
+}
+table.module_overview_table {
+    display: block;
+    overflow: hidden;
+}
+table.module_overview_table thead {
+    margin-bottom: 10px;
+    display: block;
+}
+.api_spec_methods_overview {
+    padding: 9px;
+}
+.endpoind_http_method_GET {
+    color: #4CAF50;
+}
+.endpoind_http_method_POST {
+    color: #2196F3;
+}
+.endpoint_http_method {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: 600;
+}
+.api_user_group_info h1 {
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #acb5bf;
+    white-space: nowrap;
+}
+.api_user_group_info h4 {
+    text-transform: capitalize;
+    white-space: nowrap;
+    font-weight: 300;
+}
+.api_user_group_info table {
+    margin-left: 200px;
+    margin-top: -25px;
+    margin-bottom: 15px;
+}
+.api_user_group_info {
+    background: #f5f6f7;
+    width: 100%;
+    padding: 25px;
+}
+.tabslide{
+    width: 300%;
+    transition: 0.25s;
+    transition-timing-function: cubic-bezier(0, 0.64, 0, 1.01);
+    display: flex;
+}
+.api_spec {
+    padding: 9px;
+    display: inline-block;
+    vertical-align: top;
+    flex: 1;
+    overflow: scroll;
+}
+.scrollspy_target.api_spec_main_title {
+    background: #8bcb8d;
+    color: white;
+    border-radius: 3px;
+    width: fit-content;
+}
+div#wrapper {
+    display: flex;
+    width: 100%;
+    background: white;
+}
+div#sidebar {
+    position: sticky;
+    top: 0px;
+    align-self: flex-start;
+    width: 300px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: inset -1px 0px 0px #00000010;
+}
+div#sidebar_body {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+div#sidebar_footer {
+    background: #eef6e4;
+    height: 50px;
+    flex-shrink: 0;
+}
+#main {
+    flex: auto;
+}
+.api_spec_column {
+    display: flex;
+    margin: 50px;
+    border-top: 1px solid #e1e4e8;
+    margin-top: 0px;
+    padding-top: 50px;
+}
+.api_spec_examples {
+    position: sticky;
+    top: 0px;
+    align-self: flex-start;
+    width: 500px;
+    flex-shrink: 0;
+    min-width: 500px;
+}
+.api_spec_description {
+    padding-top: 16px;
+    margin-right: 50px;
+    flex: auto;
+}
+.api_spec_route_label p {
+    line-height: 21px;
+}
+.api_command_content * {
+    color: #596980;
+    font-weight: 500;
+}
+.api_command_content {
+    background: #f5faf7;
+}
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+a.mod_link:not(.collapsed) {
+    color: #4CAF50;
+    background: #8bcb8c45;
+    font-weight: 500;
+    border-left: 3px solid #4CAF50;
+}
+.api_user_group_info {
+    background: #fcfdfc;
+    width: 100%;
+    padding: 25px;
+}
+h1,h2,h3,h4,h5 {
+    width: 0px;
+}
+pre {
+    width: 100%;
+}
+.pre_data_type {
+    color: orange;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+span.pre_http_method {
+    border-radius: 3px;
+    padding: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-weight: bold;
+}
+span.pre_http_method.pre_http_metho_GET {
+    background: #b4d78f;
+    color: white;
+}
+span.pre_http_method.pre_http_metho_POST{
+    background: #a3d1f8;
+    color: white;
+}
+.spec_label {
+    padding: 0px;
+    width: 100px;
+    display: inline-block;
+    text-align: left;
+}
+.spec_route_data {
+    background: #4caf50a6;
+    border-radius: 3px;
+    display: inline-block;
+    color: #ffffff;
+    padding: 3px;
+    text-align: center;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+* {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale;
+}
+.api_user_group_info {
+    background: #f5faf7;
+}
+.api_command_content {
+    background: #f5faf7;
+    border-right: 1px solid #efefef;
+}
+tbody.module_overview tr:nth-child(odd) {
+    background: rgb(255, 255, 255);
+}
+tbody.module_overview tr:nth-child(even) {
+    background: #fdfffe75;
+}
+.scrollspy_target.api_spec_main_title {
+    background: #8bcb8d;
+    color: white;
+    border-radius: 3px;
+    width: fit-content;
+    border-color: #8bcb8d;
+}
+.api_spec_main_title {
+    font-size: 20px;
+    border: 1px solid #596980;
+    border-radius: 5px;
+}

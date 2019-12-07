@@ -1,0 +1,54 @@
+.preloader {
+    background: #8bcb8d !important;
+}
+.spinner-border.text-primary {
+    height: 100px;
+    width: 100px;
+    font-size: 9px;
+    animation: spinner-border 1.15s linear infinite;
+    color: white !important;
+}
+.material-icons {
+    font-family: 'Material Icons' !important;
+}
+.material-icons {
+    vertical-align: middle;
+}
+* {
+    font-family: 'Ubuntu', sans-serif;
+    color: #596981;
+    scroll-behavior: smooth;
+}
+code, pre, pre *, .monospace {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+}
+span.spec_label {
+    font-weight: 500;
+}
+.muted {
+    color: #a3d1f8;
+    text-transform: lowercase;
+}
+.inline-block {
+    display: inline-block;
+}
+.bold-code {
+    font-weight: 600;
+}
+.nav.nav-tabs {
+    box-shadow: inset 0px -1px 0px #00000010;
+}
+.nav.nav-tabs li a {
+    color: #596980;
+    opacity: 1;
+    background: none;
+}
+.nav.nav-tabs li a.active {
+    border-bottom: 3px solid #4CAF50;
+    color: #4CAF50;
+    background: none;
+}
+body {
+    overflow-x: hidden;
+}

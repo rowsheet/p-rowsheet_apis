@@ -1,0 +1,62 @@
+<div class="api_spec_route_label">
+    <div class="inline-block">
+        <p class="muted m-0">
+            Service:</p>
+        <p class="muted m-0">
+            Module:</p>
+        <p class="muted m-0">
+            Command:</p>
+    </div>
+    <div class="inline-block m-2"
+        style="font-size: 17px;">
+        <p class="m-0"
+            style="text-transform: uppercase; color: #acb5bf;
+            font-weight: 300; letter-spacing: 1px;">
+            {{ skey }}
+        </p>
+        <p class="m-0"
+            style="text-transform: capitalize;
+            font-weight: 400; font-size: 15px;">
+            {{ mkey }}
+        </p>
+        <p class="monospace m-0 bold-code">
+            {{ ckey }}()
+        </p>
+    </div>
+</div>
+{% if command.params %}
+<div class="api_spec_param"
+    style="border-bottom: 1px solid #59697f2e;
+    padding: 10px 0px 10px 0px; margin-top: 25px;">
+    <h4 style="font-weight: 500;color: #acb5c0;font-size: 13px;">
+        ARGUMENTS
+    </h4>
+</div>
+{% endif %}
+{% for pkey, param in command.params.items %}
+<div class="api_spec_param"
+    style="border-bottom: 1px solid #59697f2e; padding: 10px 0px 10px 0px;">
+    <h5 class="api_spec_param_title"
+        style="display: inline;">
+        <span class="monospace"
+            style="font-weight: 600; font-size: 15px">
+            {{ pkey }}
+        </span>
+        <span style="font-size: 13px;">
+            {{ param.type }}
+        </span>
+    </h5>
+    {% if param.description %}
+        <p style="padding-top: 15px">{{ param.description }}</p>
+    {% endif %}
+</div>
+{% endfor %}
+{% if command.returns %}
+<div class="api_spec_param"
+    style="border-bottom: 1px solid #59697f2e;
+    padding: 10px 0px 10px 0px; margin-top: 25px;">
+    <h4 style="font-weight: 500;color: #acb5c0;font-size: 13px;">
+        RETURNS
+    </h4>
+</div>
+{% endif %}

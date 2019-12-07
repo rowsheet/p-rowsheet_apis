@@ -1,0 +1,104 @@
+{% load basic %}
+{% load api_spec %}
+
+{% for skey, service in api_spec.services.items %}
+    <div class="api_user_group_info">
+        <h1 class="">
+            {% replace ukey "_" " " %}
+        </h1>
+        {% for mkey , module in service.modules.items %}
+            <h4 class="">
+                {% replace mkey "_" " " %}
+            </h4>
+            <table class="module_overview_table">
+                <thead>
+                    <tr>
+                        <td>
+                            <strong>Methods:</strong>
+                        </td>
+                        <td>
+                            <strong>Endpoints:</strong>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody class="module_overview">
+                {% for ckey, command in module.commands.items %}
+                    <tr>
+                        <td>
+                            <span class="monospace">
+                                {{ ckey }}()
+                            </span>
+                        </td>
+                        <td>
+                            <span class="monospace">
+                                {% endpoint_url version skey mkey ckey command.method %}
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+    {% for mkey, module in service.modules.items %}
+        {% for ckey, command in module.commands.items %}
+                <div id="{% api_spec_guid skey mkey ckey %}" class="anchor api_spec_column"
+                    {% if forloop.counter == 1 %}
+                        style="border-top: none;"
+                    {% endif %}>
+                    <div class="api_spec_description">
+                        {% include "rowsheet/partial/command_params.html" %}
+                    </div>
+                    <div class="api_spec_examples">
+                        <div class="tabslide_wrapper" style="overflow: hidden;">
+                            <div class="api_spec__info_wrapper p-3">
+                        <h3 id="{% api_spec_guid skey mkey ckey %}_title"
+                            class="api_spec_main_title monospace"
+                            style="padding: 3px 9px 5px 9px; display: table-cell;">
+                            {{ ckey }}()
+                        </h3>
+                        <div class="inline-block m-2">
+                            <p class="monospace m-0 bold-code">
+                                {{ spec.route.user_group }}
+                            </p>
+                            <p class="monospace m-0 bold-code">
+                                {{ spec.route.module }}
+                            </p>
+                        </div>
+                            </div>
+                            <ul class="nav nav-tabs tabnav"
+                                style="display: flex">
+                                <li class="nav-item"
+                                    onclick="rowsheet.tabslide.set('#{% api_spec_guid skey mkey ckey %}', 0)">
+                                    <a href="#{% api_spec_guid skey mkey ckey %}"
+                                        class="nav-link api_spec_header api_spec_curl_header active">
+                                        headers</a>
+                                </li>
+                                <li class="nav-item"
+                                    onclick="rowsheet.tabslide.set('#{% api_spec_guid skey mkey ckey %}', 1)">
+                                    <a href="#{% api_spec_guid skey mkey ckey %}"
+                                        class="nav-link api_spec_header api_spec_json_header">
+                                        headers</a>
+                                </li>
+                                <li class="nav-item"
+                                    onclick="rowsheet.tabslide.set('#{% api_spec_guid skey mkey ckey %}', 2)">
+                                    <a href="#{% api_spec_guid skey mkey ckey %}"
+                                        class="nav-link api_spec_header">
+                                        headers</a>
+                                </li>
+                            </ul>
+                            <div class="tabslide">
+                                <div class="api_spec api_spec_curl active">
+                                    {% api_spec_curl request version skey mkey ckey command.method command.params %}
+                                </div><div class="api_spec api_spec_json">
+                                    {% pretty_json spec %}
+                                </div><div class="api_spec">
+                                    {% pretty_json spec %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
