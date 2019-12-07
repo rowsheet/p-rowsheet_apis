@@ -1,0 +1,290 @@
+services:
+  api_test:
+    description: Test API service.
+    modules:
+      api_test:
+        description: Generic module for test API service with the same name.
+        commands:
+          api_test:
+            description: An example API call to test the value of a single parameter.
+            method: POST
+            params:
+              value:
+                description: An example value.
+                type: str
+                required: true
+          test_get:
+            description: An example API call to test the value of a single parameter.
+            method: GET
+            auth: null
+            params:
+              foo:
+                description: Foo
+                type: str
+                required: true
+              bar:
+                description: Bar 
+                type: int 
+                required: true
+              qux:
+                description: Qux
+                type: float
+                required: true
+                max: 1000
+              baz:
+                description: Baz 
+                type: bool
+                required: false
+                default: false
+          dump_args:
+            description: API Example function that dumps any args it was passed.
+            method: POST
+  riders:
+    modules:
+      accounts:
+        commands:
+          account:
+            method: GET
+            auth: rider
+          profile:
+            method: GET
+            auth: rider
+          trusted_contacts:
+            method: GET
+            auth: rider
+          set_phone_number:
+            method: POST
+            auth: rider
+            params:
+              phone_number:
+                type: int 
+          set_profile:
+            method: POST
+            auth: rider
+            params:
+              name:
+                type: str
+              pronoun:
+                type: str
+              accomodations:
+                type: str
+              photo_filename:
+                type: str
+          verify:
+            method: POST
+            auth: rider
+            params:
+              verification_code:
+                type: int
+          add_trusted_contact:
+            method: POST
+            auth: rider
+            params:
+              contact_name:
+                type: str
+              contact_phone_number:
+                type: int
+          past_rides:
+            method: POST
+            auth: rider
+            params:
+              limit:
+                type: int
+              offset:
+                type: int
+      session:
+        commands:
+          log_out:
+            method: POST
+            auth: rider
+          unregister:
+            method: POST
+            auth: rider
+      payments:
+        commands:
+          set_paypal:
+            status: todo
+          set_apple_pay:
+            status: todo
+          set_credit_card:
+            method: POST
+            auth: rider
+            params:
+              credit_card_number:
+                type: int
+              exp_month:
+                type: int
+              exp_year:
+                type: int
+              zip_code int cvv:
+                type: int
+          set_email_address:
+            method: POST
+            auth: rider
+            params:
+              email_address:
+                type: str
+          add_tax_reciept_request:
+            method: POST
+            auth: rider
+            params:
+              email_address:
+                type: str
+          add_one_time_donation:
+            method: POST
+            auth: rider
+            params:
+              donation_amount:
+                type: int
+              round_up:
+                type: bool
+          add_paypal_donation:
+            method: POST
+            auth: rider
+            params:
+              payment_token:
+                type: PaymentToken
+          add_credit_card_donation:
+            method: POST
+            auth: rider
+            params:
+              payment_token:
+                type: PaymentToken
+      settings:
+        commands:
+          settings:
+            method: POST
+            auth: rider
+            params:
+          set_accessibility_requirement:
+            method: POST
+            auth: rider
+            params:
+              name:
+                type: string
+          unset_accessibility_requirement:
+            method: POST
+            auth: rider
+            params:
+              name:
+                type: string
+      logging:
+        commands:
+          error:
+            method: POST
+            auth: rider
+            params:
+              error:
+                type: Error
+          911_assistance_opened:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              lat:
+                type: float
+              lng :
+                type: float
+          911_assistance_called:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              lat:
+                type: float
+              lng:
+                type: float
+      rideshare:
+        commands:
+          flight_checks:
+            method: GET
+            auth: rider
+          bookmark_locations:
+            method: GET
+            auth: rider
+          search_location:
+            method: GET
+            auth: rider
+          location_query:
+            type: str
+            auth: rider
+          ride_status:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+          current_location_availibility:
+            method: POST
+            auth: rider
+            params:
+              lat:
+                type: float
+              lng:
+                type: float
+          ride_request_estimate:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+          set_ride_request:
+            method: POST
+            auth: rider
+            params:
+              start_lat:
+                type: float
+              start_lng:
+                type: float
+              end_lat:
+                type: float
+              end_lng:
+                type: float
+              time_from_now:
+                type: int
+          unset_ride_request:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+          set_a_driver_tip:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              tip_amount:
+                type: int
+          set_pickup_note:
+            method: POST
+            auth: rider
+            params:
+              pickup_note:
+                type: str
+          set_ride_feedback:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              ride_feedback:
+                type: str
+          set_ride_rating:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              ride_rating:
+                type: ride_rating
+          add_driver_message:
+            method: POST
+            auth: rider
+            params:
+              ride_token:
+                type: RideToken
+              ride_feedback:
+                type: str
