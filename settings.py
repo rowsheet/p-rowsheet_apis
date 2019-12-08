@@ -19,6 +19,11 @@ DEBUG = PARSE_ENV("DEBUG", os.getenv("DEBUG"), data_type="bool",
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = [
+    "homobiles.herokuapp.com",
+    "rideshare.rowsheet.com",
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
