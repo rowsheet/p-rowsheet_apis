@@ -125,7 +125,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/set_nonce"
 SITE_ID = 1
 
 #-------------------------------------------------------------------------------
@@ -146,3 +146,17 @@ if os.path.isfile(api_spec_file_path):
 else:
     print("------------------NO API SPEC")
     print(BASE_DIR)
+
+
+class AuthNonce:
+    def __init__(self):
+        self.pairs = {}
+    def set(self, nonce, session_id):
+        self.pairs[nonce] = session_id
+    def get(self, nonce):
+        session_id = self.pairs.get(nonce)
+        if session_id is not None:
+            self.pairs.pop(nonce)
+        return session_id
+
+AUTH_NONCE = AuthNonce()
