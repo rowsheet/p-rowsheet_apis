@@ -38,21 +38,16 @@ def set_nonce(request):
     return JsonResponse({ "error": "Unauthorized." }, status=401)
 
 import base64
-def parse_auth_bearer(auth_header):
-    if auth_header is None:
-        return None
-
-    # Remove "Basic " to isolate credentials.
-    encoded_credentials = auth_header.split(' ')[1]
-    decoded_credentials = base64.b64decode(encoded_credentials).decode("utf-8").split(':')
-
-    # Remove the square brackets around username.
-    bearer = decoded_credentials[0][1:-1]
-    return bearer
+def parse_auth_bearer(request):
+    try:
+        request.META.get("HTTP_AUTHORIZATION")
+        return auth_header.split(' ')[1]
+    except Exception:
+        return ""
 
 @csrf_exempt
 def session(request):
-    bearer_token = parse_auth_bearer(request.META.get("HTTP_AUTHORIZATION"))
+    bearer_token = parse_auth_bearer(request)
     try:
         session = Session.objects.get(session_key=bearer_token)
         return JsonResponse({"data": "OK"}, status=200)
