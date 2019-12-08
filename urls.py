@@ -34,24 +34,38 @@ def set_nonce(request):
     if request.user.is_authenticated:
         nonce = str(uuid.uuid4())
         auth_nonce.set(nonce, request.session.session_key)
-        return HttpResponseRedirect("http://localhost:5002/auth_callback?auth_nonce=" + nonce, 302)
+        return HttpResponseRedirect(settings.WEBAPP_URL + "/auth_callback?auth_nonce=" + nonce, 302)
     return JsonResponse({ "error": "Unauthorized." }, status=401)
+
+def logout_callback(request):
+    return HttpResponseRedirect(settings.WEBAPP_URL, 302)
 
 import base64
 def parse_auth_bearer(request):
     try:
-        request.META.get("HTTP_AUTHORIZATION")
-        return auth_header.split(' ')[1]
-    except Exception:
+        auth_header = request.META.get("HTTP_AUTHORIZATION")
+        print("auth_header: " + auth_header)
+        auth_type = auth_header.split(' ')[0]
+        credentials = auth_header.split(' ')[1]
+        if auth_type == "Bearer":
+            return credentials
+        decoded_credentials = base64.b64decode(credentials).decode("utf-8")
+        print("decoded_credentials: " + str(decoded_credentials))
+        bearer = decoded_credentials.split(':')[0][1:-1]
+        return bearer
+    except Exception as ex:
+        print(str(ex))
         return ""
 
 @csrf_exempt
 def session(request):
     bearer_token = parse_auth_bearer(request)
+    print("TOKEN: " + str(bearer_token))
     try:
         session = Session.objects.get(session_key=bearer_token)
         return JsonResponse({"data": "OK"}, status=200)
-    except Exception:
+    except Exception as ex:
+        print(str(ex))
         return JsonResponse({"error": "Unauthorized" }, status=401)
 
 def catch_all(request):
@@ -77,6 +91,7 @@ urlpatterns = [
     # path("info", info),
     path("auth", auth),
     path("set_nonce", set_nonce),
+    path("logout_callback", logout_callback),
     path("session", session),
     path("", catch_all),
 ]
