@@ -50,9 +50,9 @@ def handle(request, version, service, module, command):
         raw_args = { key : val for key, val in request.GET.items()}
     if request.method == "POST":
         raw_args = { key : val for key, val in request.POST.items()}
+    args = {}
     if api_command.get("params") is not None:
         params = api_command.get("params")
-        args = {}
         errors = {}
         for param_name, param in api_command.get("params").items():
             raw_param = raw_args.get(param_name)
@@ -115,7 +115,11 @@ def handle(request, version, service, module, command):
     bearer_token = parse_auth_bearer(auth_header)
     session_valid = request.session.exists(bearer_token)
 
+    if session_valid == False:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
     import importlib
     module = importlib.import_module("api.v1")
     method = getattr(module, command)
+
     return method(**args)

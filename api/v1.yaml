@@ -13,32 +13,32 @@ services:
                 description: An example value.
                 type: str
                 required: true
-          test_get:
-            description: An example API call to test the value of a single parameter.
-            method: GET
-            auth: null
-            params:
-              foo:
-                description: Foo
-                type: str
-                required: true
-              bar:
-                description: Bar 
-                type: int 
-                required: true
-              qux:
-                description: Qux
-                type: float
-                required: true
-                max: 1000
-              baz:
-                description: Baz 
-                type: bool
-                required: false
-                default: false
-          dump_args:
-            description: API Example function that dumps any args it was passed.
-            method: POST
+                #          test_get:
+                #            description: An example API call to test the value of a single parameter.
+                #            method: GET
+                #            auth: null
+                #            params:
+                #              foo:
+                #                description: Foo
+                #                type: str
+                #                required: true
+                #              bar:
+                #                description: Bar 
+                #                type: int 
+                #                required: true
+                #              qux:
+                #                description: Qux
+                #                type: float
+                #                required: true
+                #                max: 1000
+                #              baz:
+                #                description: Baz 
+                #                type: bool
+                #                required: false
+                #                default: false
+                #          dump_args:
+                #            description: API Example function that dumps any args it was passed.
+                #            method: POST
   riders:
     modules:
       account:
@@ -81,7 +81,7 @@ services:
               contact_name:
                 type: str
               contact_phone_number:
-                type: int
+                type: str
           remove_trusted_contact:
             method: POST
             auth: rider
@@ -149,13 +149,13 @@ services:
             auth: rider
             params:
               payment_token:
-                type: PaymentToken
+                type: str
           add_credit_card_donation:
             method: POST
             auth: rider
             params:
               payment_token:
-                type: PaymentToken
+                type: str
       settings:
         commands:
           settings:
@@ -167,13 +167,13 @@ services:
             auth: rider
             params:
               name:
-                type: string
+                type: str
           unset_accessibility_requirement:
             method: POST
             auth: rider
             params:
               name:
-                type: string
+                type: str
       logging:
         commands:
           error:
@@ -181,13 +181,13 @@ services:
             auth: rider
             params:
               error:
-                type: Error
+                type: str
           emergency_assistance_opened:
             method: POST
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               lat:
                 type: float
               lng :
@@ -197,7 +197,7 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               lat:
                 type: float
               lng:
@@ -222,7 +222,7 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
           current_location_availibility:
             method: GET
             auth: rider
@@ -264,7 +264,7 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
           set_verification_code:
             method: POST
             auth: rider
@@ -281,7 +281,7 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               tip_amount:
                 type: int
           set_pickup_note:
@@ -295,7 +295,7 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               ride_feedback:
                 type: str
           set_ride_rating:
@@ -303,14 +303,14 @@ services:
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               ride_rating:
-                type: ride_rating
+                type: int
           add_driver_message:
             method: POST
             auth: rider
             params:
               ride_token:
-                type: RideToken
+                type: str
               ride_feedback:
                 type: str

@@ -17,9 +17,9 @@ def highlight(content, color):
 
 def translate_data_type(spec_type):
     if spec_type == "int":
-        return "integer"
+        return "int"
     if spec_type == "bool":
-        return "boolean"
+        return "bool"
     if spec_type == "str":
         return "string"
     return spec_type
@@ -42,9 +42,9 @@ def api_spec_curl(request, version, skey, mkey, ckey, method, params=None):
         curl_params = ""
     elif len(params) > 0:
         curl_params = "\n".join([
-            """    <nobr>-d %s="<span class="pre_data_type">%s</span>" \\</nobr>""" % (
+            """    <nobr>-d %s=<span class="pre_data_type">%s</span> \\</nobr>""" % (
                 pkey,
-                translate_data_type(pkey)
+                translate_data_type(param["type"])
             )
             for pkey, param in params.items()])
     color = "#f6968f"
