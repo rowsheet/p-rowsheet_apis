@@ -8,17 +8,21 @@ from rowsheet.APISpec import APISpec
 
 api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))
 
-def parse_auth_bearer(auth_header):
-    if auth_header is None:
-        return None
-
-    # Remove "Basic " to isolate credentials.
-    encoded_credentials = auth_header.split(' ')[1]
-    decoded_credentials = base64.b64decode(encoded_credentials).decode("utf-8").split(':')
-
-    # Remove the square brackets around username.
-    bearer = decoded_credentials[0][1:-1]
-    return bearer
+def parse_auth_bearer(request):
+    try:
+        auth_header = request.META.get("HTTP_AUTHORIZATION")
+        print("auth_header: " + auth_header)
+        auth_type = auth_header.split(' ')[0]
+        credentials = auth_header.split(' ')[1]
+        if auth_type == "Bearer":
+            return credentials
+        decoded_credentials = base64.b64decode(credentials).decode("utf-8")
+        print("decoded_credentials: " + str(decoded_credentials))
+        bearer = decoded_credentials.split(':')[0][1:-1]
+        return bearer
+    except Exception as ex:
+        print(str(ex))
+        return ""
 
 def assert_range(value, min_val, max_val):
     if max_val is not None:
@@ -111,8 +115,7 @@ def handle(request, version, service, module, command):
         if errors != {}:
             return JsonResponse({"error": "Bad request parameters", "errors": errors}, status=400)
 
-    auth_header = request.headers.get('Authorization')
-    bearer_token = parse_auth_bearer(auth_header)
+    bearer_token = parse_auth_bearer(request)
     session_valid = request.session.exists(bearer_token)
 
     if session_valid == False:

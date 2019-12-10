@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 
 def api_test(**args):
-    return JsonResponse({ "data": "response from python api_test(**args)" }, status=200)
+    print(args)
+    return JsonResponse({ "data": "response from python api_test(**args)", "args": args }, status=200)
 
 def test_get(**args):
     return JsonResponse({ "data": "response from python test_get(**args)" }, status=200)

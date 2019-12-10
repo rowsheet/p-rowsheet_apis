@@ -1,4 +1,5 @@
 import uuid
+import base64
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
@@ -40,7 +41,6 @@ def set_nonce(request):
 def logout_callback(request):
     return HttpResponseRedirect(settings.WEBAPP_URL, 302)
 
-import base64
 def parse_auth_bearer(request):
     try:
         auth_header = request.META.get("HTTP_AUTHORIZATION")
