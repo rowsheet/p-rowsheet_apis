@@ -87,6 +87,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     url(r"^accounts/", include("allauth.urls")),
     url(r"^docs/", include("rowsheet.urls")),
+    url(r"^assets/", include("rowsheet.assets")),
     path("<version>/<service>/<module>/<command>", handle),
     # path("info", info),
     path("auth", auth),

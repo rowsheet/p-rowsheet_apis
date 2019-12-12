@@ -113,7 +113,10 @@ def bookmark_locations(**args):
     return JsonResponse({ "data": "response from python bookmark_locations(**args)" }, status=200)
 
 def search_location(**args):
-    return JsonResponse({ "data": "response from python search_location(**args)" }, status=200)
+    print(args)
+    return {
+        "data": "Query result was " + str(args.get("query"))
+    }
 
 def ride_status(**args):
     return JsonResponse({ "data": "response from python ride_status(**args)" }, status=200)

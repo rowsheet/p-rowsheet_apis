@@ -121,8 +121,20 @@ def handle(request, version, service, module, command):
     if session_valid == False:
         return JsonResponse({"error": "Unauthorized"}, status=401)
 
-    import importlib
-    module = importlib.import_module("api.v1")
-    method = getattr(module, command)
+    try:
+        import importlib
+        module = importlib.import_module("api.v1")
+        method = getattr(module, command)
 
-    return method(**args)
+        response = method(**args)
+        if type(response) == JsonResponse:
+            return response
+        else:
+            return JsonResponse({
+                    "data": method(**args)
+            }, status=200)
+
+    except Exception as ex:
+        return JsonResponse({
+            "error": str(ex),
+        }, status=500)

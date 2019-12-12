@@ -122,7 +122,9 @@ services:
                 type: int
               exp_year:
                 type: int
-              zip_code int cvv:
+              zip_code:
+                type: int
+              cvv:
                 type: int
           set_email_address:
             method: POST
@@ -213,10 +215,10 @@ services:
           search_location:
             method: GET
             auth: rider
-          search_location:
-            method: GET
-            type: str
-            auth: rider
+            params:
+              query:
+                type: str
+                required: true
           ride_status:
             method: GET
             auth: rider
