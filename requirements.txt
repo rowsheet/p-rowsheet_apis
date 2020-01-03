@@ -6,3 +6,4 @@ django-allauth
 termcolor
 pyyaml
 django-cors-headers
+googlemaps
