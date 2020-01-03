@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.conf import settings as _settings
+import googlemaps
 
 def api_test(**args):
     print(args)
@@ -112,11 +114,106 @@ def flight_checks(**args):
 def bookmark_locations(**args):
     return JsonResponse({ "data": "response from python bookmark_locations(**args)" }, status=200)
 
-def search_location(**args):
+def reverse_geocode(**args):
     print(args)
+    gmaps = googlemaps.Client(key=_settings.GOOGLE_MAPS_API_KEY)
+    location = (args.get("lat"), args.get("lng"))
+    result = gmaps.reverse_geocode(location)
     return {
-        "data": "Query result was " + str(args.get("query"))
+        "formatted_address": result[0]["formatted_address"],
+        "place_id": result[0]["place_id"],
     }
+
+def search_suggestions(**args):
+    try:
+        gmaps = googlemaps.Client(key=_settings.GOOGLE_MAPS_API_KEY)
+        location = (args.get("lat"), args.get("lng"))
+        query = args.get("query")
+        if query is None:
+            return []
+        if query == "":
+            return []
+        resp = gmaps.places_autocomplete(
+                query, location=location, types='address',
+                radius=(1650 * 50), strict_bounds=True)
+        import pprint as pp
+        pp.pprint(resp);
+        addresses = [{
+            "address": item.get("description"),
+            "place_id": item.get("place_id"),
+        } for item in resp]
+        return addresses 
+    except Exception as ex:
+        print("EX:")
+        print(str(ex))
+        return {}
+
+def location_detail(**args):
+    try:
+        gmaps = googlemaps.Client(key=_settings.GOOGLE_MAPS_API_KEY)
+        resp = gmaps.place(args.get("place_id"))
+        import pprint as pp
+        pp.pprint(resp)
+        result = resp.get("result")
+        return {
+            "address": result.get("formatted_address"),
+            "icon": result.get("icon"),
+            "name": result.get("name"),
+            "place_id": result.get("place_id"),
+            "geometry": result.get("geometry"),
+        }
+    except Exception as ex:
+        print("EX:")
+        print(str(ex))
+        return {}
+
+def search_location(**args):
+    try:
+        gmaps = googlemaps.Client(key=_settings.GOOGLE_MAPS_API_KEY)
+        location = (args.get("lat"), args.get("lng"))
+        resp = gmaps.places_nearby(location,
+                keyword=args.get("query"), rank_by="distance")
+        api_result = []
+        for item in resp["results"]:
+            api_result.append({
+                "address": item.get("vicinity"),
+                "name": item.get("name"),
+                "geometry": item.get("geometry"),
+                "icon": item.get("icon"),
+                "open_now": item.get("opening_hours").get("open_now") if item.get("opening_hours") is not None else None,
+                "rating": item.get("rating"),
+                "total_reviews": item.get("user_ratings_total"),
+                "place_id": item.get("place_id"),
+                "types": item.get("types"),
+                "price_level": item.get("price_level"),
+            })
+        import pprint as pp
+        pp.pprint(api_result)
+        return api_result
+    except Exception as ex:
+        print("EX:")
+        print(str(ex))
+        return {}
+        """
+        result = gmaps.find_place(args.get("query"), "textquery", fields=[
+            "formatted_address",
+            "geometry",
+            "icon",
+            "name",
+            "permanently_closed",
+            "photos",
+            "place_id",
+            "plus_code",
+            "types",
+            ],
+            location_bias= "point:%s,%s" % (
+                args.get("lat"),
+                args.get("lng"),
+            )
+        )
+        import pprint as pp
+        pp.pprint(result)
+        """
 
 def ride_status(**args):
     return JsonResponse({ "data": "response from python ride_status(**args)" }, status=200)

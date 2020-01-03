@@ -28,21 +28,12 @@ var api = {
                 {% for ckey, command in module.commands.items %}
                 {% js_doc command 4 %}
                 {{ ckey }}: function({% js_params command.params %}) {
-                    $.ajax({
+                    return Promise.resolve($.ajax({
                         method: "{{ command.method }}",
                         url: API_SERVER_URL + "/{% command_url request vkey skey mkey ckey command %}",
                         {% command_data command.method command.params 6 %}
                         headers: { "Authorization": "Bearer " + getCookie("session_id") },
-                        error: function (request) {
-                            error_resp = JSON.parse(request.responseText);
-                            console.log(error_resp);
-                            error && error(error_resp);
-                        },
-                        success: function(resp) {
-                            console.log(resp);
-                            success && success(resp);
-                        }
-                    });
+                    }));
                 },
                 {% endfor %}
             },

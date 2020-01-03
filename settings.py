@@ -166,3 +166,8 @@ class AuthNonce:
         return session_id
 
 AUTH_NONCE = AuthNonce()
+
+#-------------------------------------------------------------------------------
+# GOOGLE MAPS API
+#-------------------------------------------------------------------------------
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")

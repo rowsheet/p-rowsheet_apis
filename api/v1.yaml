@@ -212,11 +212,43 @@ services:
           bookmark_locations:
             method: GET
             auth: rider
+          reverse_geocode:
+            method: GET
+            params:
+              lat:
+                type: float
+                required: true
+              lng:
+                type: float
+                required: true
           search_location:
             method: GET
-            auth: rider
             params:
+              lat:
+                type: float
+                required: true
+              lng:
+                type: float
+                required: true
               query:
+                type: str
+                required: true
+          search_suggestions:
+            method: GET
+            params:
+              lat:
+                type: float
+                required: true
+              lng:
+                type: float
+                required: true
+              query:
+                type: str
+                required: true
+          location_detail:
+            method: GET
+            params:
+              place_id:
                 type: str
                 required: true
           ride_status:

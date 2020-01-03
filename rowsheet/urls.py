@@ -25,6 +25,9 @@ def render_api_spec(request, version=None):
 
 def index(request, version="v1"):
 
+    print("FUCKING INDEX")
+    print(settings)
+
     # Hot-reload if DEV_MODE == True
     if DEV_MODE == True:
         api_spec = APISpec(os.path.join(settings.BASE_DIR, "api"))

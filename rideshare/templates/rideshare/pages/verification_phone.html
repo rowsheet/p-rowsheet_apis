@@ -1,0 +1,26 @@
+{% extends "rideshare/index.html" %}
+
+{% block content %}
+<div id="page_verification_phone" class="p-3">
+    <div class="back_nav my-3">
+        <a href="/rideshare">
+            <i class="material-icons">arrow_back_ios</i>
+        </a>
+    </div>
+    <h3>What's your number?</h3>
+    <h6>We’ll text you a code to verify your phone</h6>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">
+                <i class="material-icons">local_phone</i>
+            </span>
+        </div>
+        <input type="text" placeholder="+1 (512) 555-5555." class="form-control"></input>
+    </div>
+    <button class="round_button">
+        <a href="verification_code">
+            <i class="material-icons">arrow_forward</i>
+        </a>
+    </button>
+</div>
+{% endblock %}

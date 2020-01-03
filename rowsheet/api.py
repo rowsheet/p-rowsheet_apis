@@ -115,11 +115,12 @@ def handle(request, version, service, module, command):
         if errors != {}:
             return JsonResponse({"error": "Bad request parameters", "errors": errors}, status=400)
 
-    bearer_token = parse_auth_bearer(request)
-    session_valid = request.session.exists(bearer_token)
+    if api_command.get("auth") is not None:
+        bearer_token = parse_auth_bearer(request)
+        session_valid = request.session.exists(bearer_token)
 
-    if session_valid == False:
-        return JsonResponse({"error": "Unauthorized"}, status=401)
+        if session_valid == False:
+            return JsonResponse({"error": "Unauthorized"}, status=401)
 
     try:
         import importlib
@@ -130,11 +131,10 @@ def handle(request, version, service, module, command):
         if type(response) == JsonResponse:
             return response
         else:
-            return JsonResponse({
-                    "data": method(**args)
-            }, status=200)
+            return JsonResponse(method(**args), status=200, safe=False)
 
     except Exception as ex:
+        print(str(ex))
         return JsonResponse({
             "error": str(ex),
         }, status=500)
