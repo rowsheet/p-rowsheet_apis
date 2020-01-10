@@ -6,6 +6,12 @@ import yaml
 register = template.Library()
 
 @register.simple_tag
+def url_base(request):
+    http_or_https = request.build_absolute_uri().split("/")[0]
+    uri = request.build_absolute_uri().split("/")[2]
+    return http_or_https + "//" +  uri
+
+@register.simple_tag
 def js_params(params):
     try:
         return ", ".join([param_name for param_name, _ in params.items()] + 
