@@ -22,6 +22,7 @@ set_prod_env: ; $(info $(M) Setting production env vars...)
 	heroku config:set ALL_AUTH_EMAIL_HOST_PASSWORD=$(PROD__ALL_AUTH_EMAIL_HOST_PASSWORD) --remote production
 	heroku config:set DISABLE_COLLECTSTATIC=$(PROD__DISABLE_COLLECTSTATIC) --remote production
 	heroku config:set SECRET_KEY=$(PROD__SECRET_KEY) --remote production
+	heroku config:set WEBAPP_URL=$(PROD__WEBAPP_URL) --remote staging
 	heroku config:set TIMES=$(PROD__TIMES) --remote production
 
 deploy_production: set_prod_env ; $(info $(M) Running staging server...)
@@ -46,6 +47,7 @@ set_staging_env: ; $(info $(M) Setting staging env vars...)
 	heroku config:set ALL_AUTH_EMAIL_HOST_PASSWORD=$(STAGE__ALL_AUTH_EMAIL_HOST_PASSWORD) --remote staging
 	heroku config:set DISABLE_COLLECTSTATIC=$(STAGE__DISABLE_COLLECTSTATIC) --remote staging
 	heroku config:set SECRET_KEY=$(STAGE__SECRET_KEY) --remote staging
+	heroku config:set WEBAPP_URL=$(STAGE__WEBAPP_URL) --remote staging
 	heroku config:set TIMES=$(STAGE__TIMES) --remote staging
 
 deploy_staging: set_staging_env; $(info $(M) Running staging server...)
@@ -71,6 +73,7 @@ run_local: ; $(info $(M) Running local server...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py runserver 0.0.0.0:5002
 
@@ -86,6 +89,7 @@ migrate_local_db: ; $(info $(M) Migrating local database...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py migrate
 
@@ -101,6 +105,7 @@ make_local_migrations: ; $(info $(M) Migrating local database...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py makemigrations
 
@@ -116,6 +121,7 @@ collect_static : ; $(info $(M) Collecting local static-files...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py collectstatic
 
@@ -131,6 +137,7 @@ create_local_superuser: ; $(info $(M) Creating super-user for local server...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py createsuperuser 
 
@@ -146,6 +153,7 @@ cli: ; $(info $(M) Running Django CLI with local config...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 		python3 manage.py shell
 
@@ -161,6 +169,7 @@ start_app: ; $(info $(M) Adding new app...)
 		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
 		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
 		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
 	python3 manage.py startapp $(app_name)
 
