@@ -55,6 +55,7 @@ def profile(**args):
         "profile": {
             "username": acct.username,
             "pronouns": acct.pronoun.key,
+            "profile_picture": user.profile_picture
             # @TODO "accessibility": "ACCESSIBILITY",
         },
         "options": {

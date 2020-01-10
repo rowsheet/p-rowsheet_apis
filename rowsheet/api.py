@@ -129,6 +129,26 @@ def handle(request, version, service, module, command):
         uid = session_data.get('_auth_user_id')
         user = User.objects.get(id=uid)
         args["request_user"] = user
+        import pprint as pp
+        from allauth.socialaccount.models import SocialAccount
+        sa_obj_list = SocialAccount.objects.filter(user_id=user.id)
+        if sa_obj_list.count() > 0:
+            sa_obj = sa_obj_list.first()
+            if sa_obj.provider == "google":
+                print("GOT GOOGLE")
+                # print(vars(sa_obj))
+                # print(sa_obj.extra_data['picture'])
+                args["request_user"].profile_picture = sa_obj.extra_data['picture']
+            elif sa_obj.provider == "facebook":
+                args["request_user"].profile_picture = ""
+                print("GOT FACEBOOK")
+            else:
+                print("UNKNOWN")
+                args["request_user"].profile_picture = ""
+            print(user.id)
+        else:
+            print("NON SA OBJ")
+            args["request_user"].profile_picture = ""
 
     try:
         import importlib
