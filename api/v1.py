@@ -23,7 +23,44 @@ def verify(**args):
     return JsonResponse({ "data": "response from python verify(**args)" }, status=200)
 
 def profile(**args):
-    return JsonResponse({ "data": "response from python profile(**args)" }, status=200)
+    user = args["request_user"]
+
+    from rideshare.models import AppUser
+    from rideshare.models import Pronoun
+
+    acct_list = AppUser.objects.filter(
+        django_account = user
+    )
+    acct = None
+    if acct_list.count() == 0:
+        AppUser.objects.create(
+            django_account = user,
+            username = " ".join([
+                user.first_name,
+                user.last_name,
+            ]),
+            pronoun = Pronoun(id=3),
+        )
+        acct = AppUser.objects.get(
+            django_account = user
+        )
+    else:
+        acct = acct_list.first()
+
+    pronouns = {
+        res.key: res.display_name for res in Pronoun.objects.all()
+    }
+
+    return JsonResponse({
+        "profile": {
+            "username": acct.username,
+            "pronouns": acct.pronoun.key,
+            # @TODO "accessibility": "ACCESSIBILITY",
+        },
+        "options": {
+            "pronouns": pronouns,
+        },
+    }, status=200)
 
 def set_profile(**args):
     return JsonResponse({ "data": "response from python set_profile(**args)" }, status=200)

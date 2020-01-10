@@ -1,6 +1,8 @@
 import os
 import base64
 from django.http import JsonResponse
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from rowsheet import APIRequest
@@ -121,6 +123,12 @@ def handle(request, version, service, module, command):
 
         if session_valid == False:
             return JsonResponse({"error": "Unauthorized"}, status=401)
+
+        session = Session.objects.get(session_key=bearer_token)
+        session_data = session.get_decoded()
+        uid = session_data.get('_auth_user_id')
+        user = User.objects.get(id=uid)
+        args["request_user"] = user
 
     try:
         import importlib

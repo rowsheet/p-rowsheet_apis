@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 
     "rowsheet",         # Core application.
     "api",              # API config and entrypoints.
+    "rideshare",        # Rideshare models.
 ]
 
 MIDDLEWARE = [
