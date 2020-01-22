@@ -7,6 +7,7 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf import settings
+from django.template import loader
 
 from rowsheet.api import handle
 
@@ -69,7 +70,9 @@ def session(request):
         return JsonResponse({"error": "Unauthorized" }, status=401)
 
 def catch_all(request):
-        return HttpResponseRedirect("/docs/v1")
+    template = loader.get_template("rowsheet/error_404.html")
+    context = {}
+    return HttpResponse(template.render(context, request))
 
 """
 def info(request):
@@ -94,5 +97,11 @@ urlpatterns = [
     path("set_nonce", set_nonce),
     path("logout_callback", logout_callback),
     path("session", session),
-    path("", catch_all),
+
+    # Rideshare Paths
+    # @TODO Configure this somewhere as the "active" app or something.
+    path("", include("rideshare.urls")),
+
+    # 404 Catch-all.
+    url(r'^.*/$', catch_all),
 ]
