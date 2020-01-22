@@ -130,7 +130,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-LOGIN_REDIRECT_URL = "/set_nonce"
+LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/logout_callback"
 SITE_ID = 1
 WEBAPP_URL = os.getenv("WEBAPP_URL")

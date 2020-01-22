@@ -1,6 +1,46 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class RideRequest(models.Model):
+    start_name = models.CharField(
+        unique=True,
+        max_length = 64,
+        null = False, blank = False, default = None,
+    )
+    start_address = models.CharField(
+        unique=True,
+        max_length = 128,
+        null = False, blank = False, default = None,
+    )
+    start_place_id = models.CharField(
+        unique=True,
+        max_length = 256,
+        null = False, blank = False, default = None,
+    )
+    end_name = models.CharField(
+        unique=True,
+        max_length = 64,
+        null = False, blank = False, default = None,
+    )
+    end_address = models.CharField(
+        unique=True,
+        max_length = 128,
+        null = False, blank = False, default = None,
+    )
+    end_place_id = models.CharField(
+        unique=True,
+        max_length = 256,
+        null = False, blank = False, default = None,
+    )
+    ride_utc = models.IntegerField(
+        null = False, blank = False, default = None,
+    )
+    csrf_token= models.CharField(
+        unique=True,
+        max_length = 256,
+        null = False, blank = False, default = None,
+    )
+
 class Pronoun(models.Model):
     key = models.CharField(
         unique=True,

@@ -75,7 +75,7 @@ run_local: ; $(info $(M) Running local server...)
 		SECRET_KEY=$(SECRET_KEY) \
 		WEBAPP_URL=$(WEBAPP_URL) \
 		TIMES=$(TIMES) \
-		python3 manage.py runserver 0.0.0.0:5002
+		python3 manage.py runserver 0.0.0.0:5003
 
 migrate_local_db: ; $(info $(M) Migrating local database...)
 	env \
