@@ -1,8 +1,9 @@
 from django.contrib import admin
 
 from .models import AppUser 
-from .models import Pronoun 
-from .models import RideRequest 
+from .models import Pronoun
+from .models import Accommodation
+from .models import RideRequest
 
 class RideRequestAdmin(admin.ModelAdmin):
     fields = (
@@ -27,6 +28,15 @@ class PronounAdmin(admin.ModelAdmin):
     list_display = fields
     search_fields = fields
 admin.site.register(Pronoun, PronounAdmin)
+
+class AccommodationAdmin(admin.ModelAdmin):
+    fields = (
+        "key",
+        "display_name",
+    )
+    list_display = fields
+    search_fields = fields
+admin.site.register(Accommodation, AccommodationAdmin)
 
 class AppUserAdmin(admin.ModelAdmin):
     fields = (

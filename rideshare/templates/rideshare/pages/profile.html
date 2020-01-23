@@ -1,0 +1,33 @@
+{% extends "rideshare/layout.html" %}
+
+{% block content %}
+<div id="page_phone_verification">
+    <a href="/" class="btn btn-light btn-round">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <h5 class="text-center m-0">
+        What's your name?
+    </h5>
+    <input type="text" class="form-control" value="{{ username }}"/>
+    <br>
+    <h5 class="text-center m-0">
+        What are your preferred pronouns?
+    </h5>
+    <select class="form-control">
+        {% for opt in pronouns %}
+        <option value="{{ opt.id }}"
+                {% if opt == pronoun %}selected="selected"{% endif %}>
+            {{ opt.display_name }}
+        </option>
+        {% endfor %}
+    </select>
+    <br>
+    <h5 class="text-center m-0">
+        Do you require accommodations?
+    </h5>
+    <input type="text" class="form-control"/>
+    <a href="/" class="btn btn-light btn-round mt-3">
+        Save
+    </a>
+</div>
+{% endblock %}

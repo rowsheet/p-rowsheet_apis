@@ -54,6 +54,17 @@ class Pronoun(models.Model):
         null=False, blank=False, default=None,
     )
 
+class Accommodation(models.Model):
+    key = models.CharField(
+        unique=True,
+        max_length=16,
+        null=False, blank=False, default=None,
+    )
+    display_name = models.CharField(
+        unique=True,
+        max_length=32,
+        null=False, blank=False, default=None,
+    )
 
 class AppUser(models.Model):
     django_account = models.OneToOneField(
