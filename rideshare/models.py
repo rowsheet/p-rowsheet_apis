@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class RideRequest(models.Model):
     start_name = models.CharField(
         unique=True,
@@ -54,6 +55,7 @@ class Pronoun(models.Model):
         null=False, blank=False, default=None,
     )
 
+
 class Accommodation(models.Model):
     key = models.CharField(
         unique=True,
@@ -65,6 +67,7 @@ class Accommodation(models.Model):
         max_length=32,
         null=False, blank=False, default=None,
     )
+
 
 class AppUser(models.Model):
     django_account = models.OneToOneField(

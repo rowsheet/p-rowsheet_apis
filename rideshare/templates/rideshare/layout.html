@@ -34,9 +34,30 @@
                         Open
                     </button>
                     <div id="offcanvas-overlay" uk-offcanvas="overlay: true">
-                        <div class="uk-offcanvas-bar bg-light text-dark">
-                            {% block sidebar %}
-                            {% endblock %}
+                        <div class="uk-offcanvas-bar bg-light text-dark border-left">
+                            <div class="bg-primary p-3">
+                            {% if app_user is None %}
+                                No AppUser
+                            {% else %}
+                                <p class="m-0 text-center text-light">
+                                    {{ app_user.username }}
+                                </p>
+                                <p class="m-0 text-center text-light">
+                                    <small>
+                                        {{ app_user.pronoun.display_name }}
+                                    </small>
+                                </p>
+                            {% endif %}
+                            </div>
+                            {% if user_type is None %}
+                                <a href="/accounts/login" class="btn btn-primary">
+                                    Sign In
+                                </a>
+                            {% elif user_type == "rider" %}
+                                {% include "rideshare/partials/rider_sidebar.html" %}
+                            {% elif user_type == "drier" %}
+                                Driver
+                            {% endif %}
                         </div>
                     </div>
                 </div>

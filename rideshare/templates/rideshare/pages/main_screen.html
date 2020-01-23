@@ -1,5 +1,33 @@
 {% extends "rideshare/layout.html" %}
 
 {% block content %}
-Main Screen
+<div id="page_main_screen">
+    <button class="btn btn-primary btn-round"
+        onclick="$('#main_sidebar_trigger').click()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <div id="ride_map">
+        Ride Map:
+    </div>
+    <div id="ride_form" class="border-top">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <input type="text" class="form-control"
+                placeholder="Search destination for a ride ASAP">
+        </div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="Schedule a future ride">
+        </div>
+    </div>
+</div>
 {% endblock %}

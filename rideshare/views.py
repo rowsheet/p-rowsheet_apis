@@ -20,10 +20,20 @@ def load_app_user(request):
     return app_user, None
 
 
+"""-----------------------------------------------------------------------------
+PAGES (Public and On-boarding)
+-----------------------------------------------------------------------------"""
+
+
 def index(request):
-    template = loader.get_template("rideshare/pages/index.html")
-    context = {}
-    return HttpResponse(template.render(context, request))
+    app_user, created = AppUser.objects.get_or_create(
+        django_account=request.user)
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        # Page info.
+    }
+    return render(request, "rideshare/pages/index.html", context)
 
 
 def phone_verification(request):
@@ -32,6 +42,9 @@ def phone_verification(request):
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
     context = {
+        # Sidebar info.
+        "app_user": app_user,
+        # Page info.
         "user_id": request.user.id,
         "app_user": app_user,
         "phone_number": app_user.phone_number,
@@ -45,51 +58,78 @@ def code_verification(request):
         return redirect("/accounts/login/")
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
-    context = {}
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        # Page info.
+    }
     return render(request, "rideshare/pages/code_verification.html", context)
+
+
+"""-----------------------------------------------------------------------------
+PAGES (Authenticated)
+-----------------------------------------------------------------------------"""
 
 
 def main_screen(request):
 
-    app_user, redirect = load_app_user(request)
-    if redirect is not None:
-        return redirect
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
 
-    context = {}
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
     return render(request, "rideshare/pages/main_screen.html", context)
 
 
 def set_location(request):
 
-    app_user, redirect = load_app_user(request)
-    if redirect is not None:
-        return redirect
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
 
-    context = {}
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
     return render(request, "rideshare/pages/set_location.html", context)
 
 
 def account(request):
 
-    app_user, redirect = load_app_user(request)
-    if redirect is not None:
-        return redirect
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
 
     context = {
+        "app_user": app_user,
+        "user_type": "rider",
+        # Sidebar info.
         "phone_number": app_user.phone_number,
+        # Page info.
     }
     return render(request, "rideshare/pages/account.html", context)
 
 
 def profile(request):
 
-    app_user, redirect = load_app_user(request)
-    if redirect is not None:
-        return redirect
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
 
     pronouns = Pronoun.objects.all()
     accommodations = Accommodation.objects.all()
     context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
         "username": app_user.username,
         "pronoun": app_user.pronoun,
         "accommodation": app_user.accommodation,
