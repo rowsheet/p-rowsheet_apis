@@ -6,17 +6,31 @@ from django.shortcuts import redirect
 from rideshare.models import AppUser, Pronoun, Accommodation
 
 
+def load_app_user(request):
+    if not request.user.is_authenticated:
+        return None, redirect("/accounts/login/")
+    app_user, created = AppUser.objects.get_or_create(
+        django_account=request.user)
+    if app_user.phone_number is None:
+        print("NEED PHONE NUMBER")
+        return None, redirect("/phone_verification")
+    if not app_user.phone_verified:
+        print("NEED PHONE VERIFICATION")
+        return None, redirect("/code_verification")
+    return app_user, None
+
+
 def index(request):
     template = loader.get_template("rideshare/pages/index.html")
     context = {}
     return HttpResponse(template.render(context, request))
 
+
 def phone_verification(request):
-    if request.user.is_authenticated == False:
+    if not request.user.is_authenticated:
         return redirect("/accounts/login/")
-    app_user, created = AppUser.objects.get_or_create(django_account=request.user)
-    if app_user.phone_number is not None:
-        return redirect("/code_verification")
+    app_user, created = AppUser.objects.get_or_create(
+        django_account=request.user)
     context = {
         "user_id": request.user.id,
         "app_user": app_user,
@@ -25,48 +39,54 @@ def phone_verification(request):
     }
     return render(request, "rideshare/pages/phone_verification.html", context)
 
+
 def code_verification(request):
-    if request.user.is_authenticated == False:
-        return redirect("/accounts/login")
-    app_user, created = AppUser.objects.get_or_create(django_account=request.user)
-    if app_user.phone_verified == True:
-        return redirect("/main_screen")
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login/")
+    app_user, created = AppUser.objects.get_or_create(
+        django_account=request.user)
     context = {}
     return render(request, "rideshare/pages/code_verification.html", context)
 
+
 def main_screen(request):
-    if request.user.is_authenticated == False:
-        return redirect("/accounts/login")
+
+    app_user, redirect = load_app_user(request)
+    if redirect is not None:
+        return redirect
+
     context = {}
     return render(request, "rideshare/pages/main_screen.html", context)
 
+
 def set_location(request):
-    if request.user.is_authenticated == False:
-        return redirect("/accounts/login")
+
+    app_user, redirect = load_app_user(request)
+    if redirect is not None:
+        return redirect
+
     context = {}
     return render(request, "rideshare/pages/set_location.html", context)
 
+
 def account(request):
-    if request.user.is_authenticated == False:
-        return redirect("/account/login")
-    app_user, created = AppUser.objects.get_or_create(
-        django_account=request.user
-    )
-    if app_user.phone_verified == False:
-        return redirect("/phone_verification")
-    if app_user.phone_number is None:
-        return redirect("/phone_verification")
+
+    app_user, redirect = load_app_user(request)
+    if redirect is not None:
+        return redirect
+
     context = {
         "phone_number": app_user.phone_number,
     }
-    return  render(request, "rideshare/pages/account.html", context)
+    return render(request, "rideshare/pages/account.html", context)
+
 
 def profile(request):
-    if request.user.is_authenticated == False:
-        return redirect("/accounts/login")
-    app_user, created = AppUser.objects.get_or_create(
-        django_account=request.user
-    )
+
+    app_user, redirect = load_app_user(request)
+    if redirect is not None:
+        return redirect
+
     pronouns = Pronoun.objects.all()
     accommodations = Accommodation.objects.all()
     context = {

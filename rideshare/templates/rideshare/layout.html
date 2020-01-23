@@ -28,8 +28,17 @@
         <div id="main_container" class="container-fluid">
             <div id="main_row" class="row">
                 <div id="main_sidebar" class="col-3 bg-light">
-                    {% block sidebar %}
-                    {% endblock %}
+                    <button id="main_sidebar_trigger"
+                            class="hidden"
+                            type="button" uk-toggle="target: #offcanvas-overlay">
+                        Open
+                    </button>
+                    <div id="offcanvas-overlay" uk-offcanvas="overlay: true">
+                        <div class="uk-offcanvas-bar bg-light text-dark">
+                            {% block sidebar %}
+                            {% endblock %}
+                        </div>
+                    </div>
                 </div>
                 <div id="main_content" class="col-6 border-left border-right">
                     {% block content %}
