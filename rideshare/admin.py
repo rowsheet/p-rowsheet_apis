@@ -43,7 +43,8 @@ class AppUserAdmin(admin.ModelAdmin):
         "django_account",
         "username",
         "pronoun",
-    ) 
+        "accommodation",
+    )
     list_display = fields
     search_fields = fields
 admin.site.register(AppUser, AppUserAdmin)

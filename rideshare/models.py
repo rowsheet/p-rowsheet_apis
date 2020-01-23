@@ -81,6 +81,11 @@ class AppUser(models.Model):
         on_delete=models.PROTECT,  # same as RESTRICT
         null=True, blank=True, default=1,
     )
+    accommodation = models.ForeignKey(
+        Accommodation,
+        on_delete=models.PROTECT,  # same as RESTRICT
+        null=True, blank=True, default=1,
+    )
     phone_number = models.CharField(
         max_length=32,
         null=True, blank=True, default=None,

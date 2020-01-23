@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
 
-from rideshare.models import AppUser, Pronoun
+from rideshare.models import AppUser, Pronoun, Accommodation
 
 
 def index(request):
@@ -68,10 +68,12 @@ def profile(request):
         django_account=request.user
     )
     pronouns = Pronoun.objects.all()
+    accommodations = Accommodation.objects.all()
     context = {
         "username": app_user.username,
         "pronoun": app_user.pronoun,
-        "accommodations": None,
+        "accommodation": app_user.accommodation,
         "pronouns": pronouns,
+        "accommodations": accommodations,
     }
     return render(request, "rideshare/pages/profile.html", context)
