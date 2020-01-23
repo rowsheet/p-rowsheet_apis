@@ -1,0 +1,13 @@
+* {
+  color: red;
+}
+
+#main_row {
+  height: 100vh;
+}
+
+.location_setter .input-group-text {
+  width: 63px;
+}
+
+/*# sourceMappingURL=main.css.map */

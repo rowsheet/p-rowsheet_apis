@@ -1,0 +1,101 @@
+{% extends "rideshare/layout.html" %}
+
+{% block content %}
+<div id="page_set_location">
+    <a href="/main_screen" class="btn btn-light btn-round">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <h3>
+        Where can we take you?
+    </h3>
+    <div class="location_setter">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    start
+                </div>
+            </div>
+            <input type="text" class="form-control">
+        </div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    end
+                </div>
+            </div>
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <a href="/" class="btn btn-light btn-round mt-3 float-right">
+        done
+    </a>
+    <div id="location_suggestions" class="m-3">
+        <p>
+            <i class="fas fa-map-marker-alt"></i>
+            Set on map
+        </p>
+        <p>
+            <i class="fas fa-map-marker-alt"></i>
+            Work
+        </p>
+        <p>
+            <i class="fas fa-map-marker-alt"></i>
+            Home
+        </p>
+    </div>
+    <h3>
+        When can we take you there?
+    </h3>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+        </div>
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+    <div class="input-group date inactive" id="datetimepicker12" data-target-input="nearest">
+        <input type="text"
+            data-target="#datetimepicker12"
+            style="display: none;"
+            class="form-control datetimepicker-input mb-3 form-control-sm text-center text-primary h3">
+    </div>
+</div>
+
+<script>
+window.onload = function() {
+    var dt = new Date();
+    jQuery('#datetimepicker12').datetimepicker({
+        defaultDate: new Date(dt.getTime()),
+        inline: true,
+        sideBySide: true,
+    });
+}
+</script>
+{% endblock %}
+
+{% block info %}
+Phone Verication {{ user_id }}
+<br>
+<p>
+    Username:
+    {{ app_user.username }}
+</p>
+<p>
+    Display Name:
+    {{ app_user.pronoun.display_name }}
+</p>
+<p>
+    Phone Number:
+    {{ phone_number }}
+</p>
+<p>
+    Phone Verified:
+    {{ phone_verified }}
+</p>
+{% endblock %}

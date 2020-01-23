@@ -1,0 +1,36 @@
+{% extends "rideshare/layout.html" %}
+
+{% block content %}
+<div id="page_phone_verification">
+    <a href="/" class="btn btn-light btn-round">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <h3>What's your number?</h3>
+    <p>We'll text you a code to verify your phone</p>
+    <input type="text" class="form-control"/>
+    <a href="/" class="btn btn-light btn-round mt-3">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block info %}
+Phone Verication {{ user_id }}
+<br>
+<p>
+    Username:
+    {{ app_user.username }}
+</p>
+<p>
+    Display Name:
+    {{ app_user.pronoun.display_name }}
+</p>
+<p>
+    Phone Number:
+    {{ phone_number }}
+</p>
+<p>
+    Phone Verified:
+    {{ phone_verified }}
+</p>
+{% endblock %}

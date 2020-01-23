@@ -1,15 +1,10 @@
 import os
-from django.conf import settings
-from django.http import JsonResponse, HttpResponse
 from django.urls import path
-from django.template import loader
-
-def index(request, version="v1"):
-
-    template = loader.get_template("rideshare/index.html")
-    context = {}
-    return HttpResponse(template.render(context, request))
+from rideshare import views
 
 urlpatterns = [
-    path("", index),
+    path("", views.index),
+    path("phone_verification/", views.phone_verification),
+    path("main_screen/", views.main_screen),
+    path("set_location/", views.set_location),
 ]
