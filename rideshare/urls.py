@@ -16,4 +16,7 @@ urlpatterns = [
     path("driver/", views.driver),
     path("about/", views.about),
     path("help/", views.help),
+    path("payment_methods/", views.payment_methods),
+    path("email_address/", views.email_address),
+    path("services/", views.services),
 ]

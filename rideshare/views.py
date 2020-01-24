@@ -221,3 +221,45 @@ def help(request):
         # Page info.
     }
     return render(request, "rideshare/pages/help.html", context)
+
+def payment_methods(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/payment_methods.html", context)
+
+def email_address(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/email_address.html", context)
+
+def services(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/services.html", context)
