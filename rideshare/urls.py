@@ -19,4 +19,9 @@ urlpatterns = [
     path("payment_methods/", views.payment_methods),
     path("email_address/", views.email_address),
     path("services/", views.services),
+    path("location/", views.location),
+    path("notifications/", views.notifications),
+    path("emergency/", views.emergency),
+    path("trusted_contacts/", views.trusted_contacts),
+    path("delete_account/", views.delete_account),
 ]

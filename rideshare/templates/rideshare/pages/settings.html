@@ -2,10 +2,62 @@
 
 {% block content %}
 <div id="page_settings">
-    <button class="btn btn-round"
+    <button class="btn btn-light btn-round"
             onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    Settings
+    <h3>
+        Settings
+    </h3>
+    <hr>
+    <a href="/account">
+        <p class="text-dark">
+            Account
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/location">
+        <p class="text-dark">
+            Location
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/notifications">
+        <p class="text-dark">
+            Notifications
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/emergency">
+        <p class="text-dark">
+            Emergency
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/trusted_contacts">
+        <p class="text-dark">
+            Trusted Contacts
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/accounts/logout">
+        <p class="text-dark">
+            Log Out
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
+    <a href="/delete_account">
+        <p class="text-dark">
+            Delete Account
+            <i class="fas fa-chevron-right float-right"></i>
+        </p>
+    </a>
+    <hr>
 </div>
 {% endblock %}
