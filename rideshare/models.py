@@ -84,11 +84,6 @@ class AppUser(models.Model):
         on_delete=models.PROTECT,  # same as RESTRICT
         null=True, blank=True, default=1,
     )
-    accommodation = models.ForeignKey(
-        Accommodation,
-        on_delete=models.PROTECT,  # same as RESTRICT
-        null=True, blank=True, default=1,
-    )
     phone_number = models.CharField(
         max_length=32,
         null=True, blank=True, default=None,
@@ -97,3 +92,6 @@ class AppUser(models.Model):
         default=False,
         null=False, blank=False,
     )
+    accommodations = models.ManyToManyField(Accommodation)
+    def get_accommodations(self):
+        return ",".join([str(acc) for acc in self.accommodations.all()])

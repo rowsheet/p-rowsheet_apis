@@ -121,11 +121,15 @@ def profile(request):
         return user_redirect
 
     error = ""
+    all_pronouns = Pronoun.objects.all()
+    all_accommodations = Accommodation.objects.all()
+
     username = app_user.username
     pronoun = app_user.pronoun
-    accommodation = app_user.accommodation
+    accommodations = list(app_user.accommodations.all())
 
     if request.method == "POST":
+
         if not request.POST:
             error = "Invalid request."
         else:
@@ -139,34 +143,34 @@ def profile(request):
             else:
                 pronoun = Pronoun.objects.get(id=pronoun_id)
 
-            accommodation_id = request.POST.get("accommodation_id")
-            if accommodation_id is None or accommodation_id == "":
-                error += "Accommodation required."
-            else:
-                accommodation = Accommodation.objects.get(id=accommodation_id)
+            sel_accommodations = []
+            for accommodation in all_accommodations:
+                sel_accommodation = request.POST.get(
+                    "accommodation_%s" % str(accommodation.id))
+                if sel_accommodation is not None:
+                    sel_accommodations.append(accommodation)
 
         if error == "":
             app_user = AppUser.objects.get(django_account=request.user)
             app_user.username = username
             app_user.pronoun = pronoun
-            app_user.accommodation = accommodation
+            app_user.accommodations.set(sel_accommodations)
             app_user.save()
             return redirect(request.path)
 
-    pronouns = Pronoun.objects.all()
-    accommodations = Accommodation.objects.all()
     context = {
         # Post info.
         "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
-        # Page info.
+        # User info.
         "username": username,
         "pronoun": pronoun,
-        "accommodation": accommodation,
-        "pronouns": pronouns,
         "accommodations": accommodations,
+        # Form info.
+        "all_pronouns": all_pronouns,
+        "all_accommodations": all_accommodations,
     }
     return render(request, "rideshare/pages/profile.html", context)
 

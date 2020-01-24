@@ -49,14 +49,21 @@ admin.site.register(Accommodation, AccommodationAdmin)
 
 
 class AppUserAdmin(admin.ModelAdmin):
-    fields = (
+    list_display = (
         "django_account",
         "username",
         "pronoun",
-        "accommodation",
+        "phone_number",
+        "phone_verified",
+        "get_accommodations",
     )
-    list_display = fields
-    search_fields = fields
+    search_fields = (
+        "django_account",
+        "username",
+        "pronoun",
+        "phone_number",
+        "phone_verified",
+    )
 
 
 admin.site.register(AppUser, AppUserAdmin)

@@ -6,7 +6,7 @@
         onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    <form action="/profile/" method="POST">
+    <form action="/profile/" method="post">
         {% csrf_token %}
         <h5 class="text-center m-0">
             What's your name?
@@ -21,7 +21,7 @@
         </h5>
         <select name="pronoun_id"
                 class="form-control">
-            {% for opt in pronouns %}
+            {% for opt in all_pronouns %}
             <option value="{{ opt.id }}"
                     {% if opt == pronoun %}selected="selected"{% endif %}>
                 {{ opt.display_name }}
@@ -32,15 +32,21 @@
         <h5 class="text-center m-0">
             Do you require accommodations?
         </h5>
-        <select name="accommodation_id"
-                class="form-control">
-            {% for opt in accommodations %}
-            <option value="{{ opt.id }}"
-                    {% if opt == accommodation %}selected="selected"{% endif %}>
-                {{ opt.display_name }}
-            </option>
+        <div class="card bg-light">
+            <div class="card-body">
+            {% for checkbox in all_accommodations %}
+            <label>
+                <input type="checkbox" name="accommodation_{{ checkbox.id }}"
+                       {% if checkbox in accommodations %}
+                       checked
+                       {% endif %}
+                >
+                {{ checkbox.display_name }}
+            </label>
+            <br>
             {% endfor %}
-        </select>
+            </div>
+        </div>
         {% if error != "" %}
         <div class="alert alert-danger my-3">
             {{ error }}
