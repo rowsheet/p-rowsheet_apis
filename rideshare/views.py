@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_protect
 
 from rideshare.models import AppUser, Pronoun, Accommodation
 
@@ -119,16 +120,51 @@ def profile(request):
     if user_redirect is not None:
         return user_redirect
 
+    error = ""
+    username = app_user.username
+    pronoun = app_user.pronoun
+    accommodation = app_user.accommodation
+
+    if request.method == "POST":
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            username = request.POST.get("username")
+            if username is None or username == "":
+                error += "Username required. "
+
+            pronoun_id = request.POST.get("pronoun_id")
+            if pronoun_id is None or pronoun_id == "":
+                error += "Pronoun required. "
+            else:
+                pronoun = Pronoun.objects.get(id=pronoun_id)
+
+            accommodation_id = request.POST.get("accommodation_id")
+            if accommodation_id is None or accommodation_id == "":
+                error += "Accommodation required."
+            else:
+                accommodation = Accommodation.objects.get(id=accommodation_id)
+
+        if error == "":
+            app_user = AppUser.objects.get(django_account=request.user)
+            app_user.username = username
+            app_user.pronoun = pronoun
+            app_user.accommodation = accommodation
+            app_user.save()
+            return redirect(request.path)
+
     pronouns = Pronoun.objects.all()
     accommodations = Accommodation.objects.all()
     context = {
+        # Post info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
         # Page info.
-        "username": app_user.username,
-        "pronoun": app_user.pronoun,
-        "accommodation": app_user.accommodation,
+        "username": username,
+        "pronoun": pronoun,
+        "accommodation": accommodation,
         "pronouns": pronouns,
         "accommodations": accommodations,
     }

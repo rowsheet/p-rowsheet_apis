@@ -6,36 +6,49 @@
         onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    <h5 class="text-center m-0">
-        What's your name?
-    </h5>
-    <input type="text" class="form-control" value="{{ username }}"/>
-    <br>
-    <h5 class="text-center m-0">
-        What are your preferred pronouns?
-    </h5>
-    <select class="form-control">
-        {% for opt in pronouns %}
-        <option value="{{ opt.id }}"
-                {% if opt == pronoun %}selected="selected"{% endif %}>
-            {{ opt.display_name }}
-        </option>
-        {% endfor %}
-    </select>
-    <br>
-    <h5 class="text-center m-0">
-        Do you require accommodations?
-    </h5>
-    <select class="form-control">
-        {% for opt in accommodations %}
-        <option value="{{ opt.id }}"
-                {% if opt == accommodation %}selected="selected"{% endif %}>
-            {{ opt.display_name }}
-        </option>
-        {% endfor %}
-    </select>
-    <button class="btn btn-round mt-3 float-right">
-        Save
-    </button>
+    <form action="/profile/" method="POST">
+        {% csrf_token %}
+        <h5 class="text-center m-0">
+            What's your name?
+        </h5>
+        <input
+                name="username"
+                value="{{ username }}"
+               type="text" class="form-control"/>
+        <br>
+        <h5 class="text-center m-0">
+            What are your preferred pronouns?
+        </h5>
+        <select name="pronoun_id"
+                class="form-control">
+            {% for opt in pronouns %}
+            <option value="{{ opt.id }}"
+                    {% if opt == pronoun %}selected="selected"{% endif %}>
+                {{ opt.display_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <br>
+        <h5 class="text-center m-0">
+            Do you require accommodations?
+        </h5>
+        <select name="accommodation_id"
+                class="form-control">
+            {% for opt in accommodations %}
+            <option value="{{ opt.id }}"
+                    {% if opt == accommodation %}selected="selected"{% endif %}>
+                {{ opt.display_name }}
+            </option>
+            {% endfor %}
+        </select>
+        {% if error != "" %}
+        <div class="alert alert-danger my-3">
+            {{ error }}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-round mt-3 float-right">
+            Save
+        </button>
+    </form>
 </div>
 {% endblock %}
