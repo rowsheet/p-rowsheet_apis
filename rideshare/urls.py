@@ -10,4 +10,10 @@ urlpatterns = [
     path("set_location/", views.set_location),
     path("account/", views.account),
     path("profile/", views.profile),
+    path("past_rides/", views.past_rides),
+    path("donation_station/", views.donation_station),
+    path("settings/", views.settings),
+    path("driver/", views.driver),
+    path("about/", views.about),
+    path("help/", views.help),
 ]
