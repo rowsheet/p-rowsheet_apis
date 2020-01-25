@@ -6,6 +6,43 @@
             onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    Services
+    <form action="/services/" method="post">
+        {% csrf_token %}
+        <h5 class="text-center m-0">
+            Do you require accommodations?
+        </h5>
+        <hr>
+        {% for checkbox in all_accommodations %}
+        <label class="w-100">
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" name="accommodation_{{ checkbox.id }}"
+                           {% if checkbox in accommodations %}
+                           checked
+                           {% endif %}
+                    >
+                </div>
+                <div class="col-11">
+                    <h3 class="m-0">
+                        {{ checkbox.icon | safe }}
+                        {{ checkbox.display_name }}
+                    </h3>
+                    <p class="m-0">
+                        {{ checkbox.description }}
+                    </p>
+                </div>
+            </div>
+        </label>
+        <hr>
+        {% endfor %}
+        {% if error != "" %}
+        <div class="alert alert-danger my-3">
+            {{ error }}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-round mt-3 float-right">
+            Save
+        </button>
+    </form>
 </div>
 {% endblock %}

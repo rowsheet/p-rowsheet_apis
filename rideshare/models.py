@@ -67,6 +67,16 @@ class Accommodation(models.Model):
         max_length=32,
         null=False, blank=False, default=None,
     )
+    icon = models.CharField(
+        unique=False,
+        max_length=64,
+        null=False, blank=False, default="",
+    )
+    description = models.CharField(
+        unique=False,
+        max_length=255,
+        null=False, blank=False, default="",
+    )
 
 
 class AppUser(models.Model):
@@ -93,5 +103,14 @@ class AppUser(models.Model):
         null=False, blank=False,
     )
     accommodations = models.ManyToManyField(Accommodation)
+    email_address = models.CharField(
+        max_length=64,
+        null=True, blank=True, default=None,
+        unique=True,
+    )
+    email_verified = models.BooleanField(
+        default=False,
+        null=False, blank=False,
+    )
     def get_accommodations(self):
         return ",".join([str(acc) for acc in self.accommodations.all()])

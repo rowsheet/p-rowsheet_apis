@@ -278,11 +278,35 @@ def email_address(request):
     if user_redirect is not None:
         return user_redirect
 
+    error = ""
+
+    email_address = app_user.email_address
+    email_verified = app_user.email_verified
+
+    if request.method == "POST":
+
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            email_address = request.POST.get("email_address")
+            if email_address is None or email_address == "":
+                error += "Email address required. "
+
+        if error == "":
+            app_user = AppUser.objects.get(django_account=request.user)
+            app_user.email_address = email_address
+            app_user.save()
+            return redirect(request.path)
+
     context = {
+        # Post info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
         # Page info.
+        "email_address": email_address,
+        "email_verified": email_verified,
     }
     return render(request, "rideshare/pages/email_address.html", context)
 
@@ -297,11 +321,39 @@ def services(request):
     if user_redirect is not None:
         return user_redirect
 
+    error = ""
+    all_accommodations = Accommodation.objects.all()
+
+    accommodations = list(app_user.accommodations.all())
+
+    if request.method == "POST":
+
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            sel_accommodations = []
+            for accommodation in all_accommodations:
+                sel_accommodation = request.POST.get(
+                    "accommodation_%s" % str(accommodation.id))
+                if sel_accommodation is not None:
+                    sel_accommodations.append(accommodation)
+
+        if error == "":
+            app_user = AppUser.objects.get(django_account=request.user)
+            app_user.accommodations.set(sel_accommodations)
+            app_user.save()
+            return redirect(request.path)
+
     context = {
+        # Post info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
-        # Page info.
+        # Paga info.
+        "accommodations": accommodations,
+        # Form info.
+        "all_accommodations": all_accommodations,
     }
     return render(request, "rideshare/pages/services.html", context)
 

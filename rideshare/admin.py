@@ -40,6 +40,8 @@ class AccommodationAdmin(admin.ModelAdmin):
     fields = (
         "key",
         "display_name",
+        "icon",
+        "description",
     )
     list_display = fields
     search_fields = fields

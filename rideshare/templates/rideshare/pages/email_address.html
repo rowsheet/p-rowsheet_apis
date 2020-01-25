@@ -6,6 +6,42 @@
             onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    Email Address
+    <h3>
+        E-mail
+    </h3>
+    <p>
+        Enter your email to receive trip receipts, info, and updates about Homobiles.
+    </p>
+    <form action="/email_address/" method="post">
+        {% csrf_token %}
+        {% if email_address is not None %}
+            {% if email_verified == True %}
+            <small class="text-success">
+                Verified
+            </small>
+            {% else %}
+            <small class="text-danger">
+                Not Verified
+            </small>
+            {% endif %}
+        <input
+                name="email_address"
+                value="{{ email_address }}"
+                type="text" class="form-control"/>
+        {% else %}
+        <input
+                name="email_address"
+                placeholder="enter email here"
+                type="text" class="form-control"/>
+        {% endif %}
+        {% if error != "" %}
+        <div class="alert alert-danger my-3">
+            {{ error }}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn float-right">
+            Save
+        </button>
+    </form>
 </div>
 {% endblock %}
