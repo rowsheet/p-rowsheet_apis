@@ -350,9 +350,22 @@ def email_address(request):
 
         if error == "":
             app_user = AppUser.objects.get(django_account=request.user)
-            app_user.email_address = email_address
-            app_user.save()
-            return redirect(request.path)
+            if email_address != app_user.email_address:
+                app_user.email_address = email_address
+                app_user.email_verification_code = rs_utils.random_string(64)
+                app_user.email_verified = False
+                # @TODO send verification email.
+                app_user.save()
+                return redirect(request.path)
+
+    if request.method == "GET":
+        if request.GET:
+            email_verification_code = request.GET.get("verification_code")
+            app_user = AppUser.objects.get(django_account=request.user)
+            if email_verification_code == app_user.email_verification_code:
+                app_user.email_verified = True
+                app_user.save()
+                email_verified = True
 
     context = {
         # Post info.

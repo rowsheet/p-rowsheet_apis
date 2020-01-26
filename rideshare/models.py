@@ -113,6 +113,10 @@ class AppUser(models.Model):
         null=True, blank=True, default=None,
         unique=True,
     )
+    email_verification_code = models.CharField(
+        max_length=100,
+        null=False, blank=False, default=rs_utils.random_string(64),
+    )
     email_verified = models.BooleanField(
         default=False,
         null=False, blank=False,

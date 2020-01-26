@@ -56,8 +56,10 @@ class AppUserAdmin(admin.ModelAdmin):
         "username",
         "pronoun",
         "phone_number",
+        "phone_verification_code",
         "phone_verified",
         "email_address",
+        "email_verification_code",
         "email_verified",
         # Synthetic
         "get_accommodations",
