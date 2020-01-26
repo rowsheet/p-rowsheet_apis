@@ -32,4 +32,8 @@
   width: 25px;
 }
 
+.uk-offcanvas-bar {
+  border: none !important;
+}
+
 /*# sourceMappingURL=main.css.map */

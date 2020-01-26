@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from rideshare.models import AppUser, Pronoun, Accommodation
 
+import rowsheet.utils as rs_utils
 
 def load_app_user(request):
     if not request.user.is_authenticated:
@@ -27,8 +28,11 @@ PAGES (Public and On-boarding)
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login/")
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
+    print("INDEX")
     context = {
         # Sidebar info.
         "app_user": app_user,
@@ -42,7 +46,31 @@ def phone_verification(request):
         return redirect("/accounts/login/")
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
+
+    if app_user.phone_verified == True:
+        return redirect("/phone_number")
+
+    error = ""
+
+    if request.method == "POST":
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            phone_number = request.POST.get("phone_number")
+            if phone_number is None or phone_number == "":
+                error += "Phone number required. "
+
+        if error == "":
+            app_user = AppUser.objects.get(
+                django_account=request.user)
+            app_user.phone_number = phone_number
+            app_user.save()
+            return redirect("/code_verification")
+
+
     context = {
+        # Form info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         # Page info.
@@ -59,7 +87,35 @@ def code_verification(request):
         return redirect("/accounts/login/")
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
+
+    if app_user.phone_number is None:
+        return redirect("/phone_verification")
+    if app_user.phone_verified == True:
+        return redirect("/phone_number")
+
+    error = ""
+
+    if request.method == "POST":
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            verification_code = request.POST.get("verification_code")
+            if verification_code is None or verification_code == "":
+                error += "Verification code required. "
+
+        if error == "":
+            app_user = AppUser.objects.get(
+                django_account=request.user)
+            if verification_code == app_user.phone_verification_code:
+                app_user.phone_verified = True
+                app_user.save()
+                return redirect("/main_screen")
+            else:
+                error = "Invalid code."
+
     context = {
+        # Form info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         # Page info.
@@ -309,6 +365,47 @@ def email_address(request):
         "email_verified": email_verified,
     }
     return render(request, "rideshare/pages/email_address.html", context)
+
+def phone_number(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    error = ""
+
+    phone_number = app_user.phone_number
+    phone_verified = app_user.phone_verified
+
+    if request.method == "POST":
+
+        if not request.POST:
+            error = "Invalid request."
+        else:
+            phone_number = request.POST.get("phone_number")
+
+            if phone_number is not None and phone_number != "":
+                app_user = AppUser.objects.get(django_account=request.user)
+                app_user.phone_verified = False
+                app_user.phone_number = phone_number
+                app_user.phone_verification_code = rs_utils.random_phone_code()
+                # @TODO Twillio send this code to the phone number.
+                app_user.save()
+                info = "Please enter the code we sent you to verify your new number."
+                return redirect(request.path)
+            else:
+                error += "Phone number required."
+
+    context = {
+        # Post info.
+        "error": error,
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+        "phone_number": phone_number,
+        "phone_verified": phone_verified,
+    }
+    return render(request, "rideshare/pages/phone_number.html", context)
 
 
 """-----------------------------------------------------------------------------

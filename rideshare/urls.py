@@ -19,8 +19,10 @@ urlpatterns = [
     path("driver/", views.driver),
     path("about/", views.about),
     path("help/", views.help),
+    # Account pages.
     path("payment_methods/", views.payment_methods),
     path("email_address/", views.email_address),
+    path("phone_number/", views.phone_number),
     # Settings pages.
     path("services/", views.services),
     path("location/", views.location),

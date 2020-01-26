@@ -2,39 +2,29 @@
 
 {% block content %}
 <div id="page_phone_verification">
-    <a href="/" class="btn btn-light btn-round">
+    <a href="/phone_verification" class="btn btn-light btn-round">
         <i class="fas fa-chevron-left"></i>
     </a>
-    <h3>
-        Enter your code
-    </h3>
-    <p>
-        Enter the verification code we sent you
-    </p>
-    <input type="text" class="form-control"/>
-    <a href="/" class="btn btn-light btn-round mt-3">
-        <i class="fas fa-chevron-right"></i>
-    </a>
+    <form action="/code_verification/" method="post">
+        <p class="h3">
+            Enter your code
+            <h6 class="m-0">
+                 Enter the verification code we sent you.
+            </h6>
+        </p>
+        {% csrf_token %}
+        <input
+                name="verification_code"
+                placeholder="Enter code here"
+                type="text" class="form-control"/>
+        {% if error != "" %}
+        <div class="alert alert-danger my-3">
+            {{ error }}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn float-right">
+            Save
+        </button>
+    </form>
 </div>
-{% endblock %}
-
-{% block info %}
-Phone Verication {{ user_id }}
-<br>
-<p>
-    Username:
-    {{ app_user.username }}
-</p>
-<p>
-    Display Name:
-    {{ app_user.pronoun.display_name }}
-</p>
-<p>
-    Phone Number:
-    {{ phone_number }}
-</p>
-<p>
-    Phone Verified:
-    {{ phone_verified }}
-</p>
 {% endblock %}

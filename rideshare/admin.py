@@ -57,6 +57,9 @@ class AppUserAdmin(admin.ModelAdmin):
         "pronoun",
         "phone_number",
         "phone_verified",
+        "email_address",
+        "email_verified",
+        # Synthetic
         "get_accommodations",
     )
     search_fields = (
@@ -65,6 +68,8 @@ class AppUserAdmin(admin.ModelAdmin):
         "pronoun",
         "phone_number",
         "phone_verified",
+        "email_address",
+        "email_verified",
     )
 
 

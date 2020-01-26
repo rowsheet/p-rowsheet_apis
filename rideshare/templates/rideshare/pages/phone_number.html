@@ -1,24 +1,30 @@
 {% extends "rideshare/layout.html" %}
 
 {% block content %}
-<div id="page_phone_verification">
-    <a href="/" class="btn btn-round">
+<div id="page_phone_number">
+    <button class="btn btn-round"
+            onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
-    </a>
-    <form action="/phone_verification/" method="post">
+    </button>
+    <form action="/phone_number/" method="post">
         <p class="h3">
-            What's your phone number?
-        <h6 class="m-0">
-            We’ll text you a code to verify your phone.
-        </h6>
+            Update your phone number
+            <h6 class="m-0">
+                We’ll text you a code to verify your phone.
+            </h6>
         </p>
         {% csrf_token %}
         <input
                 name="phone_number"
-                placeholder="Enter your phone number here"
+                placeholder="{{ phone_number }}"
                 type="text" class="form-control"/>
         {% if error != "" %}
         <div class="alert alert-danger my-3">
+            {{ error }}
+        </div>
+        {% endif %}
+        {% if error != "" %}
+        <div class="alert alert-info my-3">
             {{ error }}
         </div>
         {% endif %}

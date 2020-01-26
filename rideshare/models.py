@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import rowsheet.utils as rs_utils
 
 class RideRequest(models.Model):
     start_name = models.CharField(
@@ -97,6 +98,10 @@ class AppUser(models.Model):
     phone_number = models.CharField(
         max_length=32,
         null=True, blank=True, default=None,
+    )
+    phone_verification_code = models.CharField(
+        max_length=32,
+        null=False, blank=False, default=rs_utils.random_phone_code,
     )
     phone_verified = models.BooleanField(
         default=False,

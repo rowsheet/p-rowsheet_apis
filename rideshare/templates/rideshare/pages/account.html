@@ -37,7 +37,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/phone_verification">
+    <a href="/phone_number">
         <h4>
             <i class="fas fa-phone"></i>
             {{ phone_number }}
@@ -53,25 +53,4 @@
         </h4>
     </a>
 </div>
-{% endblock %}
-
-{% block info %}
-Phone Verication {{ user_id }}
-<br>
-<p>
-    Username:
-    {{ app_user.username }}
-</p>
-<p>
-    Display Name:
-    {{ app_user.pronoun.display_name }}
-</p>
-<p>
-    Phone Number:
-    {{ phone_number }}
-</p>
-<p>
-    Phone Verified:
-    {{ phone_verified }}
-</p>
 {% endblock %}
