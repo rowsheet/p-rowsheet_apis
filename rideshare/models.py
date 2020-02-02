@@ -1,47 +1,9 @@
+import enum
+
 from django.db import models
 from django.contrib.auth.models import User
 
 import rowsheet.utils as rs_utils
-
-class RideRequest(models.Model):
-    start_name = models.CharField(
-        unique=True,
-        max_length=64,
-        null=False, blank=False, default=None,
-    )
-    start_address = models.CharField(
-        unique=True,
-        max_length=128,
-        null=False, blank=False, default=None,
-    )
-    start_place_id = models.CharField(
-        unique=True,
-        max_length=256,
-        null=False, blank=False, default=None,
-    )
-    end_name = models.CharField(
-        unique=True,
-        max_length=64,
-        null=False, blank=False, default=None,
-    )
-    end_address = models.CharField(
-        unique=True,
-        max_length=128,
-        null=False, blank=False, default=None,
-    )
-    end_place_id = models.CharField(
-        unique=True,
-        max_length=256,
-        null=False, blank=False, default=None,
-    )
-    ride_utc = models.IntegerField(
-        null=False, blank=False, default=None,
-    )
-    csrf_token = models.CharField(
-        unique=True,
-        max_length=256,
-        null=False, blank=False, default=None,
-    )
 
 
 class Pronoun(models.Model):
@@ -107,7 +69,9 @@ class AppUser(models.Model):
         default=False,
         null=False, blank=False,
     )
-    accommodations = models.ManyToManyField(Accommodation)
+    accommodations = models.ManyToManyField(
+        Accommodation
+    )
     email_address = models.CharField(
         max_length=64,
         null=True, blank=True, default=None,
@@ -123,3 +87,75 @@ class AppUser(models.Model):
     )
     def get_accommodations(self):
         return ",".join([str(acc) for acc in self.accommodations.all()])
+
+
+class RideRequest(models.Model):
+    class Meta:
+        unique_together = (
+            "app_user", "status",
+        )
+    start_name = models.CharField(
+        unique=True,
+        max_length=64,
+        null=False, blank=False, default=None,
+    )
+    start_address = models.CharField(
+        unique=True,
+        max_length=128,
+        null=False, blank=False, default=None,
+    )
+    start_place_id = models.CharField(
+        unique=True,
+        max_length=256,
+        null=False, blank=False, default=None,
+    )
+    end_name = models.CharField(
+        unique=True,
+        max_length=64,
+        null=False, blank=False, default=None,
+    )
+    end_address = models.CharField(
+        unique=True,
+        max_length=128,
+        null=False, blank=False, default=None,
+    )
+    end_place_id = models.CharField(
+        unique=True,
+        max_length=256,
+        null=False, blank=False, default=None,
+    )
+    ride_utc = models.IntegerField(
+        null=False, blank=False, default=None,
+    )
+    csrf_token = models.CharField(
+        unique=True,
+        max_length=256,
+        null=False, blank=False, default=None,
+    )
+    app_user = models.ForeignKey(
+        AppUser,
+        on_delete=models.PROTECT,
+        null=False, blank=False, default=None,
+    )
+    creation_timestamp = models.DateTimeField(
+        auto_now=True,
+    )
+    PENDING_CONFIRM = "PENDING_CONFIRM"
+    PENDING_DRIVER = "PENDING_DRIVER"
+    PENDING_PICKUP = "PENDING_PICKUP"
+    PENDING_DROPOFF = "PENDING_DROPOFF"
+    CANCELED = "CANCELED"
+    DONE = "DONE" # Note: Consider NULL => DONE
+    STATUS = (
+        (PENDING_CONFIRM, "PENDING_CONFIRM"),
+        (PENDING_DRIVER, "PENDING_DRIVER"),
+        (PENDING_PICKUP, "PENDING_PICKUP"),
+        (PENDING_DROPOFF, "PENDING_DROPOFF"),
+        (CANCELED, "CANCELED"),
+        (DONE, "DONE"), # Note: Consider NULL => DONE
+    )
+    status = models.CharField(
+        max_length=32,
+        choices=STATUS,
+        null=True, blank=True, default=None,
+    )

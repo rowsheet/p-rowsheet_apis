@@ -6,24 +6,6 @@ from .models import Accommodation
 from .models import RideRequest
 
 
-class RideRequestAdmin(admin.ModelAdmin):
-    fields = (
-        "start_name",
-        "start_address",
-        "start_place_id",
-        "end_name",
-        "end_address",
-        "end_place_id",
-        "ride_utc",
-        "csrf_token",
-    )
-    list_display = fields
-    search_fields = fields
-
-
-admin.site.register(RideRequest, RideRequestAdmin)
-
-
 class PronounAdmin(admin.ModelAdmin):
     fields = (
         "key",
@@ -76,3 +58,27 @@ class AppUserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AppUser, AppUserAdmin)
+
+
+class RideRequestAdmin(admin.ModelAdmin):
+    fields = (
+        "start_name",
+        "start_address",
+        "start_place_id",
+        "end_name",
+        "end_address",
+        "end_place_id",
+        "ride_utc",
+        "csrf_token",
+        "app_user",
+        "creation_timestamp",
+        "status",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+
+
+admin.site.register(RideRequest, RideRequestAdmin)
