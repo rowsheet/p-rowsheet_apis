@@ -24,6 +24,7 @@ ALLOWED_HOSTS = []
 CSRF_TRUSTED_ORIGINS = [
     "homobiles.herokuapp.com",
     "rideshare.rowsheet.com",
+    "homobiles.org",
 ]
 
 INSTALLED_APPS = [
