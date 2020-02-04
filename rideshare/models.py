@@ -90,10 +90,6 @@ class AppUser(models.Model):
 
 
 class RideRequest(models.Model):
-    class Meta:
-        unique_together = (
-            "app_user", "status",
-        )
     start_name = models.CharField(
         unique=True,
         max_length=64,
@@ -136,6 +132,7 @@ class RideRequest(models.Model):
         AppUser,
         on_delete=models.PROTECT,
         null=False, blank=False, default=None,
+        unique=True,
     )
     creation_timestamp = models.DateTimeField(
         auto_now=True,
@@ -159,3 +156,68 @@ class RideRequest(models.Model):
         choices=STATUS,
         null=True, blank=True, default=None,
     )
+
+
+class OldRideRequest(models.Model):
+    name = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    end_location = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    start_location = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    phone_number = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    pickup_time = models.TimeField(
+        auto_now=False, auto_now_add=False, default=None)
+    pickup_date = models.DateField(
+        auto_now=False, auto_now_add=False, default=None)
+    pronoun = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    special_req = models.TextField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    num_bags = models.IntegerField(
+        null=False, blank=False, default=None)
+    passenger_count = models.IntegerField(
+        null=False, blank=False, default=None)
+    driver = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        null=True, blank=True, default=None,
+    )
+    done = models.BooleanField(
+        null=False, blank=False, default=False)
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)
+
+
+class OldDriverSignup(models.Model):
+    comments = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    first_name = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    last_name = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    contact_email = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    contact_phone = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    pronoun = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    smartphone_type = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    vehicle_doors = models.IntegerField(
+        null=False, blank=False, default=None)
+    vehicle_make = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    vehicle_model = models.CharField(
+        max_length=255, unique=False, null=True, blank=True, default=None)
+    vehicle_year = models.IntegerField(
+        null=False, blank=False, default=None)
+    yes_no_criminal_history = models.BooleanField(
+        null=False, blank=False, default=False)
+    yes_no_insurance = models.BooleanField(
+        null=False, blank=False, default=False)
+    yes_no_square = models.BooleanField(
+        null=False, blank=False, default=False)
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)

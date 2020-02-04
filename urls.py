@@ -11,6 +11,8 @@ from django.template import loader
 
 from rowsheet.api import handle
 
+admin.site.site_header = settings.ADMIN_SITE_HEADER
+
 admin.autodiscover()
 
 auth_nonce = settings.AUTH_NONCE

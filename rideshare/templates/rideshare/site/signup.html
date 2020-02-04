@@ -1,0 +1,798 @@
+{% extends "rideshare/site_layout.html" %}
+
+{% block "main" %}
+<main>
+    <div class="container">
+
+
+<div class="row">
+	<div class="col-md-3">
+	</div>
+	<div class="col-md-6">
+		<div class="content_container">
+			<h1 class="text-center">Sign Up</h1>
+			<h5 class="text-center">Sign up to see why Homobiles is different.</h5>
+			<br>
+			<br>
+            <div id="signup_forms">
+                <div class="tab-content">
+                    <div class="tab-pane container active" id="driver">
+                        <div id="FORM_driver_signup" class="card card_form purple">
+    <h5 class="card-header">
+        Create an account
+    </h5>
+    <div class="card-body">
+
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" id="first_name" placeholder="First Name">
+        </div>
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" id="last_name" placeholder="Last Name">
+        </div>
+        <div class="input-group mb-2">
+            <input type="email" class="form-control" id="contact_email" placeholder="Contact Email">
+        </div>
+        <div class="input-group mb-2">
+            <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required
+                   class="form-control" id="contact_phone" placeholder="Contact Phone Number">
+        </div>
+        <div class="input-group mb-2 select-group">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                loyalty
+            </i>
+        </div>
+    </div>
+    <select id="pronoun" class="form-control">
+        <option value="">
+            pronouns
+        </option>
+        <option value="masculine">
+            he/him/his
+        </option>
+        <option value="feminine">
+            she/her/hers
+        </option>
+        <option value="they/them/theirs">
+            they/them/theirs
+        </option>
+        <option value="ze/zir/zirs">
+            ze/zir/zirs
+        </option>
+        <option value="ze/hir/hirs">
+            ze/hir/hirs
+        </option>
+        <option value="other">
+            other
+        </option>
+    </select>
+</div>
+
+
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                smartphone
+            </i>
+        </div>
+    </div>
+    <select id="smartphone_type" class="form-control">
+        <option disables="">smartphone type</option>
+        <option value="android">
+            android
+        </option>
+        <option value="blackberry">
+            blackberry
+        </option>
+        <option value="iphone">
+            iphone
+        </option>
+        <option value="windows">
+            windows
+        </option>
+    </select>
+</div>
+        <hr>
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                calendar_today
+            </i>
+        </div>
+    </div>
+    <select id="vehicle_year" class="form-control">
+        <option disables="">vehicle year</option>
+        <option value="2002">
+            2002
+        </option>
+        <option value="2003">
+            2003
+        </option>
+        <option value="2004">
+            2004
+        </option>
+        <option value="2005">
+            2005
+        </option>
+        <option value="2006">
+            2006
+        </option>
+        <option value="2007">
+            2007
+        </option>
+        <option value="2008">
+            2008
+        </option>
+        <option value="2009">
+            2009
+        </option>
+        <option value="2010">
+            2010
+        </option>
+        <option value="2011">
+            2011
+        </option>
+        <option value="2012">
+            2012
+        </option>
+        <option value="2013">
+            2013
+        </option>
+        <option value="2014">
+            2014
+        </option>
+        <option value="2015">
+            2015
+        </option>
+        <option value="2016">
+            2016
+        </option>
+        <option value="2017">
+            2017
+        </option>
+        <option value="2018">
+            2018
+        </option>
+        <option value="2019">
+            2019
+        </option>
+        <option value="2020">
+            2020
+        </option>
+    </select>
+</div>
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                directions_car
+            </i>
+        </div>
+    </div>
+    <select id="vehicle_make" class="form-control" style="text-transform:lowercase">
+        <option disables="">vehicle make</option>
+        <option value="Acura">
+            Acura
+        </option>
+        <option value="Alfa Romeo">
+            Alfa Romeo
+        </option>
+        <option value="AMC">
+            AMC
+        </option>
+        <option value="Aston Martin">
+            Aston Martin
+        </option>
+        <option value="Audi">
+            Audi
+        </option>
+        <option value="Bentley">
+            Bentley
+        </option>
+        <option value="BMW">
+            BMW
+        </option>
+        <option value="Buick">
+            Buick
+        </option>
+        <option value="Cadillac">
+            Cadillac
+        </option>
+        <option value="Chevrolet">
+            Chevrolet
+        </option>
+        <option value="Chrysler">
+            Chrysler
+        </option>
+        <option value="Daewoo">
+            Daewoo
+        </option>
+        <option value="Datsun">
+            Datsun
+        </option>
+        <option value="Dodge">
+            Dodge
+        </option>
+        <option value="Eagle">
+            Eagle
+        </option>
+        <option value="Ferrari">
+            Ferrari
+        </option>
+        <option value="Ford">
+            Ford
+        </option>
+        <option value="Geo">
+            Geo
+        </option>
+        <option value="GMC">
+            GMC
+        </option>
+        <option value="Honda">
+            Honda
+        </option>
+        <option value="HUMMER">
+            HUMMER
+        </option>
+        <option value="Hyundai">
+            Hyundai
+        </option>
+        <option value="Infiniti">
+            Infiniti
+        </option>
+        <option value="Isuzu">
+            Isuzu
+        </option>
+        <option value="Jaguar">
+            Jaguar
+        </option>
+        <option value="Jeep">
+            Jeep
+        </option>
+        <option value="Kia">
+            Kia
+        </option>
+        <option value="Lamborghini">
+            Lamborghini
+        </option>
+        <option value="Land Rover">
+            Land Rover
+        </option>
+        <option value="Lexus">
+            Lexus
+        </option>
+        <option value="Lincoln">
+            Lincoln
+        </option>
+        <option value="Lotus">
+            Lotus
+        </option>
+        <option value="Maserati">
+            Maserati
+        </option>
+        <option value="Mazda">
+            Mazda
+        </option>
+        <option value="Mercedes-Benz">
+            Mercedes-Benz
+        </option>
+        <option value="Mercury">
+            Mercury
+        </option>
+        <option value="MINI">
+            MINI
+        </option>
+        <option value="Mitsubishi">
+            Mitsubishi
+        </option>
+        <option value="Nissan">
+            Nissan
+        </option>
+        <option value="Oldsmobile">
+            Oldsmobile
+        </option>
+        <option value="Plymouth">
+            Plymouth
+        </option>
+        <option value="Pontiac">
+            Pontiac
+        </option>
+        <option value="Porsche">
+            Porsche
+        </option>
+        <option value="Renault">
+            Renault
+        </option>
+        <option value="Rolls-Royce">
+            Rolls-Royce
+        </option>
+        <option value="Saab">
+            Saab
+        </option>
+        <option value="Saturn">
+            Saturn
+        </option>
+        <option value="Scion">
+            Scion
+        </option>
+        <option value="Smart">
+            Smart
+        </option>
+        <option value="Subaru">
+            Subaru
+        </option>
+        <option value="Suzuki">
+            Suzuki
+        </option>
+        <option value="Toyota">
+            Toyota
+        </option>
+        <option value="Volkswagen">
+            Volkswagen
+        </option>
+        <option value="Volvo">
+            Volvo
+        </option>
+        <option value="Other">
+            Other (Not Listed)
+        </option>
+    </select>
+</div>
+<div class="input-group mb-2">
+        <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="material-icons">
+                        airport_shuttle
+                    </i>
+                </div>
+            </div>
+    <input type="text" class="form-control" id="vehicle_model" placeholder="vehicle model">
+</div>
+
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                exposure_plus_2
+            </i>
+        </div>
+    </div>
+    <select id="vehicle_doors" class="form-control" style="text-transform:lowercase">
+        <option disables="">number of doors</option>
+        <option value="2">
+            Two Doors
+        </option>
+        <option value="3">
+            Three Doors
+        </option>
+        <option value="4">
+            Four Doors
+        </option>
+        <option value="5">
+            Five Doors
+        </option>
+        <option value="5+">
+            Five+ Doors
+        </option>
+    </select>
+</div>
+        <hr>
+        <p id="yes_no_square">Do you have square (squareup.com) or something similar to allow you to accept credit card
+            donations?</p>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_square" id="true" value="true">
+            <label class="form-check-label" for="true">
+                true
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_square" id="false" value="false">
+            <label class="form-check-label" for="false">
+                false
+            </label>
+        </div>
+        <hr>
+        <p id="yes_no_insurance">Do you have comprehensive (full) insurance on your vehicle?</p>
+        <p style="color: purple; margin-top: -15px; font-size: 80%; margin-left: 10px; margin-right: 10px;">Note: Drivers are required to have comprehensive (full) insurance on their vehicle.
+        </p>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_insurance" id="true" value="true">
+            <label class="form-check-label" for="true">
+                true
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_insurance" id="false" value="false">
+            <label class="form-check-label" for="false">
+                false
+            </label>
+        </div>
+        <hr>
+        <p id="yes_no_criminal_history">Do you consent to a criminal history background check and drug testing?</p>
+        <p style="color: purple; margin-top: -15px; font-size: 80%; margin-left: 10px; margin-right: 10px;">Note: Applicants selected as volunteer drivers will be required to
+            undergo a criminal history background check and a drug test.</p>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_criminal_history" id="true" value="true">
+            <label class="form-check-label" for="true">
+                true
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="yes_no_criminal_history" id="false" value="false">
+            <label class="form-check-label" for="false">
+                false
+            </label>
+        </div>
+        <hr>
+        <p>
+            Use this area to tell us anything you like, such as why you want to drive for us, the shifts you'd like to volunteer, etc.
+        </p>
+        <div class="input-group mb-2" id="open-input">
+            <textarea class="form-control" id="comments"></textarea>
+        </div>
+        <div class="form_message form_error alert alert-danger hidden">
+</div>
+<div class="form_message form_success alert alert-success hidden">
+</div>
+
+        <div class="text-right">
+            <button class="btn btn-outline-secondary" onclick="applib.forms.driver_signup()">
+                Sign Up</button>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    <div class="tab-pane container fade" id="rider">
+                        <!-- <div id="FORM_rider_signup" class="card card_form pink">
+    <h5 class="card-header">
+        Rider Signup
+    </h5>
+    <div class="card-body">
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                person
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="username" placeholder="username">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                filter_1
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="first_name" placeholder="first name">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                filter_2
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="last_name" placeholder="last name">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                lock
+            </i>
+        </div>
+    </div>
+    <input type="password" class="form-control" id="password" placeholder="password">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                lock
+            </i>
+        </div>
+    </div>
+    <input type="password" class="form-control" id="repeat_password" placeholder="verify password">
+</div>
+        <div class="input-group mb-2 select-group">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                loyalty
+            </i>
+        </div>
+    </div>
+    <select id="pronoun" class="form-control">
+        <option value="">
+            pronouns
+        </option>
+        <option value="masculine">
+            he/him/his
+        </option>
+        <option value="feminine">
+            she/her/hers
+        </option>
+        <option value="they/them/theirs">
+            they/them/theirs
+        </option>
+        <option value="ze/zir/zirs">
+            ze/zir/zirs
+        </option>
+        <option value="ze/hir/hirs">
+            ze/hir/hirs
+        </option>
+        <option value="other">
+            other
+        </option>
+    </select>
+</div>
+
+        <div class="form_message form_error alert alert-danger hidden">
+</div>
+<div class="form_message form_success alert alert-success hidden">
+</div>
+
+        <div class="text-right">
+            <div class="alert alert-danger text-left" role="alert">
+                WARNING: This feature is non-functional and still in development mode.
+            </div>
+            <button class="btn btn-outline-secondary"
+                onclick="applib.forms.rider_signup()">
+            Sign Up
+            </button>
+        </div>
+    </div>
+</div>
+ -->
+                        <div id="FORM_rider_signup" class="card card_form pink">
+    <h5 class="card-header">
+        1 of 3
+    </h5>
+    <div class="card-body">
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                person
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="username" placeholder="username">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                filter_1
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="first_name" placeholder="first name">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                filter_2
+            </i>
+        </div>
+    </div>
+    <input type="text" class="form-control" id="last_name" placeholder="last name">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                lock
+            </i>
+        </div>
+    </div>
+    <input type="password" class="form-control" id="password" placeholder="password">
+</div>
+<div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                lock
+            </i>
+        </div>
+    </div>
+    <input type="password" class="form-control" id="repeat_password" placeholder="verify password">
+</div>
+        <div class="text-right">
+            <button class="btn btn-outline-secondary" onclick="applib.forms.rider_signup()">
+                <i class="material-icons">
+                    arrow_forward
+                </i>
+            </button>
+        </div>
+    </div>
+</div>
+                        <div id="FORM_rider_signup" class="card card_form pink">
+    <h5 class="card-header">
+        2 of 3
+    </h5>
+    <div class="card-body">
+        <div class="input-group mb-2 select-group">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                loyalty
+            </i>
+        </div>
+    </div>
+    <select id="pronoun" class="form-control">
+        <option value="">
+            pronouns
+        </option>
+        <option value="masculine">
+            he/him/his
+        </option>
+        <option value="feminine">
+            she/her/hers
+        </option>
+        <option value="they/them/theirs">
+            they/them/theirs
+        </option>
+        <option value="ze/zir/zirs">
+            ze/zir/zirs
+        </option>
+        <option value="ze/hir/hirs">
+            ze/hir/hirs
+        </option>
+        <option value="other">
+            other
+        </option>
+    </select>
+</div>
+
+        <div class="input-group mb-2">
+    <div class="input-group-prepend">
+        <div class="input-group-text">
+            <i class="material-icons">
+                smartphone
+            </i>
+        </div>
+    </div>
+    <select id="smartphone_type" class="form-control" style="text-transform:lowercase">
+        <option disables="">smartphone provider</option>
+        <option value="AT&T">AT&T</option>
+        <!-- SMS -->
+        <!-- number@txt.att.net -->
+        <!-- MMS -->
+        <!-- number@mms.att.net -->
+        <option value="T-Mobile">T-Mobile</option>
+        <!-- SMS & MMS -->
+        <!-- number@tmomail.net -->
+        <option value="Verizon">Verizon</option>
+        <!-- SMS  -->
+        <!-- number@vtext.com -->
+        <!-- MMS -->
+        <!-- number@vzwpix.com -->
+        <option value="Sprint">Sprint</option>
+        <!-- SMS -->
+        <!-- number@messaging.sprintpcs.com -->
+        <!-- MMS -->
+        <!-- number@pm.sprint.com -->
+        <option value="XFinity Mobile">XFinity Mobile</option>
+        <!-- SMS -->
+        <!-- number@vtext.com -->
+        <!-- MMS -->
+        <!-- number@mypixmessages.com -->
+        <option value="Virgin Mobile">Virgin Mobile</option>
+        <!-- SMS -->
+        <!-- number@vmobl.com -->
+        <!-- MMS -->
+        <!-- number@vmpix.com -->
+        <option value="Tracfone">Tracfone</option>
+        <!-- MMS -->
+        <!-- number@mmst5.tracfone.com -->
+        <option value="Metro PCS">Metro PCS</option>
+        <!-- SMS & MMS -->
+        <!-- number@mymetropcs.com -->
+        <option value="Boost Mobile">Boost Mobile</option>
+        <!-- SMS -->
+        <!-- number@sms.myboostmobile.com -->
+        <!-- MMS -->
+        <!-- number@myboostmobile.com -->
+        <option value="Cricket">Cricket</option>
+        <!-- SMS -->
+        <!-- number@sms.cricketwireless.net -->
+        <!-- MMS -->
+        <!-- number@mms.cricketwireless.net -->
+        <option value="Republic Wireless">Republic Wireless</option>
+        <!-- SMS -->
+        <!-- number@text.republicwireless.com -->
+        <option value="Google Fi (Project Fi)">Google Fi (Project Fi)</option>
+        <!-- number@msg.fi.google.com (SMS & MMS) -->
+        <option value="U.S. Cellular">U.S. Cellular</option>
+        <!-- SMS -->
+        <!-- number@email.uscc.net -->
+        <!-- MMS -->
+        <!-- number@mms.uscc.net -->
+        <option value="Ting">Ting</option>
+        <!-- number@message.ting.com -->
+        <option value="Consumer Cellular">Consumer Cellular</option>
+        <!-- number@mailmymobile.net -->
+        <option value="C-Spire">C-Spire</option>
+        <!-- number@cspire1.com -->
+        <option value="Page Plus">Page Plus</option>
+        <!-- number@vtext.com -->
+    </select>
+</div>
+        <div class="text-right">
+            <button class="btn btn-outline-secondary"
+                onclick="applib.forms.rider_signup()">
+                <i class="material-icons">
+                        arrow_forward
+                    </i>
+            </button>
+        </div>
+    </div>
+</div>
+
+                        <div id="FORM_rider_signup" class="card card_form pink">
+    <h5 class="card-header">
+        3 of 3
+    </h5>
+    <div class="card-body">
+        <div class="form_message form_error alert alert-danger hidden">
+</div>
+<div class="form_message form_success alert alert-success hidden">
+</div>
+
+        <div class="text-right">
+            <button class="btn btn-outline-secondary"
+                onclick="applib.forms.rider_signup()">
+            Sign Up!
+            </button>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                </div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#driver">
+                            Sign up as a driver instead.
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#rider">
+                            Sign up as a rider instead.
+                        </a>
+                    </li>
+                </ul>
+            </div>
+			<p class="text-center">
+				Already have an account? Go to <a href="/login">login</a> instead.
+			</p>
+            <br>
+		</div>
+	</div>
+	<div class="col-md-3">
+	</div>
+</div>
+
+<style>
+#signup_forms li.nav-item {
+    width: 100%;
+    text-align: center;
+}
+#signup_forms a.nav-link.active {
+    display: none;
+}
+</style>
+
+    </div>
+</main>
+{% endblock %}

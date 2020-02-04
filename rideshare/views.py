@@ -2,11 +2,157 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_protect
+# from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 
-from rideshare.models import AppUser, Pronoun, Accommodation
+from rideshare.models import AppUser
+from rideshare.models import Pronoun
+from rideshare.models import Accommodation
+from rideshare.models import RideRequest
+from rideshare.models import OldRideRequest
+from rideshare.models import OldDriverSignup
 
 import rowsheet.utils as rs_utils
+import requests
+import json
+
+
+ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
+RECAPTCHA_SECRET = "6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR"
+RECAPTCHA_MIN_SCORE = "0.7"
+
+"""-----------------------------------------------------------------------------
+"SITE" (Old Site Pages)
+-----------------------------------------------------------------------------"""
+
+
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")
+
+
+def send_email(email_to, body, api_key):
+    r = requests.post(
+        "https://emailer.rowsheet.com/",
+        data=json.dumps({
+            "api_key": api_key,
+            "to": email_to,
+            "subject": "Ride Request",
+            "body": body,
+        }),
+        headers={'content-type': 'application/json'}
+    )
+    return r
+
+
+def validate_ajax_post(request):
+    command = request.POST.get("command")
+    if command is None:
+        raise Exception("Command is none")
+    recaptcha_token = request.POST.get("_grecaptcha_token")
+    if recaptcha_token is None:
+        raise Exception("Missing reCaptcha token")
+    response = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        data={
+            "secret": "6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR",
+            "response": recaptcha_token,
+            "remoteip": request.META.get('REMOTE_ADDR'),
+        }
+    )
+    if response.status_code != 200:
+        raise Exception("Non-200 reCaptcha response.")
+    response_obj = json.loads(response.text, encoding="utf-8")
+
+    success = response_obj.get("success")
+    if success is None:
+        raise Exception("Unparsable reCaptcha response (no 'success').")
+    if not success:
+        raise Exception("False reCaptcha success.")
+
+    score = response_obj.get("score")
+    if score is None:
+        raise Exception("Unparsable reCaptcha response (no 'score').")
+    if score < 0.7:
+        raise Exception("Insufficient reCaptcha score.")
+
+    data = dict(request.POST)
+    data.pop("command")
+    data.pop("_grecaptcha_token")
+
+    return command, request.POST
+
+@csrf_exempt
+def index(request):
+    if request.method == "POST":
+
+        try:
+            command, data = validate_ajax_post(request)
+        except Exception as ex:
+            print("ERROR: " + str(ex))
+            return HttpResponse("Invalid request", 400)
+
+        import pprint as pp
+        pp.pprint(data)
+
+        if command == "request_a_ride":
+            OldRideRequest.objects.create(
+                name=data.get("name"),
+                end_location=data.get("end_location"),
+                start_location=data.get("start_location"),
+                phone_number=data.get("phone_number"),
+                pickup_time=data.get("pickup_time"),
+                pickup_date=data.get("pickup_date"),
+                pronoun=data.get("pronoun"),
+                special_req=data.get("special_req"),
+                num_bags=data.get("num_bags"),
+                passenger_count=data.get("passenger_count"),
+            )
+            return HttpResponse("GOT REQUEST RIDE", status=200)
+        if command == "driver_signup":
+            OldDriverSignup.objects.create(
+                comments=data.get("comments"),
+                first_name=data.get("first_name"),
+                last_name=data.get("last_name"),
+                contact_email=data.get("contact_email"),
+                contact_phone=data.get("contact_phone"),
+                pronoun=data.get("pronoun"),
+                smartphone_type=data.get("smartphone_type"),
+                vehicle_doors=data.get("vehicle_doors"),
+                vehicle_make=data.get("vehicle_make"),
+                vehicle_model=data.get("vehicle_model"),
+                vehicle_year=data.get("vehicle_year"),
+                yes_no_criminal_history=str2bool(data.get("yes_no_criminal_history")),
+                yes_no_insurance=str2bool(data.get("yes_no_insurance")),
+                yes_no_square=str2bool(data.get("yes_no_square")),
+            )
+            return HttpResponse("Submitted!", status=200)
+
+        return JsonResponse({
+            "data": "OK"
+        }, status=200)
+
+    return render(request, "rideshare/site/index.html")
+
+
+def for_drivers(request):
+    return render(request, "rideshare/site/for-drivers.html")
+
+
+def for_riders(request):
+    return render(request, "rideshare/site/for-riders.html")
+
+
+def why_homobiles(request):
+    return render(request, "rideshare/site/why-homobiles.html")
+
+
+def signup(request):
+    return render(request, "rideshare/site/signup.html")
+
+"""-----------------------------------------------------------------------------
+Common Helper Functions
+-----------------------------------------------------------------------------"""
+
 
 def load_app_user(request):
     if not request.user.is_authenticated:
@@ -21,24 +167,22 @@ def load_app_user(request):
         return None, redirect("/code_verification")
     return app_user, None
 
-
 """-----------------------------------------------------------------------------
 PAGES (Public and On-boarding)
 -----------------------------------------------------------------------------"""
 
 
-def index(request):
+def get_started(request):
     if not request.user.is_authenticated:
         return redirect("/accounts/login/")
     app_user, created = AppUser.objects.get_or_create(
         django_account=request.user)
-    print("INDEX")
     context = {
         # Sidebar info.
         "app_user": app_user,
         # Page info.
     }
-    return render(request, "rideshare/pages/index.html", context)
+    return render(request, "rideshare/pages/get_started.html", context)
 
 
 def phone_verification(request):
@@ -147,11 +291,42 @@ def set_location(request):
     if user_redirect is not None:
         return user_redirect
 
+    start_name = "sn"
+    start_address = "sa"
+    start_place_id = "spi"
+    end_name = "en"
+    end_address = "ea"
+    end_place_id = "epi"
+    ride_utc = "ru" # @ToDo Make timestamp field in model.
+    try:
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+        )
+        start_name = ride_request.start_name
+    except Exception as ex:
+        ride_request = None
+
+    error = ""
+
+    if request.method == "POST":
+        if not request.POST:
+            error = "Invalid request."
+
     context = {
+        # Form info.
+        "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
         # Page info.
+        "ride_request": ride_request,
+        "start_name": start_name,
+        "start_address": start_address,
+        "start_place_id": start_place_id,
+        "end_name": end_name,
+        "end_address": end_address,
+        "end_place_id": end_place_id,
+        "ride_utc": ride_utc,
     }
     return render(request, "rideshare/pages/set_location.html", context)
 

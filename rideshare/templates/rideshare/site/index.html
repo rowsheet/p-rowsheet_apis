@@ -1,0 +1,253 @@
+{% extends "rideshare/site_layout.html" %}
+
+{% block "main" %}
+<main class="index_page">
+    <div>
+
+<div class="col-sm-12" id="info_section">
+    <div id="site_info" class="jumbotron">
+    <div id="jumbotron-content">
+            <div id="text_break_no_circle">
+                    <div id="starlogo">
+        <div id="star" class="overlapping-shape">
+            <img src="/static/site/star-glow.png">
+            <p>H</p>
+        </div>
+    </div>
+
+            </div>
+        <div id="site_info_text">
+            <div id="text_blob">
+                <h2 id="index_info_1" class="index_info">
+                    Homobiles is a California NPO 501c3 committed to providing secure and reliable transit to the SF Bay
+                    Area LGBTIQQ community and its allies.
+                </h2>
+                <br>
+                <h5 id="index_info_2" class="index_info">
+                    We accept donations to help cover the costs of operation. Donation is 100% voluntary & is not a
+                    condition of service. No one is turned away for lack of funds.
+                </h5>
+                <br>
+                <h5 id="index_info_3" class="index_info">
+                    Operating on a prebook basis only. We are available via text for advanced booking, 7 days a week, with
+                    the support of the Homobiles volunteer staff.
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <br>
+</div>
+<div class="row container-fluid" id="index_page">
+	<div class="col-sm-12" id="form_section">
+			<br>
+		<div id="FORM_request_a_ride" class="card card_form purple">
+    <h5 class="card-header">
+        Request a Ride
+    </h5>
+    <div class="card-body">
+        <div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        person
+                        </i>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="name"
+                    placeholder="Your Name">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        access_time
+                        </i>
+                    </div>
+                </div>
+                <input type="time" class="form-control" id="pickup_time"
+                    placeholder="Pickup Time">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            calendar_today
+                        </i>
+                    </div>
+                </div>
+                <input type="date" class="form-control" id="pickup_date"
+                       placeholder="Pickup Date">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        record_voice_over
+                        </i>
+                    </div>
+                </div>
+                <select id="pronoun" class="form-control">
+                    <option value="">
+                        Pronoun
+                    </option>
+                    <option value="masculine">
+                        He/Him/His
+                    </option>
+                    <option value="feminine">
+                        She/Her/Hers
+                    </option>
+                    <option value="neutral">
+                        They/Them/Theirs
+                    </option>
+                    <option value="neutral">
+                        Ze/Zir/Zirs
+                    </option>
+                    <option value="neutral">
+                        Ze/Hir/Hirs
+                    </option>
+                    <option value="other">
+                        Other
+                    </option>
+                </select>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        phone_iphone
+                        </i>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="phone_number"
+                    placeholder="Your Phone Number">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        my_location
+                        </i>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="start_location" placeholder="Pickup Address">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        map
+                        </i>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="end_location" placeholder="Destination Address">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        group
+                        </i>
+                    </div>
+                </div>
+                <input type="number" class="form-control" id="passenger_count" placeholder="Number of Passengers">
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                        work
+                        </i>
+                    </div>
+                </div>
+                <input type="number" class="form-control" id="num_bags" placeholder="Number of Bags">
+            </div>
+            <div>
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            accessibility_new
+                        </i>
+                    </div>
+                    <textarea id="special_req" class="form-control" placeholder="Special requests"></textarea>
+                </div>
+                <br>
+            </div>
+            <div class="form_message form_error alert alert-danger hidden">
+</div>
+<div class="form_message form_success alert alert-success hidden">
+</div>
+
+            <div class="text-right">
+                <button class="btn btn-outline-secondary"
+                    onclick="applib.forms.request_a_ride()">
+                Request a Ride</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+		<br>
+		<div class="line_or">
+	<div class="or_left"></div>
+	<h5 class="or_center text-center">
+		OR
+	</h5>
+	<div class="or_right"></div>
+</div>
+
+		<br>
+		<div class="card card_form pink">
+    <h5 class="card-header text_to_fetch_header">Text to Fetch</h5>
+    <div class="card-body text-center text_to_fetch">
+        <h2 id="text_to_fetch_number">
+            text: (415)574-5023
+        </h2>
+        <h6 class="text_to_fetch_info" id="text_to_fetch_tagline">
+            make sure to include your:
+        </h6>
+        <div class="text_to_fetch_info_box text-left">
+            <p class="text_to_fetch_info">
+                <i class="material-icons">person</i>
+                Name
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">access_time</i>
+                Pickup Time
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">record_voice_over</i>
+                Pronoun
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">my_location</i>
+                Pickup Address
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">map</i>
+                Destination Address
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">group</i>
+                Number of Passengers
+            </p>
+            <p class="text_to_fetch_info">
+                <i class="material-icons">work</i>
+                Number of Bags
+            </p>
+            <p class="text_to_fetch_info last">
+                <i class="material-icons">accessible</i>
+                Special Requests
+            </p>
+        </div>
+    </div>
+</div>
+
+	</div>
+</div>
+
+    </div>
+</main>
+{% endblock %}

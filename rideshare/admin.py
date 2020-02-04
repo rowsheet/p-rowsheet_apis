@@ -4,6 +4,8 @@ from .models import AppUser
 from .models import Pronoun
 from .models import Accommodation
 from .models import RideRequest
+from .models import OldRideRequest
+from .models import OldDriverSignup
 
 
 class PronounAdmin(admin.ModelAdmin):
@@ -82,3 +84,57 @@ class RideRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RideRequest, RideRequestAdmin)
+
+
+class OldRideRequestAdmin(admin.ModelAdmin):
+    fields = (
+        "name",
+        "end_location",
+        "start_location",
+        "phone_number",
+        "pickup_time",
+        "pickup_date",
+        "pronoun",
+        "special_req",
+        "num_bags",
+        "passenger_count",
+        "driver",
+        "done",
+        "creation_timestamp",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+
+
+admin.site.register(OldRideRequest, OldRideRequestAdmin)
+
+
+class OldDriverSignupAdmin(admin.ModelAdmin):
+    fields = (
+        "contact_email",
+        "contact_phone",
+        "first_name",
+        "last_name",
+        "pronoun",
+        "smartphone_type",
+        "vehicle_doors",
+        "vehicle_make",
+        "vehicle_model",
+        "vehicle_year",
+        "yes_no_criminal_history",
+        "yes_no_insurance",
+        "yes_no_square",
+        "comments",
+        "creation_timestamp",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+
+
+admin.site.register(OldDriverSignup, OldDriverSignupAdmin)
