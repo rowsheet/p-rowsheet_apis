@@ -22,7 +22,9 @@
                 <input
                         name="start_name"
                         value="{{ start_name }}"
-                        type="text" class="form-control"/>
+                        type="text" class="form-control"
+                        id="start_name"
+                        onkeypress="start_keypress()"/>
             </div>
             <input
                     name="start_address"
@@ -41,7 +43,8 @@
                 <input
                         name="end_name"
                         value="{{ end_name }}"
-                        type="text" class="form-control"/>
+                        type="text" class="form-control"
+                        onkeypress="end_keypress()"/>
             </div>
             <input
                     name="end_address"
@@ -101,6 +104,34 @@
 </div>
 
 <script>
+function showPosition(position) {
+    console.log("SHOW POSITION");
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    console.log(lat + ":" + lng);
+}
+start_keypress = function() {
+    console.log("START KEYPRESS");
+    $.ajax({
+        method: "POST",
+        url: "/set_location/",
+        data: {
+            "input": "start_name",
+            "value": $("#start_name").val(),
+        },
+        success: function(resp) {
+            console.log("AJAX SUCCESS:");
+            console.log(resp);
+        },
+        error: function(resp) {
+            console.log("AJAX ERROR:");
+            console.log(resp.responseText);
+        },
+    });
+}
+end_keypress = function() {
+    console.log("END KEYPRESS");
+}
 window.onload = function() {
     var dt = new Date();
     jQuery('#datetimepicker12').datetimepicker({
@@ -110,25 +141,4 @@ window.onload = function() {
     });
 }
 </script>
-{% endblock %}
-
-{% block info %}
-Phone Verication {{ user_id }}
-<br>
-<p>
-    Username:
-    {{ app_user.username }}
-</p>
-<p>
-    Display Name:
-    {{ app_user.pronoun.display_name }}
-</p>
-<p>
-    Phone Number:
-    {{ phone_number }}
-</p>
-<p>
-    Phone Verified:
-    {{ phone_verified }}
-</p>
 {% endblock %}

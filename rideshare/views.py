@@ -286,6 +286,7 @@ def main_screen(request):
     return render(request, "rideshare/pages/main_screen.html", context)
 
 
+@csrf_exempt
 def set_location(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
@@ -309,8 +310,12 @@ def set_location(request):
     error = ""
 
     if request.method == "POST":
+        print("GOT POST")
         if not request.POST:
             error = "Invalid request."
+        return JsonResponse({
+            "data": "TEST DATA",
+        }, status=200)
 
     context = {
         # Form info.
