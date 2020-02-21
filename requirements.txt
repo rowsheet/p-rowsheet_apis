@@ -7,3 +7,4 @@ termcolor
 pyyaml
 django-cors-headers
 googlemaps
+twilio

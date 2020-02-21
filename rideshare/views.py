@@ -21,6 +21,17 @@ ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
 RECAPTCHA_SECRET = "6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR"
 RECAPTCHA_MIN_SCORE = "0.7"
 
+from twilio.rest import Client
+
+def send_text_message(body):
+    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
+    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        to="+15404540846",
+        from_="+14159939395",
+        body=body)
+
 """-----------------------------------------------------------------------------
 "SITE" (Old Site Pages)
 -----------------------------------------------------------------------------"""
@@ -95,6 +106,7 @@ def index(request):
         pp.pprint(data)
 
         if command == "request_a_ride":
+            send_text_message("Ride request from: " + data.get("name"))
             OldRideRequest.objects.create(
                 name=data.get("name"),
                 end_location=data.get("end_location"),

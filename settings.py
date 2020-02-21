@@ -175,3 +175,9 @@ AUTH_NONCE = AuthNonce()
 # GOOGLE MAPS API
 #-------------------------------------------------------------------------------
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+
+#-------------------------------------------------------------------------------
+# TWILIO
+#-------------------------------------------------------------------------------
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
