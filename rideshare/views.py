@@ -29,7 +29,8 @@ def send_text_message(body):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         # to="+15404540846",
-        to="+17203643760",
+        # to="+17203643760",
+        to="+14155745023",
         from_="+14159939395",
         body=body)
 
