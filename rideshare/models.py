@@ -78,7 +78,8 @@ class AppUser(models.Model):
         null=False, blank=False,
     )
     accommodations = models.ManyToManyField(
-        Accommodation
+        Accommodation,
+        default=False
     )
     email_address = models.CharField(
         max_length=64,
