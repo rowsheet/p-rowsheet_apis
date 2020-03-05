@@ -64,8 +64,17 @@
             <button id="submit_ride_request_form" type="submit" class="btn btn-primary">
                 geolocate
             </button>
-            <div id="error_msg" class="hidden alert alert-danger">
-                Error...
+            <div id="error_msg" class="
+                    {% if error|length > 0 %}
+                    {% else %}
+                        hidden
+                    {% endif %}
+                alert alert-danger">
+                {% if error|length > 0 %}
+                    {{ error }}
+                {% else %}
+                    Error...
+                {% endif %}
             </div>
         </form>
         <button type="submit" class="btn btn-round mt-3 float-right"
@@ -102,7 +111,7 @@ function preload_place_info() {
             $("#end_place_id").val(end_place_id);
             $("#end_lat").val(end_lat);
             $("#end_lng").val(end_lng);
-            // $("#submit_ride_request_form").click();
+            $("#submit_ride_request_form").click();
         },
         error: function(resp) {
             console.log("ERROR");

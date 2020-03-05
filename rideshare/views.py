@@ -442,17 +442,40 @@ def set_location(request):
         print("GOT POST")
         if not request.POST:
             error = "Invalid request."
+            return JsonResponse({
+                start_address: "start_address",
+                start_place_id: "start_place_id",
+                end_address: "end_address",
+                end_place_id: "end_place_id",
+            }, status=200)
         else:
             start_address = request.POST.get("start_address")
             start_place_id = request.POST.get("start_place_id")
+            start_lat = request.POST.get("start_lat")
+            start_lng = request.POST.get("start_lng")
             end_address = request.POST.get("end_address")
             end_place_id = request.POST.get("end_place_id")
-        return JsonResponse({
-            start_address: "start_address",
-            start_place_id: "start_place_id",
-            end_address: "end_address",
-            end_place_id: "end_place_id",
-        }, status=200)
+            end_lat = request.POST.get("end_lat")
+            end_lng = request.POST.get("end_lng")
+            if start_address == "":
+                error = "Invalid start address."
+            if start_place_id == "":
+                error = "Invalid start address."
+            if start_lat == "":
+                error = "Invalid start address."
+            if start_lng == "":
+                error = "Invalid start address."
+            if end_address == "":
+                error = "Invalid end address."
+            if end_place_id == "":
+                error = "Invalid end address."
+            if end_lat == "":
+                error = "Invalid end address."
+            if end_lng == "":
+                error = "Invalid end address."
+            # If POST and no errors, redirect to main_screen (map).
+            if error == "":
+                return redirect("/main_screen")
 
     context = {
         # Form info.
