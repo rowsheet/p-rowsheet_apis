@@ -11,6 +11,9 @@
         Where can we take you?
     </h3>
     <div class="location_setter">
+
+
+
         <form action="/set_location/" method="post">
             {% csrf_token %}
             <div class="input-group">
@@ -19,126 +22,109 @@
                         start
                     </div>
                 </div>
-                <input
-                        name="start_name"
-                        value="{{ start_name }}"
-                        type="text" class="form-control"
-                        id="start_name"
-                        onkeypress="start_keypress()"/>
+                <input id="autocomplete_start"
+                       value="{{ start_name }}"
+                       class="form-control"
+                       placeholder="Enter your address"
+                       onFocus="geolocate('start')"
+                       type="text"/>
             </div>
-            <input
-                    name="start_address"
-                    value="{{ start_address }}"
-                    type="text" class="form-control"/>
-            <input
-                    name="start_place_id"
-                    value="{{ start_place_id }}"
-                    type="text" class="form-control"/>
-            <div class="input-group mt-2">
+            <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
                         end
                     </div>
                 </div>
-                <input
-                        name="end_name"
-                        value="{{ end_name }}"
-                        type="text" class="form-control"
-                        onkeypress="end_keypress()"/>
+                <input id="autocomplete_end"
+                       value="{{ end_name }}"
+                       class="form-control"
+                       placeholder="Enter your address"
+                       onFocus="geolocate('end')"
+                       type="text"/>
             </div>
-            <input
-                    name="end_address"
-                    value="{{ end_address }}"
-                    type="text" class="form-control"/>
-            <input
-                    name="end_place_id"
-                    value="{{ end_place_id }}"
-                    type="text" class="form-control"/>
-            <br>
-            {% if error != "" %}
-            <div class="alert alert-danger my-3">
-                {{ error }}
-            </div>
-            {% endif %}
             <button type="submit" class="btn btn-round mt-3 float-right">
                 done
             </button>
         </form>
     </div>
-    <div id="location_suggestions" class="m-3">
-        <p>
-            <i class="fas fa-map-marker-alt"></i>
-            Set on map
-        </p>
-        <p>
-            <i class="fas fa-map-marker-alt"></i>
-            Work
-        </p>
-        <p>
-            <i class="fas fa-map-marker-alt"></i>
-            Home
-        </p>
-    </div>
-    <h3>
-        When can we take you there?
-    </h3>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-        </div>
-        <input type="text" class="form-control">
-        <div class="input-group-append">
-            <div class="input-group-text">
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </div>
-    <div class="input-group date inactive" id="datetimepicker12" data-target-input="nearest">
-        <input type="text"
-            data-target="#datetimepicker12"
-            style="display: none;"
-            class="form-control datetimepicker-input mb-3 form-control-sm text-center text-primary h3">
-    </div>
-</div>
 
-<script>
-function showPosition(position) {
-    console.log("SHOW POSITION");
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    console.log(lat + ":" + lng);
+    <script>
+// This sample uses the Autocomplete widget to help the user select a
+// place, then it retrieves the address components associated with that
+// place, and then it populates the form fields with those details.
+// This sample requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script
+// src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&libraries=places">
+
+var placeSearch, autocomplete;
+var input_id = "none"; // this is defined in geolocate(input_id);
+
+var componentForm = {
+    street_number: 'short_name',
+    route: 'long_name',
+    locality: 'long_name',
+    administrative_area_level_1: 'short_name',
+    country: 'long_name',
+    postal_code: 'short_name'
+};
+
+function initAutocomplete() {
+
+    console.log("INPUT_ID: " + input_id);
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Create the autocomplete object, restricting the search predictions to
+    // geographical location types.
+    autocomplete_start = new google.maps.places.Autocomplete(
+            document.getElementById('autocomplete_start'), {types: ['geocode']});
+
+    // Avoid paying for data that you don't need by restricting the set of
+    // place fields that are returned to just the address components.
+    autocomplete_start.setFields(['address_component']);
+
+    // When the user selects an address from the drop-down, populate the
+    // address fields in the form.
+    autocomplete_start.addListener('place_changed', fillInAddress);
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Create the autocomplete object, restricting the search predictions to
+    // geographical location types.
+    autocomplete_end = new google.maps.places.Autocomplete(
+            document.getElementById('autocomplete_end'), {types: ['geocode']});
+
+    // Avoid paying for data that you don't need by restricting the set of
+    // place fields that are returned to just the address components.
+    autocomplete_end.setFields(['address_component']);
+
+    // When the user selects an address from the drop-down, populate the
+    // address fields in the form.
+    autocomplete_end.addListener('place_changed', fillInAddress);
 }
-start_keypress = function() {
-    console.log("START KEYPRESS");
-    $.ajax({
-        method: "POST",
-        url: "/set_location/",
-        data: {
-            "input": "start_name",
-            "value": $("#start_name").val(),
-        },
-        success: function(resp) {
-            console.log("AJAX SUCCESS:");
-            console.log(resp);
-        },
-        error: function(resp) {
-            console.log("AJAX ERROR:");
-            console.log(resp.responseText);
-        },
-    });
+
+function fillInAddress() {
+    // TEMP
+    // @TODO maybe geocode and get place_id, etc here.
 }
-end_keypress = function() {
-    console.log("END KEYPRESS");
+
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+function geolocate(id) {
+
+    console.log("geolocate(): " + id);
+    input_id = id;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle(
+                    {center: geolocation, radius: position.coords.accuracy});
+        });
+    }
 }
-window.onload = function() {
-    var dt = new Date();
-    jQuery('#datetimepicker12').datetimepicker({
-        defaultDate: new Date(dt.getTime()),
-        inline: true,
-        sideBySide: true,
-    });
-}
-</script>
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
