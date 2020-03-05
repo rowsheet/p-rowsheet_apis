@@ -2,6 +2,7 @@ import os
 from django.urls import path
 from rideshare import views
 
+"""
 urlpatterns = [
     # Site pages.
     path("", views.index),
@@ -12,6 +13,8 @@ urlpatterns = [
 ]
 """
 urlpatterns = [
+    # DEMO
+    path("demo_google_maps/", views.demo_google_maps),
     # On-boarding pages.
     # path("get_started/", views.get_started),
     path("", views.get_started),
@@ -49,4 +52,3 @@ urlpatterns = [
     path("policies/", views.policies),
     path("legal/", views.legal),
 ]
-"""

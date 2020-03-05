@@ -94,6 +94,18 @@ def validate_ajax_post(request):
 
     return command, request.POST
 
+"""-----------------------------------------------------------------------------
+DEMO
+-----------------------------------------------------------------------------"""
+
+def demo_google_maps(request):
+    return render(request, "rideshare/demo/google_maps.html")
+
+"""-----------------------------------------------------------------------------
+PAGES
+-----------------------------------------------------------------------------"""
+
+
 @csrf_exempt
 def index(request):
     if request.method == "POST":
