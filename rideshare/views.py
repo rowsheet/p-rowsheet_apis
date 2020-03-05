@@ -30,7 +30,7 @@ def send_text_message(body):
     message = client.messages.create(
         # to="+15404540846",
         # to="+17203643760",
-        to="+14155745023",
+        to="+14155745023, +16464138190, +14158672671, +15404540846",
         from_="+14159939395",
         body=body)
 
@@ -120,7 +120,7 @@ def index(request):
         pp.pprint(data)
 
         if command == "request_a_ride":
-            send_text_message("Ride request from: " + data.get("name"))
+            send_text_message("Ride requested from: " + data.get("name") + " on " + data.get("pickup_date") + " at " + data.get("pickup_time") + ". \n \n Pick up rider at " + data.get("start_location") + ". \n Drop off rider at " + data.get("end_location") + ". \n Contact phone: " + data.get("phone_number"))
             OldRideRequest.objects.create(
                 name=data.get("name"),
                 end_location=data.get("end_location"),
