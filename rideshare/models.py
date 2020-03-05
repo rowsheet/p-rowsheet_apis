@@ -158,7 +158,7 @@ class RideRequest(models.Model):
     )
 
 
-class OldRideRequest(models.Model):
+class CurrentRideRequest(models.Model):
     name = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
     end_location = models.CharField(

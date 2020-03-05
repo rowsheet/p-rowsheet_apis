@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             field=models.CharField(default='47HACUNZCO863E1PIR397MII84YNE2AB14TNR8ARPY9U5Q4UI7DT44OP95S2JWH7', max_length=100),
         ),
         migrations.AlterField(
-            model_name='oldriderequest',
+            model_name='CurrentRideRequest',
             name='pickup_time',
             field=models.TimeField(default=None),
         ),
