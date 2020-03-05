@@ -52,3 +52,4 @@ urlpatterns = [
     path("policies/", views.policies),
     path("legal/", views.legal),
 ]
+# """
