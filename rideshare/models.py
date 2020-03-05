@@ -45,6 +45,8 @@ class Accommodation(models.Model):
         max_length=255,
         null=False, blank=False, default="",
     )
+    def __str__(self):
+        return str(self.display_name)
 
 
 class AppUser(models.Model):
@@ -78,8 +80,7 @@ class AppUser(models.Model):
         null=False, blank=False,
     )
     accommodations = models.ManyToManyField(
-        Accommodation,
-        default=False
+        Accommodation
     )
     email_address = models.CharField(
         max_length=64,
