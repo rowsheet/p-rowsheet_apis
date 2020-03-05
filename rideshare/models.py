@@ -21,7 +21,6 @@ class Pronoun(models.Model):
         null=False, blank=False, default=None,
     )
 
-
 class Accommodation(models.Model):
     class Meta:
         verbose_name= 'Accomodation'
@@ -50,8 +49,8 @@ class Accommodation(models.Model):
 
 class AppUser(models.Model):
     class Meta:
-        verbose_name= 'Rider Account'
-        verbose_name_plural= 'Rider Accounts'
+        verbose_name= 'Homobiles Team Member'
+        verbose_name_plural= 'Homobiles Team Members'
     django_account = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
