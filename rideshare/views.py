@@ -235,7 +235,7 @@ def geocode(request):
             start_lat = start_results[0]["geometry"]["location"]["lat"]
             start_lng = start_results[0]["geometry"]["location"]["lng"]
             # Get end_address info
-            end_results = gclient.geocode(start_address)
+            end_results = gclient.geocode(end_address)
             end_place_id = end_results[0]["place_id"]
             end_lat = end_results[0]["geometry"]["location"]["lat"]
             end_lng = end_results[0]["geometry"]["location"]["lng"]
