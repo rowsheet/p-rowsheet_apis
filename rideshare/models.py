@@ -51,8 +51,8 @@ class Accommodation(models.Model):
 
 class AppUser(models.Model):
     class Meta:
-        verbose_name= 'Homobiles Team Member'
-        verbose_name_plural= 'Homobiles Team Members'
+        verbose_name= 'App User'
+        verbose_name_plural= 'App Users'
     django_account = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
