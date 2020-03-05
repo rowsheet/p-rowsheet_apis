@@ -23,12 +23,17 @@
                     </div>
                 </div>
                 <input id="autocomplete_start"
-                       value="{{ start_name }}"
+                       value="{{ start_address }}"
                        class="form-control"
                        placeholder="Enter your address"
                        onFocus="geolocate('start')"
                        type="text"/>
             </div>
+            <br>
+            <input id="start_place_id"
+                   value="{{ start_place_id }}">
+            <br>
+            <br>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -36,12 +41,15 @@
                     </div>
                 </div>
                 <input id="autocomplete_end"
-                       value="{{ end_name }}"
+                       value="{{ end_address }}"
                        class="form-control"
                        placeholder="Enter your address"
                        onFocus="geolocate('end')"
                        type="text"/>
             </div>
+            <br>
+            <input id="end_place_id"
+                   value="{{ end_place_id }}">
             <button type="submit" class="btn btn-round mt-3 float-right">
                 done
             </button>

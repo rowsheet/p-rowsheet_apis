@@ -314,14 +314,18 @@ def main_screen(request):
 
 @csrf_exempt
 def set_location(request):
+
+    # Check basic user info (logged in and valid phone)
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
-    start_name = "sn"
+    # Set default ride request vars for the view. Get this
+    # data from the RideRequest object associated with the
+    # app_user. This data will be used to populate the template
+    # context form values.
     start_address = "sa"
     start_place_id = "spi"
-    end_name = "en"
     end_address = "ea"
     end_place_id = "epi"
     ride_utc = "ru" # @ToDo Make timestamp field in model.
@@ -329,7 +333,10 @@ def set_location(request):
         ride_request = RideRequest.objects.get(
             app_user=app_user,
         )
-        start_name = ride_request.start_name
+        if ride_request is not None:
+            print("GOT RIDE REQUEST")
+        else:
+            print("NO RIDE REQUEST")
     except Exception as ex:
         ride_request = None
 
@@ -351,10 +358,8 @@ def set_location(request):
         "user_type": "rider",
         # Page info.
         "ride_request": ride_request,
-        "start_name": start_name,
         "start_address": start_address,
         "start_place_id": start_place_id,
-        "end_name": end_name,
         "end_address": end_address,
         "end_place_id": end_place_id,
         "ride_utc": ride_utc,
