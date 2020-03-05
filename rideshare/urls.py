@@ -2,7 +2,7 @@ import os
 from django.urls import path
 from rideshare import views
 
-"""
+# """
 urlpatterns = [
     # Site pages.
     path("", views.index),
@@ -52,4 +52,4 @@ urlpatterns = [
     path("policies/", views.policies),
     path("legal/", views.legal),
 ]
-# """
+"""
