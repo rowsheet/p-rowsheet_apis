@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='CurrentRideRequest',
+            model_name='OldRideRequest',
             name='pickup_date',
             field=models.DateField(default=None),
         ),

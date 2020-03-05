@@ -9,7 +9,7 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
-from rideshare.models import CurrentRideRequest
+from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
 
 import rowsheet.utils as rs_utils
@@ -109,7 +109,7 @@ def index(request):
 
         if command == "request_a_ride":
             send_text_message("Ride request from: " + data.get("name"))
-            CurrentRideRequest.objects.create(
+            OldRideRequest.objects.create(
                 name=data.get("name"),
                 end_location=data.get("end_location"),
                 start_location=data.get("start_location"),

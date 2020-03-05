@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='CurrentRideRequest',
+            model_name='OldRideRequest',
             name='special_req',
             field=models.TextField(blank=True, default=None, max_length=255, null=True),
         ),
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             field=models.CharField(default='BH471X2VAK4LME004ZFPWB9P3XU1G1KT4UVPKB5L1KMQX14I1EC1NHSM8Z024GJ2', max_length=100),
         ),
         migrations.AlterField(
-            model_name='CurrentRideRequest',
+            model_name='OldRideRequest',
             name='start_location',
             field=models.CharField(blank=True, default=None, max_length=255, null=True),
         ),

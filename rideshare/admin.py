@@ -4,7 +4,7 @@ from .models import AppUser
 from .models import Pronoun
 from .models import Accommodation
 from .models import RideRequest
-from .models import CurrentRideRequest
+from .models import OldRideRequest
 from .models import OldDriverSignup
 
 
@@ -109,7 +109,7 @@ class OldRideRequestAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(CurrentRideRequest, OldRideRequestAdmin)
+admin.site.register(OldRideRequest, OldRideRequestAdmin)
 
 
 class OldDriverSignupAdmin(admin.ModelAdmin):

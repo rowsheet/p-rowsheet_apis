@@ -14,12 +14,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='CurrentRideRequest',
+            model_name='OldRideRequest',
             name='done',
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='CurrentRideRequest',
+            model_name='OldRideRequest',
             name='driver',
             field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
         ),
