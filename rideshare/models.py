@@ -159,6 +159,9 @@ class RideRequest(models.Model):
 
 
 class OldRideRequest(models.Model):
+    class Meta:
+        verbose_name= 'Current Ride Request'
+        verbose_name_plural= 'Current Ride Requests'
     name = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
     end_location = models.CharField(
