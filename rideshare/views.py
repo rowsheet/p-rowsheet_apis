@@ -30,10 +30,19 @@ def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    num=['+14155745023','+15404540846', '+16464138190', '+14158672671', '+7203643760']
+    num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
     for i in range(0,len(num)):
         message = client.messages.create(
         num[i],
+        from_="+14159939395",
+        body=body)
+
+def send_confirmation_text_message(body, to):
+    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
+    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        to=to,
         from_="+14159939395",
         body=body)
 
@@ -123,7 +132,30 @@ def index(request):
         pp.pprint(data)
 
         if command == "request_a_ride":
-            send_text_message("Ride requested from: " + data.get("name") + " on " + data.get("pickup_date") + " at " + data.get("pickup_time") + ". \n \n Pick up rider at " + data.get("start_location") + ". \n Drop off rider at " + data.get("end_location") + ". \n Contact phone: " + data.get("phone_number"))
+            try:
+                send_text_message("""
+Ride requested from: %s on %s at %s.
+
+Pick up rider at %s.
+Drop off rider at %s.
+Contact phone: %s.
+""" % (
+                str(data.get("name")),
+                str(data.get("pickup_date")),
+                str(data.get("pickup_time")),
+                str(data.get("start_location")),
+                str(data.get("end_location")),
+                str(data.get("phone_number")),
+                ))
+            except Exception as ex:
+                print(str(ex))
+
+            try:
+                send_confirmation_text_message(
+                "Your ride request has been received! We will text to confirm your ride on " + data.get("pickup_date") + " at " + data.get("pickup_time") + " from " + data.get("start_location") + " to " + data.get("end_location") + ".\n\nContact us at 14155745023 for assistance.", "+1" + str(data.get("phone_number")))
+            except Exception as ex:
+                print(str(ex))
+
             OldRideRequest.objects.create(
                 name=data.get("name"),
                 end_location=data.get("end_location"),
