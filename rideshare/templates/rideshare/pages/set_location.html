@@ -112,6 +112,12 @@ function preload_place_info() {
             $("#end_lat").val(end_lat);
             $("#end_lng").val(end_lng);
             $("#submit_ride_request_form").click();
+
+            // Set the address to the cookie.
+            setCookie("start_address", start_address);
+            setCookie("end_address", end_address);
+            setCookie("originPlaceId", start_place_id);
+            setCookie("destinationPlaceId", end_place_id);
         },
         error: function(resp) {
             console.log("ERROR");
