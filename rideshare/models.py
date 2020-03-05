@@ -7,6 +7,9 @@ import rowsheet.utils as rs_utils
 
 
 class Pronoun(models.Model):
+    class Meta:
+        verbose_name= 'Pronoun'
+        verbose_name_plural= 'Pronouns'
     key = models.CharField(
         unique=True,
         max_length=16,
@@ -20,6 +23,9 @@ class Pronoun(models.Model):
 
 
 class Accommodation(models.Model):
+    class Meta:
+        verbose_name= 'Accomodation'
+        verbose_name_plural= 'Accomodations'
     key = models.CharField(
         unique=True,
         max_length=16,
@@ -43,6 +49,9 @@ class Accommodation(models.Model):
 
 
 class AppUser(models.Model):
+    class Meta:
+        verbose_name= 'Rider Account'
+        verbose_name_plural= 'Rider Accounts'
     django_account = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -90,6 +99,9 @@ class AppUser(models.Model):
 
 
 class RideRequest(models.Model):
+    class Meta:
+        verbose_name= 'Rider Request (development)'
+        verbose_name_plural= 'Rider Requests (development)'
     start_name = models.CharField(
         unique=True,
         max_length=64,
@@ -194,6 +206,9 @@ class OldRideRequest(models.Model):
 
 
 class OldDriverSignup(models.Model):
+    class Meta:
+        verbose_name= 'Driver Application'
+        verbose_name_plural= 'Driver Applications'
     comments = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
     first_name = models.CharField(
