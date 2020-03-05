@@ -181,3 +181,14 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 #-------------------------------------------------------------------------------
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+
+# DEPLOYMENT_MODE
+"""
+Since Homobiles has the "old" active production pages, set these as the
+active url route if no other "DEPLOYMENT_MODE" is set.
+For development, add something other than "PRODUCTION" for the "DEPLOYMENT_MODE"
+in the .env file.
+"""
+DEPLOYMENT_MODE = os.getenv("DEPLOYMENT_MODE")
+if DEPLOYMENT_MODE is None:
+    DEPLOYMENT_MODE = "PRODUCTION"
