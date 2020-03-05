@@ -4,6 +4,7 @@ from django.template import loader
 from django.shortcuts import redirect
 # from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from rideshare.models import AppUser
 from rideshare.models import Pronoun
@@ -15,6 +16,8 @@ from rideshare.models import OldDriverSignup
 import rowsheet.utils as rs_utils
 import requests
 import json
+
+import googlemaps
 
 
 ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
@@ -193,6 +196,63 @@ def load_app_user(request):
         return None, redirect("/code_verification")
     return app_user, None
 
+
+@csrf_exempt
+def geocode(request):
+    print("geocode")
+    try:
+        if not request.POST:
+            return JsonResponse({
+                "error": "No data"
+            }, status=400)
+        else:
+            start_address = request.POST.get("start_address")
+            end_address = request.POST.get("end_address")
+            print("DEBUG")
+            print(start_address)
+            print(end_address)
+            if start_address is None:
+                return JsonResponse({
+                    "error": "Start address is required.",
+                }, status=400)
+            if start_address == "":
+                return JsonResponse({
+                    "error": "Start address is required.",
+                }, status=400)
+            if end_address is None:
+                return JsonResponse({
+                    "error": "Destination address is required."
+                }, status=400)
+            if end_address == "":
+                return JsonResponse({
+                    "error": "Destination address is required."
+                }, status=400)
+            gclient = googlemaps.Client(
+                key=settings.GOOGLE_MAPS_API_KEY)
+            # Get start_address info
+            start_results = gclient.geocode(start_address)
+            start_place_id = start_results[0]["place_id"]
+            start_lat = start_results[0]["geometry"]["location"]["lat"]
+            start_lng = start_results[0]["geometry"]["location"]["lng"]
+            # Get end_address info
+            end_results = gclient.geocode(start_address)
+            end_place_id = end_results[0]["place_id"]
+            end_lat = end_results[0]["geometry"]["location"]["lat"]
+            end_lng = end_results[0]["geometry"]["location"]["lng"]
+            return JsonResponse({
+                "start_place_id": start_place_id,
+                "start_lat": start_lat,
+                "start_lng": start_lng,
+                "end_place_id": end_place_id,
+                "end_lat": end_lat,
+                "end_lng": end_lng,
+            }, status=200)
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "error": "Unknown error occurred",
+        }, status=500)
+
 """-----------------------------------------------------------------------------
 PAGES (Public and On-boarding)
 -----------------------------------------------------------------------------"""
@@ -324,11 +384,15 @@ def set_location(request):
     # data from the RideRequest object associated with the
     # app_user. This data will be used to populate the template
     # context form values.
-    start_address = "sa"
-    start_place_id = "spi"
-    end_address = "ea"
-    end_place_id = "epi"
-    ride_utc = "ru" # @ToDo Make timestamp field in model.
+    start_address = ""
+    start_place_id = ""
+    start_lat = ""
+    start_lng = ""
+    end_address = ""
+    end_place_id = ""
+    end_lat = ""
+    end_lng = ""
+    ride_utc = "" # @ToDo Make timestamp field in model.
     try:
         ride_request = RideRequest.objects.get(
             app_user=app_user,
@@ -346,8 +410,16 @@ def set_location(request):
         print("GOT POST")
         if not request.POST:
             error = "Invalid request."
+        else:
+            start_address = request.POST.get("start_address")
+            start_place_id = request.POST.get("start_place_id")
+            end_address = request.POST.get("end_address")
+            end_place_id = request.POST.get("end_place_id")
         return JsonResponse({
-            "data": "TEST DATA",
+            start_address: "start_address",
+            start_place_id: "start_place_id",
+            end_address: "end_address",
+            end_place_id: "end_place_id",
         }, status=200)
 
     context = {
@@ -359,9 +431,7 @@ def set_location(request):
         # Page info.
         "ride_request": ride_request,
         "start_address": start_address,
-        "start_place_id": start_place_id,
         "end_address": end_address,
-        "end_place_id": end_place_id,
         "ride_utc": ride_utc,
     }
     return render(request, "rideshare/pages/set_location.html", context)
@@ -470,7 +540,7 @@ def donation_station(request):
     return render(request, "rideshare/pages/donation_station.html", context)
 
 
-def settings(request):
+def _settings(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect

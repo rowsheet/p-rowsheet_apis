@@ -2,15 +2,15 @@
 
 {% block content %}
 <div id="page_main_screen">
-    <button class="btn btn-primary btn-round"
+    <button id="menu_button" class="btn btn-primary btn-round"
         onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    <div id="ride_map">
+    <div id="map">
         Ride Map:
     </div>
     <a href="/set_location/">
-        <div id="ride_form" class="border-top">
+        <div id="ride_form" class="border-top bg-light">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -32,4 +32,35 @@
         </div>
     </a>
 </div>
+<style>
+#map {
+    position: absolute;
+    overflow: hidden;
+    height: calc(100vh - 105px);
+    width: 100%;
+    top: 0px;
+    z-index: 0;
+}
+#main_content {
+    padding: 0px;
+}
+#menu_button {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 10px;
+}
+</style>
+<script>
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+        });
+    }
+</script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&callback=initMap">
+async defer></script>
 {% endblock %}

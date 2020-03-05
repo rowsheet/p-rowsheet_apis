@@ -27,11 +27,16 @@
                        class="form-control"
                        placeholder="Enter your address"
                        onFocus="geolocate('start')"
+                       name="start_address"
                        type="text"/>
             </div>
             <br>
             <input id="start_place_id"
-                   value="{{ start_place_id }}">
+                   name="start_place_id">
+            <input id="start_lat"
+                   name="start_lat">
+            <input id="start_lng"
+                   name="start_lng">
             <br>
             <br>
             <div class="input-group">
@@ -45,18 +50,68 @@
                        class="form-control"
                        placeholder="Enter your address"
                        onFocus="geolocate('end')"
+                       name="end_address"
                        type="text"/>
             </div>
             <br>
             <input id="end_place_id"
+                   name="end_place_id"
                    value="{{ end_place_id }}">
-            <button type="submit" class="btn btn-round mt-3 float-right">
-                done
+            <input id="end_lat"
+                   name="end_lat">
+            <input id="end_lng"
+                   name="end_lng">
+            <button id="submit_ride_request_form" type="submit" class="btn btn-primary">
+                geolocate
             </button>
+            <div id="error_msg" class="hidden alert alert-danger">
+                Error...
+            </div>
         </form>
+        <button type="submit" class="btn btn-round mt-3 float-right"
+            onclick="preload_place_info()">
+            done
+        </button>
     </div>
 
     <script>
+function preload_place_info() {
+    console.log("Preloading place info...");
+    var start_address = $("#autocomplete_start").val();
+    var end_address = $("#autocomplete_end").val();
+    $.ajax({
+        method: "POST",
+        url: "/geocode/",
+        data: {
+            start_address: start_address,
+            end_address: end_address,
+        },
+        success: function(resp) {
+            $("#error_msg").addClass("hidden");
+            console.log(resp);
+            var start_place_id = resp["start_place_id"];
+            var start_lat = resp["start_lat"];
+            var start_lng = resp["start_lng"];
+            var end_place_id = resp["end_place_id"];
+            var end_lat = resp["end_lat"];
+            var end_lng = resp["end_lng"];
+            console.log("OK");
+            $("#start_place_id").val(start_place_id);
+            $("#start_lat").val(start_lat);
+            $("#start_lng").val(start_lng);
+            $("#end_place_id").val(end_place_id);
+            $("#end_lat").val(end_lat);
+            $("#end_lng").val(end_lng);
+            // $("#submit_ride_request_form").click();
+        },
+        error: function(resp) {
+            console.log("ERROR");
+            console.log(resp.responseJSON);
+            $("#error_msg").html(resp.responseJSON.error);
+            $("#error_msg").removeClass("hidden");
+        },
+    });
+}
 // This sample uses the Autocomplete widget to help the user select a
 // place, then it retrieves the address components associated with that
 // place, and then it populates the form fields with those details.

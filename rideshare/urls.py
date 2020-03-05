@@ -22,6 +22,7 @@ else:
     urlpatterns = [
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),
+        path("geocode/", views.geocode),
         # On-boarding pages.
         # path("get_started/", views.get_started),
         path("", views.get_started),
@@ -35,7 +36,7 @@ else:
         # Sidebar pages
         path("past_rides/", views.past_rides),
         path("donation_station/", views.donation_station),
-        path("settings/", views.settings),
+        path("settings/", views._settings),
         path("driver/", views.driver),
         path("about/", views.about),
         path("help/", views.help),
