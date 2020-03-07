@@ -95,6 +95,17 @@
 </style>
 
 <script>
+{% if in_setup == False %}
+clearDriverRideRequestCookies();
+{% else %}
+setCookie("start_address", "{{ start_address }}");
+setCookie("end_address", "{{ end_address }}");
+setCookie("originPlaceId", "{{ originPlaceId }}");
+setCookie("destinationPlaceId", "{{ destinationPlaceId }}");
+{% endif %}
+</script>
+
+<script>
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
 // <script
@@ -247,8 +258,9 @@ window.addEventListener("load", function() {
             // Set to cookie value.
             document.getElementById('pickup_date').value = pickup_date;
         }
-        // Set to cookie value.
-        document.getElementById('pickup_date').value = pickup_date;
+    } else {
+        // Set to now();
+        document.getElementById('pickup_date').valueAsDate = new Date();
     }
     // Note: In order to set the time input field to "now", we have to
     // first get the string in HH:mm, then pad an extra zero if the time
@@ -276,8 +288,8 @@ window.addEventListener("load", function() {
             document.getElementById('pickup_time').value = pickup_time;
         }
     } else {
-        // Set to cookie value.
-        document.getElementById('pickup_time').value = pickup_time;
+        // Set to now().
+        document.getElementById('pickup_time').value = currentTime;
     }
 });
 

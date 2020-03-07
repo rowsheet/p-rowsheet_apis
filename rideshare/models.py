@@ -101,8 +101,9 @@ class AppUser(models.Model):
 
 class RideRequest(models.Model):
     class Meta:
-        verbose_name= 'Rider Request (development)'
-        verbose_name_plural= 'Rider Requests (development)'
+        verbose_name = 'Rider Request (development)'
+        verbose_name_plural = 'Rider Requests (development)'
+        unique_together = ("app_user", "in_setup")
     start_address = models.CharField(
         unique=True,
         max_length=128,
@@ -127,7 +128,11 @@ class RideRequest(models.Model):
         AppUser,
         on_delete=models.PROTECT,
         null=False, blank=False, default=None,
-        unique=True,
+        # Note: unique cannot be true because we may use this for
+        # batch processing and if the batch time is shorter than the
+        # time in between the same users rides, the second ride attempt
+        # will be impossible until that batch is run.
+        # unique=True,
     )
     creation_timestamp = models.DateTimeField(
         auto_now=True,
@@ -153,6 +158,15 @@ class RideRequest(models.Model):
     )
     pickup_timestamp = models.DateTimeField(
         null=True, blank=True, default=None,
+    )
+    # When we load the "set_location" page for a ride request, the user may
+    # have other ride requests waiting to be assigned, completed, etc. If
+    # the user want's to set up another ride, we should only pre-fetch the
+    # request where "in_setup" is true; once the ride is past "PENDING_CONFIRM",
+    # we should toggle this off. Every app user should only be able to have one
+    # ride request that is "in_setup", therefore the unique together constraint.
+    in_setup = models.BooleanField(
+        null=False, blank=False, default=None,
     )
 
 

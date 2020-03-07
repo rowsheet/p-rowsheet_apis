@@ -72,6 +72,7 @@ class RideRequestAdmin(admin.ModelAdmin):
         "creation_timestamp",
         "status",
         "pickup_timestamp",
+        "in_setup",
     )
     list_display = fields
     search_fields = fields

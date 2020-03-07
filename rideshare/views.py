@@ -19,6 +19,7 @@ import json
 
 import googlemaps
 from datetime import datetime
+import time
 
 
 ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
@@ -396,11 +397,43 @@ def main_screen(request):
     if user_redirect is not None:
         return user_redirect
 
+    in_setup = False
+    start_address = None
+    start_place_id = None
+    end_address = None
+    end_place_id = None
+    pickup_time = None
+    pickup_date = None
+
+    try:
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+            in_setup=True,
+        )
+        if ride_request is not None:
+            print("GOT RIDE REQUEST")
+        else:
+            print("NO RIDE REQUEST")
+    except Exception as ex:
+        ride_request = None
+
+    if ride_request is not None:
+        in_setup = True
+        start_address = ride_request.start_address
+        start_place_id = ride_request.start_place_id
+        end_address = ride_request.end_address
+        end_place_id = ride_request.end_place_id
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
         # Page info.
+        "in_setup": in_setup,
+        "start_address": start_address,
+        "end_address": end_address,
+        "originPlaceId": start_place_id,
+        "destinationPlaceId": end_place_id,
     }
     return render(request, "rideshare/pages/main_screen.html", context)
 
@@ -429,6 +462,7 @@ def set_location(request):
     try:
         ride_request = RideRequest.objects.get(
             app_user=app_user,
+            in_setup=True,
         )
         if ride_request is not None:
             print("GOT RIDE REQUEST")
@@ -494,10 +528,51 @@ def set_location(request):
             timestamp_string_epoch = datetime.strptime(timestamp_string, "%Y-%m-%d %H:%M").timestamp()
             # Note: the "pickup_timestamp" is adjusted from the user's
             # timezone to a UTC/GMT timestamp epoch.
-            pickup_timestamp = int(timestamp_string_epoch) + int(timezone_offset) # <!-- this is what we need.
             print("pickup_timestamp (raw datetime string): " + timestamp_string)
             print("pickup_timestamp (raw epoch):           " + str(timestamp_string_epoch))
+            print(timestamp_string_epoch)
+            print(timezone_offset)
+            pickup_timestamp = int(timestamp_string_epoch) + int(timezone_offset) # <!-- this is what we need.
+            django_pickup_timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pickup_timestamp))
+
+            """
+            DEBUG CODE @TODO DELETE THIS
+            """
             print("pickup_timestamp (adjusted epoch):      " + str(pickup_timestamp))
+            """
+            END DEBUG CODE
+            """
+            print("start_address: " + str(start_address))
+            print("start_place_id: " + str(start_place_id))
+            print("end_address: " + str(end_address))
+            print("end_place_id: " + str(end_place_id))
+            print("app_user: " + str(app_user))
+            print("pickup_timestamp: " + str(pickup_timestamp))
+
+            # Save and create the new RideRequest.
+            if ride_request is None:
+                # Create the new ride_request.
+                ride_request = RideRequest.objects.create(
+                    start_address=start_address,
+                    start_place_id=start_place_id,
+                    end_address=end_address,
+                    end_place_id=end_place_id,
+                    app_user=app_user,
+                    status="PENDING_CONFIRM",
+                    pickup_timestamp=str(django_pickup_timestamp),
+                    in_setup=True,
+                )
+            else:
+                # Save ("update") the existing ride request.
+                ride_request.start_place_id = start_place_id
+                ride_request.end_address = end_address
+                ride_request.end_place_id = end_place_id
+                ride_request.app_user = app_user
+                ride_request.status = "PENDING_CONFIRM"
+                ride_request.pickup_timestamp = str(django_pickup_timestamp)
+                ride_request.in_setup = True
+                ride_request.save()
+
             # @TODO persist model
 
             # If POST and no errors, redirect to main_screen (map).

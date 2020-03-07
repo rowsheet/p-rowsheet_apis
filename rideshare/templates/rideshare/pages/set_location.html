@@ -30,14 +30,14 @@
                        name="start_address"
                        type="text"/>
             </div>
-            <!--
-            <input id="start_place_id"
-                   name="start_place_id">
-            <input id="start_lat"
-                   name="start_lat">
-            <input id="start_lng"
-                   name="start_lng">
-            -->
+            <div style="display: none;">
+                <input id="start_place_id"
+                       name="start_place_id">
+                <input id="start_lat"
+                       name="start_lat">
+                <input id="start_lng"
+                       name="start_lng">
+            </div>
             <div class="input-group mt-2">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -82,18 +82,18 @@
                     </div>
                 </div>
             </div>
-            <!--
-            <input id="end_place_id"
-                   name="end_place_id"
-                   value="{{ end_place_id }}">
-            <input id="end_lat"
-                   name="end_lat">
-            <input id="end_lng"
-                   name="end_lng">
-            -->
-            <input type="number"
-                id="timezone_offset"
-                name="timezone_offset">
+            <div style="display: none;">
+                <input id="end_place_id"
+                       name="end_place_id"
+                       value="{{ end_place_id }}">
+                <input id="end_lat"
+                       name="end_lat">
+                <input id="end_lng"
+                       name="end_lng">
+                <input type="number"
+                    id="timezone_offset"
+                    name="timezone_offset">
+            </div>
             <button id="submit_ride_request_form" type="submit" class="btn btn-primary"
                 style="display: none;">
                 geolocate
@@ -291,8 +291,9 @@ window.addEventListener("load", function() {
             // Set to cookie value.
             document.getElementById('pickup_date').value = pickup_date;
         }
-        // Set to cookie value.
-        document.getElementById('pickup_date').value = pickup_date;
+    } else {
+        // Set to now();
+        document.getElementById('pickup_date').valueAsDate = new Date();
     }
     // Note: In order to set the time input field to "now", we have to
     // first get the string in HH:mm, then pad an extra zero if the time
@@ -313,15 +314,15 @@ window.addEventListener("load", function() {
     // alert(currentTime);
     if (pickup_time != null) {
         if (pickup_time == "") {
-            // Set to now().
-            document.getElementById('pickup_time').value = currentTime;
-        } else {
             // Set to cookie value.
             document.getElementById('pickup_time').value = pickup_time;
+        } else {
+            // Set to now().
+            document.getElementById('pickup_time').value = currentTime;
         }
     } else {
-        // Set to cookie value.
-        document.getElementById('pickup_time').value = pickup_time;
+        // Set to now().
+        document.getElementById('pickup_time').value = currentTime;
     }
 });
 

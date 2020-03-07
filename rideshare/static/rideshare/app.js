@@ -18,3 +18,17 @@ function getCookie(name) {
     }
     return null;
 }
+
+function deleteCookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function clearDriverRideRequestCookies() {
+    deleteCookie("sidebar_pinned");
+    deleteCookie("start_address");
+    deleteCookie("end_address");
+    deleteCookie("originPlaceId");
+    deleteCookie("destinationPlaceId");
+    deleteCookie("pickup_time");
+    deleteCookie("pickup_date");
+}
