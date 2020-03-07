@@ -41,6 +41,36 @@
                     type="text" class="form-control"
                     placeholder="Destination Address">
             </div>
+            <div class="row mt-2">
+                <div class="col-md-6 pr-0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="width: 60px;">
+                                <i class="material-icons">
+                                    calendar_today
+                                </i>
+                            </div>
+                        </div>
+                        <input type="date" class="form-control"
+                               id="pickup_date"
+                               name="pickup_date">
+                    </div>
+                </div>
+                <div class="col-md-6 pl-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="width: 60px;">
+                                <i class="material-icons">
+                                    access_time
+                                </i>
+                            </div>
+                        </div>
+                        <input type="time" class="form-control"
+                               id="pickup_time"
+                               name="pickup_time">
+                    </div>
+                </div>
+            </div>
         </div>
     </a>
 </div>
@@ -48,7 +78,7 @@
 #map {
     position: absolute;
     overflow: hidden;
-    height: calc(100vh - 105px);
+    height: calc(100vh - 151px);
     width: 100%;
     top: 0px;
     z-index: 0;
@@ -199,6 +229,33 @@ window.addEventListener("load", function() {
     }
     if (end_address != null) {
         $("#main_screen_end_address").val(end_address);
+    }
+
+    /*
+    Also set the date and time from the timestamp. This may be more
+    subitle since it has to be converted from a UTC timestamp.
+    */
+
+    // First check if it has a value, the set it to now if no value
+    // has been set by a previous process.
+    var pickup_date = $("#pickup_date").val();
+    if (pickup_date == "") {
+        document.getElementById('pickup_date').valueAsDate = new Date();
+    }
+    // Note: In order to set the time input field to "now", we have to
+    // first get the string in HH:mm, then pad an extra zero if the time
+    // starts with single digits. If the time is past 12:00 noon, the
+    // "AM" and "PM" portions will automatically set.
+
+    var date = new Date();
+    var currentTime = date.getHours() + ':' + date.getMinutes();
+    if (currentTime.length == 4) {
+        currentTime = "0" + currentTime;
+    }
+    var pickup_time = $("#pickup_time").val();
+    if (pickup_time == "") {
+        // @TODO adjust for time zone.
+        document.getElementById('pickup_time').value = currentTime;
     }
 });
 
