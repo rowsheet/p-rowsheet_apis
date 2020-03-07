@@ -170,15 +170,15 @@ Contact phone: %s.
                 num_bags=data.get("num_bags"),
                 passenger_count=data.get("passenger_count"),
             )
-            return HttpResponse("GOT REQUEST RIDE", status=200)
+            return HttpResponse("Ride Request Received! Please check your phone for an SMS confirmation.", status=200)
         if command == "driver_signup":
             OldDriverSignup.objects.create(
                 comments=data.get("comments"),
                 first_name=data.get("first_name"),
                 last_name=data.get("last_name"),
+                pronoun=data.get("pronoun"),
                 contact_email=data.get("contact_email"),
                 contact_phone=data.get("contact_phone"),
-                pronoun=data.get("pronoun"),
                 smartphone_type=data.get("smartphone_type"),
                 vehicle_doors=data.get("vehicle_doors"),
                 vehicle_make=data.get("vehicle_make"),
@@ -465,7 +465,7 @@ def set_location(request):
             in_setup=True,
         )
         if ride_request is not None:
-            print("GOT RIDE REQUEST")
+            print("RIDE REQUEST RECEIVED")
         else:
             print("NO RIDE REQUEST")
     except Exception as ex:

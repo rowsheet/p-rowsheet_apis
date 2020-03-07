@@ -1,5 +1,5 @@
 var applib = {
-    init: function() {
+    init: function () {
         console.log("init");
     },
     forms: {
@@ -245,8 +245,20 @@ function request_a_ride() {
     if (pickup_date == "") {
         errors["pickup_date"] = "Pickup date is required."
     }
-    if (phone_number == "") {
-        errors["phone_number"] = "Phone number is required."
+    function validate(phone_number) {
+        const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        console.log(regex.test(phone_number))
+        errors = {};
+    }
+
+    // validate('1234567890')     // true
+    // validate(1234567890)       // true
+    // validate('(078)789-8908')  // true
+    // validate('123-345-3456')   // true
+    
+    if (validate(phone_number) == false) {
+        console.log("+" + phone_number + "is not a valid phone number")
+        errors["phone_number"] = "Please enter a valid 10-12 digit numeric phone number."
     }
     if (pronoun == "") {
         errors["pronoun"] = "Pronoun is required."
@@ -285,98 +297,99 @@ function request_a_ride() {
         }
         submit_form(form_id, data);
     }
-}
 
-/*------------------------------------------------------------------------------
-Form Utils
-------------------------------------------------------------------------------*/
 
-function submit_form(form_id, data) {
-    // var test = '6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR';
-    grecaptcha.ready(function() {
-        console.log("FORM_ID: " + form_id);
-        grecaptcha.execute(
-            '6LeoZbYUAAAAAP3yjdxMcf4uLfxFDiE_razm0koU',
-            {action: form_id})
-        .then(function(token) {
-            console.log("DATA: ");
-            console.log(data);
-            console.log("TOKEN RECIEVED: " + token);
-            data['_grecaptcha_token'] = token;
-            $.ajax({
-                "url": "/",
-                "data": data,
-                "type": "POST",
-                "statusCode": {
-                    200: function(resp) {
-                        console.log("200");
-                        console.log(resp);
-                        clear_form_messages(form_id);
-                        form_success([resp], form_id);
-                        $("#" + form_id + " button").attr("onclick", "").unbind("click");
-                    },
-                    302: function(resp) {
-                        console.log("302");
-                        console.log(resp.responseText);
-                        window.location.href = resp.responseText;
-                    },
-                    500: function(err) {
-                        console.log("500");
-                        console.error(err);
-                        form_error(["There was an unknown error."], form_id);
-                    },
-                    503: function(err) {
-                        console.log("503");
-                        console.error(err);
-                        form_error([
-                            "This service is temporarily down at this time."
-                        ], form_id);
-                    },
-                    400: function(err) {
-                        console.log("400");
-                        console.log(err.responseText);
-                        form_error([err.responseText], form_id);
-                    },
-                    403: function(err) {
-                        console.log("403");
-                        console.error(err);
-                        form_error([err.responseText], form_id);
-                    },
-                    404: function(err) {
-                        console.log("404");
-                        console.error(err);
-                        form_error([
-                            "This service is temporarily down at this time."
-                        ], form_id);
-                    },
-                }
-            })
+    /*------------------------------------------------------------------------------
+    Form Utils
+    ------------------------------------------------------------------------------*/
+
+    function submit_form(form_id, data) {
+        // var test = '6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR';
+        grecaptcha.ready(function () {
+            console.log("FORM_ID: " + form_id);
+            grecaptcha.execute(
+                '6LeoZbYUAAAAAP3yjdxMcf4uLfxFDiE_razm0koU',
+                { action: form_id })
+                .then(function (token) {
+                    console.log("DATA: ");
+                    console.log(data);
+                    console.log("TOKEN RECIEVED: " + token);
+                    data['_grecaptcha_token'] = token;
+                    $.ajax({
+                        "url": "/",
+                        "data": data,
+                        "type": "POST",
+                        "statusCode": {
+                            200: function (resp) {
+                                console.log("200");
+                                console.log(resp);
+                                clear_form_messages(form_id);
+                                form_success([resp], form_id);
+                                $("#" + form_id + " button").attr("onclick", "").unbind("click");
+                            },
+                            302: function (resp) {
+                                console.log("302");
+                                console.log(resp.responseText);
+                                window.location.href = resp.responseText;
+                            },
+                            500: function (err) {
+                                console.log("500");
+                                console.error(err);
+                                form_error(["There was an unknown error."], form_id);
+                            },
+                            503: function (err) {
+                                console.log("503");
+                                console.error(err);
+                                form_error([
+                                    "This service is temporarily down at this time."
+                                ], form_id);
+                            },
+                            400: function (err) {
+                                console.log("400");
+                                console.log(err.responseText);
+                                form_error([err.responseText], form_id);
+                            },
+                            403: function (err) {
+                                console.log("403");
+                                console.error(err);
+                                form_error([err.responseText], form_id);
+                            },
+                            404: function (err) {
+                                console.log("404");
+                                console.error(err);
+                                form_error([
+                                    "This service is temporarily down at this time."
+                                ], form_id);
+                            },
+                        }
+                    })
+                });
         });
-    });
-}
-
-function clear_form_messages(form_id) {
-    $("#" + form_id).find("*").removeClass("input_error");
-    $("#" + form_id + " .form_error").addClass("hidden");
-    $("#" + form_id + " .form_error").html("");
-    $("#" + form_id + " .form_success").addClass("hidden");
-    $("#" + form_id + " .form_success").html("");
-}
-
-function form_error(errors, form_id) {
-    clear_form_messages(form_id);
-    ids = Object.keys(errors);
-    messages = Object.values(errors);
-    $("#" + form_id + " .form_error").html(messages.join("<br>"));
-    $("#" + form_id + " .form_error").removeClass("hidden");
-    for (i = 0; i < ids.length; i++) {
-        id = ids[i];
-        $("#" + form_id + " #" + id).addClass("input_error");
     }
-}
 
-function form_success(message, form_id) {
-    clear_form_messages(form_id);
-    $("#" + form_id + " .form_success").html(message);
-    $("#" + form_id + " .form_success").removeClass("hidden");
+    function clear_form_messages(form_id) {
+        $("#" + form_id).find("*").removeClass("input_error");
+        $("#" + form_id + " .form_error").addClass("hidden");
+        $("#" + form_id + " .form_error").html("");
+        $("#" + form_id + " .form_success").addClass("hidden");
+        $("#" + form_id + " .form_success").html("");
+    }
+
+    function form_error(errors, form_id) {
+        clear_form_messages(form_id);
+        ids = Object.keys(errors);
+        messages = Object.values(errors);
+        $("#" + form_id + " .form_error").html(messages.join("<br>"));
+        $("#" + form_id + " .form_error").removeClass("hidden");
+        for (i = 0; i < ids.length; i++) {
+            id = ids[i];
+            $("#" + form_id + " #" + id).addClass("input_error");
+        }
+    }
+
+    function form_success(message, form_id) {
+        clear_form_messages(form_id);
+        $("#" + form_id + " .form_success").html(message);
+        $("#" + form_id + " .form_success").removeClass("hidden");
+    }
 }
