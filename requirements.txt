@@ -8,3 +8,4 @@ pyyaml
 django-cors-headers
 googlemaps
 twilio
+regex

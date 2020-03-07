@@ -27,7 +27,7 @@ def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    num=['+14155745023','+15404540846', '+16464138190', '+14158672671', '+7203643760']
+    num=['+14155745023','+15404540846', '+16464138190', '+14158672671', '+17203643760']
     for i in range(0,len(num)):
         message = client.messages.create(
         num[i],
@@ -133,15 +133,15 @@ def index(request):
                 num_bags=data.get("num_bags"),
                 passenger_count=data.get("passenger_count"),
             )
-            return HttpResponse("GOT REQUEST RIDE", status=200)
+            return HttpResponse("Ride Request Received! Please check your phone for an SMS confirmation.", status=200)
         if command == "driver_signup":
             OldDriverSignup.objects.create(
                 comments=data.get("comments"),
                 first_name=data.get("first_name"),
                 last_name=data.get("last_name"),
+                pronoun=data.get("pronoun"),
                 contact_email=data.get("contact_email"),
                 contact_phone=data.get("contact_phone"),
-                pronoun=data.get("pronoun"),
                 smartphone_type=data.get("smartphone_type"),
                 vehicle_doors=data.get("vehicle_doors"),
                 vehicle_make=data.get("vehicle_make"),
@@ -334,7 +334,7 @@ def set_location(request):
             app_user=app_user,
         )
         if ride_request is not None:
-            print("GOT RIDE REQUEST")
+            print("RIDE REQUEST RECEIVED")
         else:
             print("NO RIDE REQUEST")
     except Exception as ex:

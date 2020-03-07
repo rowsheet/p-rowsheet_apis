@@ -2,6 +2,7 @@ import enum
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 import rowsheet.utils as rs_utils
 
@@ -217,9 +218,12 @@ class OldDriverSignup(models.Model):
     last_name = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
     contact_email = models.CharField(
-        max_length=255, unique=False, null=True, blank=True, default=None)
+        max_length=10, unique=False, null=True, blank=True, default=None)
+    # phone_regex = RegexValidator(regex=r'^([1-9])+?1?\d{10,12}$', 
+    #     message="Please enter a valid 10-12 digit phone number.")
     contact_phone = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
+        # validators=[phone_regex],max_length=255, unique=False, null=True, blank=True, default=None)
     pronoun = models.CharField(
         max_length=255, unique=False, null=True, blank=True, default=None)
     smartphone_type = models.CharField(
