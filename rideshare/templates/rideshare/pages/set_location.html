@@ -91,6 +91,9 @@
             <input id="end_lng"
                    name="end_lng">
             -->
+            <input type="number"
+                id="timezone_offset"
+                name="timezone_offset">
             <button id="submit_ride_request_form" type="submit" class="btn btn-primary"
                 style="display: none;">
                 geolocate
@@ -116,6 +119,19 @@
 
     <script>
 function preload_place_info() {
+
+    /*
+    1) Set the timezone offset since the default "now" value needs to
+    be adjusted to a UTC/GMT backend timestamp.
+    2) On click, use AJAX to geocode the address fields to get info
+    such as the google maps place_id and lat/lng.
+    */
+
+    // 1)
+    var date = new Date();
+    var offset = date.getTimezoneOffset();
+    $("#timezone_offset").val(offset);
+    // 2)
     console.log("Preloading place info...");
     var start_address = $("#autocomplete_start").val();
     var end_address = $("#autocomplete_end").val();
@@ -268,11 +284,17 @@ window.addEventListener("load", function() {
     // "AM" and "PM" portions will automatically set.
 
     var date = new Date();
-    var currentTime = date.getHours() + ':' + date.getMinutes();
-    if (currentTime.length == 4) {
-        currentTime = "0" + currentTime;
+    var now_hours = date.getHours().toString();
+    var now_minutes = date.getMinutes().toString();
+    if (now_hours.length == 1) {
+        now_hours = "0" + now_hours;
     }
+    if (now_minutes.length == 1) {
+        now_minutes = "0" + now_minutes;
+    }
+    var currentTime = now_hours + ':' + now_minutes;
     var pickup_time = $("#pickup_time").val();
+    alert(currentTime);
     if (pickup_time == "") {
         // @TODO adjust for time zone.
         document.getElementById('pickup_time').value = currentTime;

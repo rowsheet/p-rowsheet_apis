@@ -18,6 +18,7 @@ import requests
 import json
 
 import googlemaps
+from datetime import datetime
 
 
 ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
@@ -458,11 +459,12 @@ def set_location(request):
             end_place_id = request.POST.get("end_place_id")
             end_lat = request.POST.get("end_lat")
             end_lng = request.POST.get("end_lng")
-            # We need the pickup_timestamp, but from the form, we
+            # We need the "pickup_timestamp", but from the form, we
             # can only have the pickup_date and pickup_time, so we
             # have to extrapolate from that.
             pickup_time = request.POST.get("pickup_time")
             pickup_date = request.POST.get("pickup_date")
+            timezone_offset = request.POST.get("timezone_offset")
             if start_address == "":
                 error = "Invalid start address."
             if start_place_id == "":
@@ -483,9 +485,21 @@ def set_location(request):
                 error = "Invalid pickup date."
             if pickup_time == "":
                 error = "Invalid pickup time."
-            print("FORM SUBMIT DEBUG")
-            print(pickup_date)
-            print(pickup_time)
+            if timezone_offset == "":
+                error = "Invalid timezone offset."
+
+            # Convert the pickup_date and pickup_time to a UTC
+            # timestamp for the RideRequest model.
+            timestamp_string = str(pickup_date) + " " + str(pickup_time)
+            timestamp_string_epoch = datetime.strptime(timestamp_string, "%Y-%m-%d %H:%M").timestamp()
+            # Note: the "pickup_timestamp" is adjusted from the user's
+            # timezone to a UTC/GMT timestamp epoch.
+            pickup_timestamp = int(timestamp_string_epoch) + int(timezone_offset) # <!-- this is what we need.
+            print("pickup_timestamp (raw datetime string): " + timestamp_string)
+            print("pickup_timestamp (raw epoch):           " + str(timestamp_string_epoch))
+            print("pickup_timestamp (adjusted epoch):      " + str(pickup_timestamp))
+            # @TODO persist model
+
             # If POST and no errors, redirect to main_screen (map).
             if error == "":
                 return redirect("/main_screen")
