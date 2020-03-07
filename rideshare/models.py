@@ -103,11 +103,6 @@ class RideRequest(models.Model):
     class Meta:
         verbose_name= 'Rider Request (development)'
         verbose_name_plural= 'Rider Requests (development)'
-    start_name = models.CharField(
-        unique=True,
-        max_length=64,
-        null=False, blank=False, default=None,
-    )
     start_address = models.CharField(
         unique=True,
         max_length=128,
@@ -118,25 +113,12 @@ class RideRequest(models.Model):
         max_length=256,
         null=False, blank=False, default=None,
     )
-    end_name = models.CharField(
-        unique=True,
-        max_length=64,
-        null=False, blank=False, default=None,
-    )
     end_address = models.CharField(
         unique=True,
         max_length=128,
         null=False, blank=False, default=None,
     )
     end_place_id = models.CharField(
-        unique=True,
-        max_length=256,
-        null=False, blank=False, default=None,
-    )
-    ride_utc = models.IntegerField(
-        null=False, blank=False, default=None,
-    )
-    csrf_token = models.CharField(
         unique=True,
         max_length=256,
         null=False, blank=False, default=None,
@@ -167,6 +149,9 @@ class RideRequest(models.Model):
     status = models.CharField(
         max_length=32,
         choices=STATUS,
+        null=True, blank=True, default=None,
+    )
+    pickup_timestamp = models.DateTimeField(
         null=True, blank=True, default=None,
     )
 

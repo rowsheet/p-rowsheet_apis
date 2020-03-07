@@ -64,17 +64,14 @@ admin.site.register(AppUser, AppUserAdmin)
 
 class RideRequestAdmin(admin.ModelAdmin):
     fields = (
-        "start_name",
         "start_address",
         "start_place_id",
-        "end_name",
         "end_address",
         "end_place_id",
-        "ride_utc",
-        "csrf_token",
         "app_user",
         "creation_timestamp",
         "status",
+        "pickup_timestamp",
     )
     list_display = fields
     search_fields = fields

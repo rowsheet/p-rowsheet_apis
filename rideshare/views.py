@@ -424,7 +424,7 @@ def set_location(request):
     end_place_id = ""
     end_lat = ""
     end_lng = ""
-    ride_utc = "" # @ToDo Make timestamp field in model.
+    pickup_timestamp = ""
     try:
         ride_request = RideRequest.objects.get(
             app_user=app_user,
@@ -438,6 +438,7 @@ def set_location(request):
 
     error = ""
 
+    print("GOT REQUEST")
     if request.method == "POST":
         print("GOT POST")
         if not request.POST:
@@ -457,6 +458,11 @@ def set_location(request):
             end_place_id = request.POST.get("end_place_id")
             end_lat = request.POST.get("end_lat")
             end_lng = request.POST.get("end_lng")
+            # We need the pickup_timestamp, but from the form, we
+            # can only have the pickup_date and pickup_time, so we
+            # have to extrapolate from that.
+            pickup_time = request.POST.get("pickup_time")
+            pickup_date = request.POST.get("pickup_date")
             if start_address == "":
                 error = "Invalid start address."
             if start_place_id == "":
@@ -473,6 +479,13 @@ def set_location(request):
                 error = "Invalid end address."
             if end_lng == "":
                 error = "Invalid end address."
+            if pickup_date == "":
+                error = "Invalid pickup date."
+            if pickup_time == "":
+                error = "Invalid pickup time."
+            print("FORM SUBMIT DEBUG")
+            print(pickup_date)
+            print(pickup_time)
             # If POST and no errors, redirect to main_screen (map).
             if error == "":
                 return redirect("/main_screen")
@@ -487,7 +500,7 @@ def set_location(request):
         "ride_request": ride_request,
         "start_address": start_address,
         "end_address": end_address,
-        "ride_utc": ride_utc,
+        "pickup_timestamp": pickup_timestamp,
     }
     return render(request, "rideshare/pages/set_location.html", context)
 
