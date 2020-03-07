@@ -31,14 +31,14 @@
                        type="text"/>
             </div>
             <br>
+            <!--
             <input id="start_place_id"
                    name="start_place_id">
             <input id="start_lat"
                    name="start_lat">
             <input id="start_lng"
                    name="start_lng">
-            <br>
-            <br>
+            -->
             <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -53,7 +53,7 @@
                        name="end_address"
                        type="text"/>
             </div>
-            <br>
+            <!--
             <input id="end_place_id"
                    name="end_place_id"
                    value="{{ end_place_id }}">
@@ -64,6 +64,7 @@
             <button id="submit_ride_request_form" type="submit" class="btn btn-primary">
                 geolocate
             </button>
+            -->
             <div id="error_msg" class="
                     {% if error|length > 0 %}
                     {% else %}
@@ -203,6 +204,18 @@ function geolocate(id) {
         });
     }
 }
+
+window.addEventListener("load", function() {
+    var start_address = getCookie("start_address");
+    var end_address = getCookie("end_address");
+    if (start_address != null) {
+        $("#autocomplete_start").val(start_address);
+    }
+    if (end_address != null) {
+        $("#autocomplete_end").val(end_address);
+    }
+});
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
