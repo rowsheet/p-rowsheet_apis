@@ -247,7 +247,7 @@ function request_a_ride() {
     }
  
     function validate_phone(number) {
-        var phone_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var phone_pattern = /^((\(\d{3}\)?)|(\d{3}))([\s-./]?)(\d{3})([\s-./]?)(\d{4})$/;
         return phone_pattern.test(number);
     }
     if (phone_number == "") {
