@@ -271,6 +271,9 @@ function request_a_ride() {
     if (num_bags == "") {
         errors["num_bags"] = "Number of bags is required."
     }
+    if (num_bags > (passenger_count*2)) {
+        errors["num_bags"] = "Number of bags exceeds limit of 2 bags per rider."
+    }
     if (special_req == "") {
         special_req = "None"
     }
