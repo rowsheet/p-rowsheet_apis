@@ -32,7 +32,8 @@ def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
+    # num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
+    num=['+15404540846', '+17203643760'] #DEV ONLY
     for i in range(0,len(num)):
         message = client.messages.create(
         num[i],
@@ -47,6 +48,15 @@ def send_confirmation_text_message(body, to):
         to=to,
         from_="+14159939395",
         body=body)
+
+# def send_phone_verification_text(body, to):
+#     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
+#     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+#     client = Client(account_sid, auth_token)
+#     message = client.messages.create(
+#         to=to,
+#         from_="+14159939395",
+#         body=body)
 
 """-----------------------------------------------------------------------------
 "SITE" (Old Site Pages)
@@ -136,13 +146,14 @@ def index(request):
         if command == "request_a_ride":
             try:
                 send_text_message("""
-Ride requested from: %s on %s at %s.
+New request!
 
-Pick up rider at %s.
-Drop off rider at %s.
-Contact phone: %s.
+Date: %s
+Time (0-23hrs): %s
+Pick up: %s
+Drop off: %s
+Phone: %s
 """ % (
-                str(data.get("name")),
                 str(data.get("pickup_date")),
                 str(data.get("pickup_time")),
                 str(data.get("start_location")),
@@ -153,8 +164,15 @@ Contact phone: %s.
                 print(str(ex))
 
             try:
-                send_confirmation_text_message(
-                "Your ride request has been received! We will text to confirm your ride on " + data.get("pickup_date") + " at " + data.get("pickup_time") + " from " + data.get("start_location") + " to " + data.get("end_location") + ".\n\nContact us at 14155745023 for assistance.", "+1" + str(data.get("phone_number")))
+                send_confirmation_text_message("We have received your request for a ride to %s from %s on %s at %s. Please contact us at 14155745023 for assistance." % (
+                    str(data.get("end_location")),
+                    str(data.get("start_location")),
+                    str(data.get("pickup_date")),
+                    str(data.get("pickup_time")),
+                 )              
+                 ,
+                 ("+1" + str(data.get("phone_number")
+                )))
             except Exception as ex:
                 print(str(ex))
 
@@ -170,7 +188,7 @@ Contact phone: %s.
                 num_bags=data.get("num_bags"),
                 passenger_count=data.get("passenger_count"),
             )
-            return HttpResponse("Ride Request Received! Please check your phone for an SMS confirmation.", status=200)
+            return HttpResponse("Request Received! Please check your phone for an SMS confirmation.", status=200)
         if command == "driver_signup":
             OldDriverSignup.objects.create(
                 comments=data.get("comments"),
@@ -839,7 +857,13 @@ def phone_number(request):
                 app_user.phone_verified = False
                 app_user.phone_number = phone_number
                 app_user.phone_verification_code = rs_utils.random_phone_code()
+                # print("verification code assigned")
                 # @TODO Twillio send this code to the phone number.
+                # body = "example"
+                # to = "+15404540846"
+
+                # send_phone_verification_text(body, to)
+
                 app_user.save()
                 info = "Please enter the code we sent you to verify your new number."
                 return redirect(request.path)

@@ -245,20 +245,16 @@ function request_a_ride() {
     if (pickup_date == "") {
         errors["pickup_date"] = "Pickup date is required."
     }
-    function validate(phone_number) {
-        const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        console.log(regex.test(phone_number))
-        errors = {};
+ 
+    function validate_phone(number) {
+        var phone_pattern = /^((\(\d{3}\)?)|(\d{3}))([\s-./]?)(\d{3})([\s-./]?)(\d{4})$/;
+        return phone_pattern.test(number);
     }
-
-    // validate('1234567890')     // true
-    // validate(1234567890)       // true
-    // validate('(078)789-8908')  // true
-    // validate('123-345-3456')   // true
-    
-    if (validate(phone_number) == false) {
-        console.log("+" + phone_number + "is not a valid phone number")
-        errors["phone_number"] = "Please enter a valid 10-12 digit numeric phone number."
+    if (phone_number == "") {
+        errors["phone_number"] = "Phone number is required."
+    }
+    if (validate_phone(phone_number) == false) {
+        errors["phone_number"] = "Please enter a valid 10 digit phone number."
     }
     if (pronoun == "") {
         errors["pronoun"] = "Pronoun is required."
@@ -274,6 +270,9 @@ function request_a_ride() {
     }
     if (num_bags == "") {
         errors["num_bags"] = "Number of bags is required."
+    }
+    if (num_bags > (passenger_count*2)) {
+        errors["num_bags"] = "Number of bags exceeds limit of 2 bags per rider."
     }
     if (special_req == "") {
         special_req = "None"
