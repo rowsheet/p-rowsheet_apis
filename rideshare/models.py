@@ -113,22 +113,22 @@ class RideRequest(models.Model):
         verbose_name_plural = 'Rider Requests (development)'
         unique_together = ("app_user", "in_setup")
     start_address = models.CharField(
-        unique=True,
+        unique=False,
         max_length=128,
         null=False, blank=False, default=None,
     )
     start_place_id = models.CharField(
-        unique=True,
+        unique=False,
         max_length=256,
         null=False, blank=False, default=None,
     )
     end_address = models.CharField(
-        unique=True,
+        unique=False,
         max_length=128,
         null=False, blank=False, default=None,
     )
     end_place_id = models.CharField(
-        unique=True,
+        unique=False,
         max_length=256,
         null=False, blank=False, default=None,
     )

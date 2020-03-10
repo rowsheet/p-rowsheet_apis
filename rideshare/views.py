@@ -578,7 +578,7 @@ def set_location(request):
                     end_address=end_address,
                     end_place_id=end_place_id,
                     app_user=app_user,
-                    status="PENDING_CONFIRM",
+                    status="REQ_1",
                     pickup_timestamp=str(django_pickup_timestamp),
                     in_setup=True,
                 )
