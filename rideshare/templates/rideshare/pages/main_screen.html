@@ -21,56 +21,53 @@
     </div>
     <a href="/set_location/">
         <div id="ride_form" class="border-top bg-light">
-            <div class="input-group">
+            <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
                         start
                     </div>
                 </div>
                 <input id="main_screen_start_address"
-                    type="text" class="form-control"
-                    placeholder="Start Address">
+                       type="text" class="form-control"
+                       placeholder="Start Address">
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group input-group-sm mt-2">
                 <div class="input-group-prepend">
-                    <div class="input-group-text" style="width: 60px;">
+                    <div class="input-group-text">
                         end
                     </div>
                 </div>
                 <input id="main_screen_end_address"
-                    type="text" class="form-control"
-                    placeholder="Destination Address">
+                       type="text" class="form-control"
+                       placeholder="Destination Address">
             </div>
-            <div class="row mt-2">
-                <div class="col-md-6 pr-0">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 60px;">
-                                <i class="material-icons">
-                                    calendar_today
-                                </i>
-                            </div>
-                        </div>
-                        <input type="date" class="form-control"
-                               id="pickup_date"
-                               name="pickup_date">
+            <div class="input-group input-group-sm mt-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            calendar_today
+                        </i>
                     </div>
                 </div>
-                <div class="col-md-6 pl-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text" style="width: 60px;">
-                                <i class="material-icons">
-                                    access_time
-                                </i>
-                            </div>
-                        </div>
-                        <input type="time" class="form-control"
-                               id="pickup_time"
-                               name="pickup_time">
+                <input id="pickup_date"
+                       type="text" class="form-control"
+                       name="pickup_date">
+            </div>
+            <div class="input-group input-group-sm mt-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            access_time
+                        </i>
                     </div>
                 </div>
+                <input id="pickup_time"
+                       type="text" class="form-control form-control-sm"
+                       name="pickup_time">
             </div>
+            <button class="btn btn-primary btn-sm text-center mt-2 w-100">
+                Confirm
+            </button>
         </div>
     </a>
 </div>
@@ -78,7 +75,7 @@
 #map {
     position: absolute;
     overflow: hidden;
-    height: calc(100vh - 151px);
+    height: calc(100vh - 208px);
     width: 100%;
     top: 0px;
     z-index: 0;

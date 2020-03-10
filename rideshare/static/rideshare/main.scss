@@ -1,3 +1,17 @@
+.input-group-sm .input-group-text {
+    width: 49px !important;
+    text-align: center !important;
+}
+
+.input-group-sm i {
+    font-size: 19px;
+    width: 100%;
+}
+
+.material-icons {
+    vertical-align:middle;
+}
+
 .hidden {
     display: none;
 }
@@ -40,4 +54,11 @@
 
 .uk-offcanvas-bar {
     border: none !important;
+}
+
+#main_content {
+    max-width: 500px;
+    height: 100vh;
+    position: relative;
+    margin: auto;
 }

@@ -1,7 +1,7 @@
 {% extends "rideshare/layout.html" %}
 
 {% block content %}
-<div id="page_set_location">
+<div id="page_set_location" class="p-2" class="p-2">
     <a href="/main_screen">
         <button class="btn btn-light btn-round">
             <i class="fas fa-chevron-left"></i>
@@ -16,7 +16,7 @@
 
         <form action="/set_location/" method="post">
             {% csrf_token %}
-            <div class="input-group">
+            <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
                         start
@@ -38,7 +38,7 @@
                 <input id="start_lng"
                        name="start_lng">
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group input-group-sm mt-2">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
                         end
@@ -52,35 +52,29 @@
                        name="end_address"
                        type="text"/>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-6 pr-0">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="material-icons">
-                                    calendar_today
-                                </i>
-                            </div>
-                        </div>
-                        <input type="date" class="form-control"
-                               id="pickup_date"
-                               name="pickup_date">
+            <div class="input-group input-group-sm mt-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            calendar_today
+                        </i>
                     </div>
                 </div>
-                <div class="col-md-6 pl-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="material-icons">
-                                    access_time
-                                </i>
-                            </div>
-                        </div>
-                        <input type="time" class="form-control"
-                               id="pickup_time"
-                               name="pickup_time">
+                <input type="date" class="form-control"
+                       id="pickup_date"
+                       name="pickup_date">
+            </div>
+            <div class="input-group input-group-sm mt-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="material-icons">
+                            access_time
+                        </i>
                     </div>
                 </div>
+                <input type="time" class="form-control"
+                       id="pickup_time"
+                       name="pickup_time">
             </div>
             <div style="display: none;">
                 <input id="end_place_id"
