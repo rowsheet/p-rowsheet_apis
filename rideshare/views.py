@@ -32,8 +32,8 @@ def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
-    # num=['+15404540846', '+17203643760'] #DEV ONLY
+    # num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
+    num=['+15404540846', '+17203643760'] #DEV ONLY
     for i in range(0,len(num)):
         message = client.messages.create(
         num[i],
@@ -146,13 +146,14 @@ def index(request):
         if command == "request_a_ride":
             try:
                 send_text_message("""
-Ride requested from: %s on %s at %s.
+New request!
 
-Pick up rider at: %s.
-Drop off rider at: %s.
-Contact phone: %s.
+Date: %s
+Time (0-23hrs): %s
+Pick up: %s
+Drop off: %s
+Phone: %s
 """ % (
-                str(data.get("name")),
                 str(data.get("pickup_date")),
                 str(data.get("pickup_time")),
                 str(data.get("start_location")),
@@ -163,16 +164,11 @@ Contact phone: %s.
                 print(str(ex))
 
             try:
-                send_confirmation_text_message("""
-Your ride request has been received! We will text to confirm your ride on %s
-at %s from %s to %s.
-
-Please contact us at 14155745023 for assistance."
-""" % (
+                send_confirmation_text_message("We have received your request for a ride to %s from %s on %s at %s. Please contact us at 14155745023 for assistance." % (
+                    str(data.get("end_location")),
+                    str(data.get("start_location")),
                     str(data.get("pickup_date")),
                     str(data.get("pickup_time")),
-                    str(data.get("start_location")),
-                    str(data.get("end_location")),
                  )              
                  ,
                  ("+1" + str(data.get("phone_number")
@@ -192,7 +188,7 @@ Please contact us at 14155745023 for assistance."
                 num_bags=data.get("num_bags"),
                 passenger_count=data.get("passenger_count"),
             )
-            return HttpResponse("Ride Request Received! Please check your phone for an SMS confirmation.", status=200)
+            return HttpResponse("Request Received! Please check your phone for an SMS confirmation.", status=200)
         if command == "driver_signup":
             OldDriverSignup.objects.create(
                 comments=data.get("comments"),
