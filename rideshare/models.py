@@ -96,8 +96,15 @@ class AppUser(models.Model):
         default=False,
         null=False, blank=False,
     )
+
     def get_accommodations(self):
         return ",".join([str(acc) for acc in self.accommodations.all()])
+
+    def __str__(self):
+        return "%s (%s) " % (
+                str(self.django_account),
+                str(self.username),
+        )
 
 
 class RideRequest(models.Model):
@@ -138,6 +145,10 @@ class RideRequest(models.Model):
     creation_timestamp = models.DateTimeField(
         auto_now=True,
     )
+
+    """
+    Ride Request Status
+    """
     PENDING_CONFIRM = "PENDING_CONFIRM"
     PENDING_DRIVER = "PENDING_DRIVER"
     PENDING_PICKUP = "PENDING_PICKUP"
@@ -157,9 +168,55 @@ class RideRequest(models.Model):
         choices=STATUS,
         null=True, blank=True, default=None,
     )
+
+    """
+    Driver Status
+    """
+    RS_1_D = "RS_1_D"
+    RS_2_D = "RS_2_D"
+    RS_3_D = "RS_3_D"
+    RS_8_D = "RS_8_D"
+    RS_9_D = "RS_9_D"
+    RS_10_D = "RS_10_D"
+    DRIVER_STATUS = (
+        (RS_1_D, "RS_1_D"),
+        (RS_2_D, "RS_2_D"),
+        (RS_3_D, "RS_3_D"),
+        (RS_8_D, "RS_8_D"),
+        (RS_9_D, "RS_9_D"),
+        (RS_10_D, "RS_10_D"),
+    )
+    driver_status = models.CharField(
+        max_length=32,
+        choices=DRIVER_STATUS,
+        null=True, blank=True, default=None,
+    )
+
+    """
+    Passenger Status
+    """
+    RS_1_P = "RS_1_P"
+    RS_4_P = "RS_4_P"
+    RS_5_P = "RS_5_P"
+    RS_7_P = "RS_7_P"
+    RS_10_P = "RS_10_P"
+    PASSENGER_STATUS = (
+        (RS_1_P, "RS_1_P"),
+        (RS_4_P, "RS_4_P"),
+        (RS_5_P, "RS_5_P"),
+        (RS_7_P, "RS_7_P"),
+        (RS_10_P, "RS_10_P"),
+    )
+    passenger_status = models.CharField(
+        max_length=32,
+        choices=PASSENGER_STATUS,
+        null=True, blank=True, default=None,
+    )
+
     pickup_timestamp = models.DateTimeField(
         null=True, blank=True, default=None,
     )
+
     # When we load the "set_location" page for a ride request, the user may
     # have other ride requests waiting to be assigned, completed, etc. If
     # the user want's to set up another ride, we should only pre-fetch the

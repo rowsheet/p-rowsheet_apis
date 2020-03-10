@@ -71,6 +71,8 @@ class RideRequestAdmin(admin.ModelAdmin):
         "app_user",
         "creation_timestamp",
         "status",
+        "driver_status",
+        "passenger_status",
         "pickup_timestamp",
         "in_setup",
     )

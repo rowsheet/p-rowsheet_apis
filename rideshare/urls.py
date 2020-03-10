@@ -24,6 +24,9 @@ else:
         path("", views.get_started),
         path("phone_verification/", views.phone_verification),
         path("code_verification/", views.code_verification),
+        #-----------------------------------------------------------------------
+        #   PASSENGER
+        #-----------------------------------------------------------------------
         # Main pages.
         path("main_screen/", views.main_screen),
         path("set_location/", views.set_location),
@@ -55,6 +58,13 @@ else:
         path("saftey/", views.saftey),
         path("policies/", views.policies),
         path("legal/", views.legal),
+        #-----------------------------------------------------------------------
+        #   DRIVER
+        #-----------------------------------------------------------------------
+        path("driver/past_rides", views.driver_past_rides),
+        path("driver/upcoming_rides", views.driver_upcoming_rides),
+        path("driver/available_rides", views.driver_available_rides),
+        path("driver/notifications", views.driver_notifications),
         #-----------TEMP-----------
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),
