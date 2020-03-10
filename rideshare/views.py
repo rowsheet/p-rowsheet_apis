@@ -49,6 +49,15 @@ def send_confirmation_text_message(body, to):
         from_="+14159939395",
         body=body)
 
+# def send_phone_verification_text(body, to):
+#     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
+#     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+#     client = Client(account_sid, auth_token)
+#     message = client.messages.create(
+#         to=to,
+#         from_="+14159939395",
+#         body=body)
+
 """-----------------------------------------------------------------------------
 "SITE" (Old Site Pages)
 -----------------------------------------------------------------------------"""
@@ -852,7 +861,13 @@ def phone_number(request):
                 app_user.phone_verified = False
                 app_user.phone_number = phone_number
                 app_user.phone_verification_code = rs_utils.random_phone_code()
+                # print("verification code assigned")
                 # @TODO Twillio send this code to the phone number.
+                # body = "example"
+                # to = "+15404540846"
+
+                # send_phone_verification_text(body, to)
+
                 app_user.save()
                 info = "Please enter the code we sent you to verify your new number."
                 return redirect(request.path)
