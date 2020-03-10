@@ -2,6 +2,7 @@ import os
 from django.urls import path
 from rideshare import views
 from django.conf import settings
+from django.urls import path, include
 
 if settings.DEPLOYMENT_MODE == "PRODUCTION":
     """
@@ -69,4 +70,5 @@ else:
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),
         path("geocode/", views.geocode),
+        path("api/", include("rideshare.api")),
     ]

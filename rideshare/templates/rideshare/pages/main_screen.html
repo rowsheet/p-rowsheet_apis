@@ -19,8 +19,8 @@
     <div id="map">
         Ride Map:
     </div>
-    <a href="/set_location/">
-        <div id="ride_form" class="border-top bg-light">
+    <div id="ride_form" class="border-top bg-light">
+        <a href="/set_location/">
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <input id="pickup_date"
-                       type="text" class="form-control"
+                       type="date" class="form-control"
                        name="pickup_date">
             </div>
             <div class="input-group input-group-sm mt-2">
@@ -62,14 +62,17 @@
                     </div>
                 </div>
                 <input id="pickup_time"
-                       type="text" class="form-control form-control-sm"
+                       type="time" class="form-control form-control-sm"
                        name="pickup_time">
             </div>
-            <button class="btn btn-primary btn-sm text-center mt-2 w-100">
-                Confirm
-            </button>
-        </div>
-    </a>
+        </a>
+        <button
+                id="ajax_confirm_ride_request"
+                class="btn btn-primary btn-sm text-center mt-2 w-100"
+                onclick="passenger_confirm_ride_request()">
+            Confirm
+        </button>
+    </div>
 </div>
 <style>
 #map {

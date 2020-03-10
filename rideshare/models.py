@@ -149,19 +149,19 @@ class RideRequest(models.Model):
     """
     Ride Request Status
     """
-    PENDING_CONFIRM = "PENDING_CONFIRM"
-    PENDING_DRIVER = "PENDING_DRIVER"
-    PENDING_PICKUP = "PENDING_PICKUP"
-    PENDING_DROPOFF = "PENDING_DROPOFF"
-    CANCELED = "CANCELED"
-    DONE = "DONE" # Note: Consider NULL => DONE
+    REQ_1 = "REQ_1"
+    REQ_2 = "REQ_2"
+    REQ_3 = "REQ_3"
+    REQ_4 = "REQ_4"
+    REQ_5 = "REQ_5"
+    REQ_X = "REQ_X"
     STATUS = (
-        (PENDING_CONFIRM, "PENDING_CONFIRM"),
-        (PENDING_DRIVER, "PENDING_DRIVER"),
-        (PENDING_PICKUP, "PENDING_PICKUP"),
-        (PENDING_DROPOFF, "PENDING_DROPOFF"),
-        (CANCELED, "CANCELED"),
-        (DONE, "DONE"), # Note: Consider NULL => DONE
+        (REQ_1, "REQ_1"),
+        (REQ_2, "REQ_2"),
+        (REQ_3, "REQ_3"),
+        (REQ_4, "REQ_4"),
+        (REQ_5, "REQ_5"),
+        (REQ_X, "REQ_X"),
     )
     status = models.CharField(
         max_length=32,
@@ -224,7 +224,7 @@ class RideRequest(models.Model):
     # we should toggle this off. Every app user should only be able to have one
     # ride request that is "in_setup", therefore the unique together constraint.
     in_setup = models.BooleanField(
-        null=False, blank=False, default=None,
+        null=True, blank=True, default=None,
     )
 
 

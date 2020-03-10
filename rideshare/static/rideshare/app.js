@@ -32,3 +32,29 @@ function clearDriverRideRequestCookies() {
     deleteCookie("pickup_time");
     deleteCookie("pickup_date");
 }
+
+function passenger_confirm_ride_request() {
+    console.log("passenger_confirm_ride_request")
+    $.ajax({
+        method: "post",
+        url: "/api/passenger_confirm_ride_request/",
+        statusCode: {
+            302: function(resp) {
+                console.log("302");
+                window.location = resp.responseJSON.location;
+            },
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(status);
+            console.log(resp.msg);
+            $("#ajax_confirm_ride_request").removeClass("btn-primary");
+            $("#ajax_confirm_ride_request").addClass("btn-success");
+            $("#ajax_confirm_ride_request").html(resp.msg);
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+        },
+    });
+}
