@@ -9,3 +9,4 @@ django-cors-headers
 googlemaps
 twilio
 regex
+stripe

@@ -153,6 +153,7 @@ function initMap() {
     var directionsRenderer = new google.maps.DirectionsRenderer({
         draggable: true,
         // map: map,
+        // directions: DirectionsResult,
         }
     );
     
@@ -210,9 +211,13 @@ function computeTotalDistance(result) {
         var total = 0;
         var time = 0;
         var myroute = result.routes[0];
+        var origin_address = "";
+        var destination_address = "";
         for (var i = 0; i < myroute.legs.length; i++) {
           total += myroute.legs[i].distance.value;
           time += myroute.legs[i].duration.value;
+          origin_address += myroute.legs[i].start_address;
+          destination_address += myroute.legs[i].end_address;
         }
         total = total / 1000;
         time_min = time / 60
@@ -222,6 +227,10 @@ function computeTotalDistance(result) {
         console.log('$'+total);
         document.getElementById('duration').innerHTML = round(time_min, 0) + ' min';
         console.log('$'+time_min);
+        document.getElementById('main_screen_start_address').innerHTML = origin_address;
+        console.log(origin_address);
+        document.getElementById('main_screen_end_address').innerHTML = destination_address;
+        console.log(destination_address);
       }
 
 /**
