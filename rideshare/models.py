@@ -301,10 +301,10 @@ class RideRequest(models.Model):
         return """
         <div class="alert alert-info">
             <p class="m-0">
-                <strong>Start:</strong> {start_address},
+                <strong>Start:</strong> {start_address}
             </p>
             <p class="m-0">
-                <strong>End:</strong> {end_address},
+                <strong>End:</strong> {end_address}
             </p>
         </div>
         """.format(
