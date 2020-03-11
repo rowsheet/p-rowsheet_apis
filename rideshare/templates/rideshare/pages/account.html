@@ -12,9 +12,9 @@
 }
 </style>
 <div id="page_account">
-    <button class="btn btn-light btn-round"
+    <button class="btn btn-round m-2"
             onclick="$('#main_sidebar_trigger').click()">
-        <i class="fas fa-chevron-left"></i>
+        <i class="fas fa-bars"></i>
     </button>
     <h3>
         Account
@@ -23,7 +23,7 @@
         </small>
     </h3>
     <hr>
-    <a href="{% if user_type == 'driver' %}/driver{% endif %}/profile">
+    <a href="/profile">
         <h4>
             <i class="fas fa-user-circle"></i>
             Profile
@@ -39,7 +39,7 @@
         </h4>
     </a>
     <hr>
-    <a href="{% if user_type == 'driver' %}/driver{% endif %}/email_address">
+    <a href="/email_address">
         <h4>
             <i class="fas fa-envelope"></i>
             E-mail
@@ -47,7 +47,7 @@
         </h4>
     </a>
     <hr>
-    <a href="{% if user_type == 'driver' %}/driver{% endif %}/phone_number">
+    <a href="/phone_number">
         <h4>
             <i class="fas fa-phone"></i>
             {{ phone_number }}
@@ -55,7 +55,7 @@
         </h4>
     </a>
     <hr>
-    <a href="{% if user_type == 'driver' %}/driver{% endif %}/services">
+    <a href="/services">
         <h4>
             <i class="fas fa-wheelchair"></i>
             Services
