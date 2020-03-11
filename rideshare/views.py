@@ -28,7 +28,7 @@ def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
     auth_token = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    if settings.DEPLOYMENT_MODE == "PRODUCTION":
+    if settings.DEPLOYMENT_MODE != "DEVELOPMENT":
         num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
     else:
         num = ['+15404540846', '+17203643760'];  # DEV ONLY
