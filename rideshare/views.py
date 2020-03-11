@@ -21,10 +21,6 @@ import googlemaps
 from datetime import datetime
 import time
 
-ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
-RECAPTCHA_SECRET = "6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR"
-RECAPTCHA_MIN_SCORE = "0.7"
-
 from twilio.rest import Client
 
 
