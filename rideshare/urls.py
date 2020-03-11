@@ -35,6 +35,7 @@ else:
         path("profile/", views.profile),
         # Sidebar pages
         path("past_rides/", views.past_rides),
+        path("upcoming_rides/", views.upcoming_rides),
         path("donation_station/", views.donation_station),
         path("settings/", views._settings),
         path("driver/", views.driver),

@@ -69,6 +69,7 @@ class RideRequestAdmin(admin.ModelAdmin):
         "end_address",
         "end_place_id",
         "app_user",
+        "app_user_driver",
         "creation_timestamp",
         "status",
         "driver_status",

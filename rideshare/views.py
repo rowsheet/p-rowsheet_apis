@@ -696,13 +696,33 @@ def past_rides(request):
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.passenger_past_rides(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
         # Page info.
+        "rides": rides,
     }
     return render(request, "rideshare/pages/past_rides.html", context)
+
+
+def upcoming_rides(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    rides = RideRequest.passenger_upcoming_rides(app_user)
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+        "rides": rides,
+    }
+    return render(request, "rideshare/pages/upcoming_rides.html", context)
 
 
 def donation_station(request):
@@ -1118,11 +1138,14 @@ def driver_past_rides(request):
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_past_rides(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
     }
     return render(request, "rideshare/pages/driver_past_rides.html", context)
 
@@ -1132,11 +1155,14 @@ def driver_upcoming_rides(request):
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_upcoming_rides(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
     }
     return render(request, "rideshare/pages/driver_upcoming_rides.html", context)
 
@@ -1146,11 +1172,14 @@ def driver_available_rides(request):
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_availible_rides(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
     }
     return render(request, "rideshare/pages/driver_available_rides.html", context)
 

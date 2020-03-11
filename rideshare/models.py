@@ -6,6 +6,8 @@ from django.core.validators import RegexValidator
 
 import rowsheet.utils as rs_utils
 
+from datetime import datetime
+
 
 class Pronoun(models.Model):
     class Meta:
@@ -142,6 +144,12 @@ class RideRequest(models.Model):
         # will be impossible until that batch is run.
         # unique=True,
     )
+    app_user_driver = models.ForeignKey(
+        AppUser,
+        on_delete=models.PROTECT,
+        null=True, blank=True, default=None,
+        related_name="app_user_driver",
+    )
     creation_timestamp = models.DateTimeField(
         auto_now=True,
     )
@@ -227,6 +235,54 @@ class RideRequest(models.Model):
         null=True, blank=True, default=None,
     )
 
+    @staticmethod
+    def all():
+        return RideRequest.objects.all()
+
+    def passenger_upcoming_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user=app_user,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def passenger_past_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user=app_user,
+            pickup_timestamp__lte=datetime.now(),
+        )
+
+    def driver_past_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=app_user,
+            pickup_timestamp__lte=datetime.now(),
+        )
+
+    def driver_upcoming_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=app_user,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def driver_availible_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=None,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def ride_summary(self):
+        return """
+        <div class="alert alert-info">
+            <p class="m-0">
+                <strong>Start:</strong> {start_address},
+            </p>
+            <p class="m-0">
+                <strong>End:</strong> {end_address},
+            </p>
+        </div>
+        """.format(
+            start_address=self.start_address,
+            end_address=self.end_address,
+        )
 
 class OldRideRequest(models.Model):
     class Meta:
