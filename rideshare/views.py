@@ -444,10 +444,13 @@ def main_screen(request):
         end_address = ride_request.end_address
         end_place_id = ride_request.end_place_id
 
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "in_setup": in_setup,
         "start_address": start_address,
@@ -601,12 +604,15 @@ def set_location(request):
             if error == "":
                 return redirect("/main_screen")
 
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Form info.
         "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "ride_request": ride_request,
         "start_address": start_address,
@@ -616,7 +622,7 @@ def set_location(request):
     return render(request, "rideshare/pages/set_location.html", context)
 
 
-def account(request):
+def account(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -624,14 +630,15 @@ def account(request):
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "phone_number": app_user.phone_number,
     }
     return render(request, "rideshare/pages/account.html", context)
 
 
-def profile(request):
+def profile(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -679,7 +686,8 @@ def profile(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # User info.
         "username": username,
         "pronoun": pronoun,
@@ -697,11 +705,13 @@ def past_rides(request):
         return user_redirect
 
     rides = RideRequest.passenger_past_rides(app_user)
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
 
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "rides": rides,
     }
@@ -714,11 +724,13 @@ def upcoming_rides(request):
         return user_redirect
 
     rides = RideRequest.passenger_upcoming_rides(app_user)
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
 
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "rides": rides,
     }
@@ -739,7 +751,7 @@ def donation_station(request):
     return render(request, "rideshare/pages/donation_station.html", context)
 
 
-def _settings(request):
+def _settings(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -747,13 +759,14 @@ def _settings(request):
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/settings.html", context)
 
 
-def about(request):
+def about(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -761,13 +774,14 @@ def about(request):
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/about.html", context)
 
 
-def help(request):
+def help(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -775,7 +789,8 @@ def help(request):
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/help.html", context)
@@ -795,7 +810,7 @@ def payment_methods(request):
     return render(request, "rideshare/pages/payment_methods.html", context)
 
 
-def email_address(request):
+def email_address(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -838,7 +853,8 @@ def email_address(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "email_address": email_address,
         "email_verified": email_verified,
@@ -846,7 +862,7 @@ def email_address(request):
     return render(request, "rideshare/pages/email_address.html", context)
 
 
-def phone_number(request):
+def phone_number(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -886,7 +902,8 @@ def phone_number(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "phone_number": phone_number,
         "phone_verified": phone_verified,
@@ -899,7 +916,7 @@ Settings pages.
 -----------------------------------------------------------------------------"""
 
 
-def services(request):
+def services(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -932,7 +949,8 @@ def services(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Paga info.
         "accommodations": accommodations,
         # Form info.
@@ -1139,6 +1157,7 @@ def driver_past_rides(request):
         return user_redirect
 
     rides = RideRequest.driver_past_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
 
     context = {
         # Sidebar info.
@@ -1146,6 +1165,7 @@ def driver_past_rides(request):
         "user_type": "driver",
         # Page info.
         "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_past_rides.html", context)
 
@@ -1156,6 +1176,7 @@ def driver_upcoming_rides(request):
         return user_redirect
 
     rides = RideRequest.driver_upcoming_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
 
     context = {
         # Sidebar info.
@@ -1163,6 +1184,7 @@ def driver_upcoming_rides(request):
         "user_type": "driver",
         # Page info.
         "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_upcoming_rides.html", context)
 
@@ -1173,6 +1195,7 @@ def driver_available_rides(request):
         return user_redirect
 
     rides = RideRequest.driver_availible_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
 
     context = {
         # Sidebar info.
@@ -1180,6 +1203,7 @@ def driver_available_rides(request):
         "user_type": "driver",
         # Page info.
         "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_available_rides.html", context)
 
@@ -1189,10 +1213,128 @@ def driver_notifications(request):
     if user_redirect is not None:
         return user_redirect
 
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_notifications.html", context)
+
+
+def driver_account(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return account(request, user_type="driver",
+                   sidebar_info=sidebar_info)
+
+
+def driver_settings(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return _settings(request, user_type="driver",
+                     sidebar_info = sidebar_info)
+
+
+def driver_about(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return about(request, user_type="driver",
+                 sidebar_info=sidebar_info)
+
+
+def driver_help(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return help(request, user_type="driver",
+                sidebar_info=sidebar_info)
+
+
+"""
+Driver /account/
+"""
+
+def driver_profile(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return profile(request, user_type="driver",
+                   sidebar_info=sidebar_info)
+
+
+def driver_payment_methods(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "driver",
+        # Page info.
+        "sidebar_info": sidebar_info,
+    }
+    return render(request, "rideshare/pages/driver_payment_methods.html", context)
+
+
+def driver_email_address(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return email_address(request, user_type="driver",
+                         sidebar_info = sidebar_info)
+
+def driver_phone_number(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return phone_number(request, user_type="driver",
+                        sidebar_info = sidebar_info)
+
+def driver_services(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return services(request, user_type="driver",
+                    sidebar_info = sidebar_info)

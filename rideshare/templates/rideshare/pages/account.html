@@ -23,7 +23,7 @@
         </small>
     </h3>
     <hr>
-    <a href="/profile">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/profile">
         <h4>
             <i class="fas fa-user-circle"></i>
             Profile
@@ -31,7 +31,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/payment_methods">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/payment_methods">
         <h4>
             <i class="fas fa-credit-card"></i>
             Payment Methods
@@ -39,7 +39,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/email_address">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/email_address">
         <h4>
             <i class="fas fa-envelope"></i>
             E-mail
@@ -47,7 +47,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/phone_number">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/phone_number">
         <h4>
             <i class="fas fa-phone"></i>
             {{ phone_number }}
@@ -55,7 +55,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/services">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/services">
         <h4>
             <i class="fas fa-wheelchair"></i>
             Services

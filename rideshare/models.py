@@ -269,6 +269,34 @@ class RideRequest(models.Model):
             pickup_timestamp__gte=datetime.now(),
         )
 
+    def driver_sidebar_info(app_user):
+        return {
+            "available_rides_count": RideRequest.objects.filter(
+                app_user_driver=None,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "upcoming_rides_count": RideRequest.objects.filter(
+                app_user_driver=app_user,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "past_rides_count": RideRequest.objects.filter(
+                app_user_driver=app_user,
+                pickup_timestamp__lte=datetime.now(),
+            ).count(),
+        }
+
+    def rider_sidebar_info(app_user):
+        return {
+            "upcoming_rides_count": RideRequest.objects.filter(
+                app_user=app_user,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "past_rides_count": RideRequest.objects.filter(
+                app_user=app_user,
+                pickup_timestamp__lte=datetime.now(),
+            ).count(),
+        }
+
     def ride_summary(self):
         return """
         <div class="alert alert-info">

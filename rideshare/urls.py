@@ -63,10 +63,20 @@ else:
         #-----------------------------------------------------------------------
         #   DRIVER
         #-----------------------------------------------------------------------
-        path("driver/past_rides", views.driver_past_rides),
-        path("driver/upcoming_rides", views.driver_upcoming_rides),
-        path("driver/available_rides", views.driver_available_rides),
-        path("driver/notifications", views.driver_notifications),
+        path("driver/past_rides/", views.driver_past_rides),
+        path("driver/upcoming_rides/", views.driver_upcoming_rides),
+        path("driver/available_rides/", views.driver_available_rides),
+        path("driver/notifications/", views.driver_notifications),
+        path("driver/account/", views.driver_account),
+        path("driver/settings/", views.driver_settings),
+        path("driver/about/", views.driver_about),
+        path("driver/help/", views.driver_help),
+        # Driver /account/
+        path("driver/profile/", views.driver_profile),
+        path("driver/payment_methods/", views.driver_payment_methods),
+        path("driver/email_address/", views.driver_email_address),
+        path("driver/phone_number/", views.driver_phone_number),
+        path("driver/services/", views.driver_services),
         #-----------TEMP-----------
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),
