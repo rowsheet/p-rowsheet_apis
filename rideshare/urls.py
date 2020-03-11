@@ -15,6 +15,7 @@ if settings.DEPLOYMENT_MODE == "PRODUCTION":
         path("for-riders/", views.for_riders),
         path("why-homobiles/", views.why_homobiles),
         path("signup/", views.signup),
+        path("press/", views.press),
     ]
 else:
     """

@@ -235,6 +235,10 @@ def signup(request):
     return render(request, "rideshare/site/signup.html")
 
 
+def press(request):
+    return render(request, "rideshare/site/press.html")
+
+
 """-----------------------------------------------------------------------------
 Common Helper Functions
 -----------------------------------------------------------------------------"""
