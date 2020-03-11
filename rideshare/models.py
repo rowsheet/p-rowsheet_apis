@@ -98,6 +98,10 @@ class AppUser(models.Model):
         default=False,
         null=False, blank=False,
     )
+    driver_approved = models.BooleanField(
+        default=False,
+        null=False, blank=False,
+    )
 
     def get_accommodations(self):
         return ",".join([str(acc) for acc in self.accommodations.all()])
@@ -243,13 +247,43 @@ class RideRequest(models.Model):
         return RideRequest.objects.filter(
             app_user=app_user,
             pickup_timestamp__gte=datetime.now(),
-        )
+
+        ).order_by("-pickup_timestamp")
+
 
     def passenger_past_rides(app_user):
         return RideRequest.objects.filter(
             app_user=app_user,
             pickup_timestamp__lte=datetime.now(),
         )
+
+
+    def passenger_cancel_ride_request(app_user, id):
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            ride_request.status = "REQ_X"
+            ride_request.save()
+
+
+    def passenger_undo_cancel_ride_request(app_user, id):
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver is None:
+                ride_request.status = "REQ_2"
+            else:
+                ride_request.status = "REQ_3"
+            ride_request.save()
+
 
     def driver_past_rides(app_user):
         return RideRequest.objects.filter(
@@ -267,13 +301,43 @@ class RideRequest(models.Model):
         return RideRequest.objects.filter(
             app_user_driver=None,
             pickup_timestamp__gte=datetime.now(),
+            status="REQ_2",
+        ).order_by("-pickup_timestamp")
+
+    def driver_claim_pickup(app_user, id):
+        ride_request = RideRequest.objects.get(
+            id=id,
         )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver is not None:
+                raise Exception("This ride has already been claimed by a driver.")
+            else:
+                ride_request.app_user_driver = app_user
+                ride_request.status = "REQ_3"
+            ride_request.save()
+
+    def driver_cancel_pickup(app_user, id):
+        ride_request = RideRequest.objects.get(
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver != app_user:
+                raise Exception("You don't have permission to cancel this ride.")
+            else:
+                ride_request.app_user_driver = None
+                ride_request.status = "REQ_2"
+            ride_request.save()
 
     def driver_sidebar_info(app_user):
         return {
             "available_rides_count": RideRequest.objects.filter(
                 app_user_driver=None,
                 pickup_timestamp__gte=datetime.now(),
+                status="REQ_2",
             ).count(),
             "upcoming_rides_count": RideRequest.objects.filter(
                 app_user_driver=app_user,
@@ -306,11 +370,27 @@ class RideRequest(models.Model):
             <p class="m-0">
                 <strong>End:</strong> {end_address}
             </p>
+            <p class="m-0">
+                <strong>Timestamp:</strong> {pickup_timestamp}
+            </p>
+            <p class="m-0">
+                <strong>Status:</strong> {status}
+            </p>
+            <a href="/ride_details/?id={id}">Details</a>
         </div>
         """.format(
             start_address=self.start_address,
             end_address=self.end_address,
+            status=self.status,
+            id=self.id,
+            pickup_timestamp=self.pickup_timestamp
         )
+
+    def epoch(self):
+        utc = self.pickup_timestamp.timestamp()
+        print(utc)
+        return utc
+
 
 class OldRideRequest(models.Model):
     class Meta:

@@ -73,6 +73,12 @@ else:
         path("driver/help/", views.driver_help),
         # Driver /account/
         path("driver/payment_methods/", views.driver_payment_methods),
+        #-----------------------------------------------------------------------
+        #   UTILS
+        #-----------------------------------------------------------------------
+        path("ride_details/", views.ride_details),
+        path("driver/active_ride/", views.driver_active_ride),
+        path("active_rides/", views.active_ride),
         #-----------TEMP-----------
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),

@@ -47,6 +47,7 @@ class AppUserAdmin(admin.ModelAdmin):
         "email_verified",
         # Synthetic
         "get_accommodations",
+        "driver_approved",
     )
     search_fields = (
         "django_account",
@@ -56,6 +57,7 @@ class AppUserAdmin(admin.ModelAdmin):
         "phone_verified",
         "email_address",
         "email_verified",
+        "driver_approved",
     )
 
 

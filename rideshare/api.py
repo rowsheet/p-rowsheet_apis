@@ -59,7 +59,89 @@ def passenger_confirm_ride_request(request):
             "location": "/set_location",
         }, status=302)
 
+@csrf_exempt
+def passenger_cancel_ride_request(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.passenger_cancel_ride_request(app_user, id)
+        return JsonResponse({
+            "msg": "Passenger ride request canceled.",
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+@csrf_exempt
+def passenger_undo_cancel_ride_request(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.passenger_undo_cancel_ride_request(app_user, id)
+        return JsonResponse({
+            "msg": "Passenger ride request un-canceled.",
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+
+@csrf_exempt
+def driver_claim_pickup(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.driver_claim_pickup(app_user, id)
+        return JsonResponse({
+            "msg": "Claimed ride request for pickup."
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+
+@csrf_exempt
+def driver_cancel_pickup(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.driver_cancel_pickup(app_user, id)
+        return JsonResponse({
+            "msg": "Cancled pickup ride request."
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
 
 urlpatterns = [
     path("passenger_confirm_ride_request/", passenger_confirm_ride_request),
+    path("passenger_cancel_ride_request/", passenger_cancel_ride_request),
+    path("passenger_undo_cancel_ride_request/", passenger_undo_cancel_ride_request),
+    path("driver_claim_pickup/", driver_claim_pickup),
+    path("driver_cancel_pickup/", driver_cancel_pickup),
 ]

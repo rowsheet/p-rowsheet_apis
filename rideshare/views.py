@@ -605,6 +605,8 @@ def set_location(request):
                 return redirect("/main_screen")
 
     sidebar_info = RideRequest.rider_sidebar_info(app_user)
+    print("FOO")
+    print(ride_request)
 
     context = {
         # Form info.
@@ -1310,3 +1312,81 @@ def driver_payment_methods(request):
         "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_payment_methods.html", context)
+
+
+"""-----------------------------------------------------------------------------
+DRIVER ACTIVE RIDE
+-----------------------------------------------------------------------------"""
+
+
+def ride_details(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    id = request.GET.get("id")
+    ride_request = RideRequest.objects.get(id=id)
+    if ride_request is None:
+        raise Exception("Ride not found.")
+    if ride_request.app_user != app_user:
+        if ride_request.app_user_driver is not None:
+            if ride_request.app_user_driver != app_user:
+                raise Exception("You don't have permission to view this ride.")
+
+    historical = False
+    print(ride_request.pickup_timestamp)
+    print(type(ride_request.pickup_timestamp))
+    from datetime import timezone
+    print(datetime.now(timezone.utc))
+    print(type(datetime.now(timezone.utc)))
+    if ride_request.pickup_timestamp < datetime.now(timezone.utc):
+        historical = True
+    passenger = False
+    if ride_request.app_user == app_user:
+        passenger = True
+    driver = False
+    if ride_request.app_user_driver == app_user:
+        driver = True
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        # Page info.
+        "id": id,
+        "ride_request": ride_request,
+        "historical": historical,
+        "passenger": passenger,
+        "driver": driver,
+    }
+    return render(request, "rideshare/pages/ride_details.html", context)
+
+
+def driver_active_ride(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "driver",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/driver_active_ride.html", context)
+
+
+def active_ride(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "driver",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/active_ride.html", context)

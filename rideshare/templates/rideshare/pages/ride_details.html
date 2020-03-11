@@ -3,16 +3,16 @@
 {% block content %}
 <div id="page_main_screen">
     <button id="menu_button" class="btn btn-primary btn-round"
-        onclick="$('#main_sidebar_trigger').click()">
+            onclick="window.history.back()">
         <i class="fas fa-chevron-left"></i>
     </button>
 
     <div style="display: none">
         <input id="origin-input" class="controls" type="text"
-            placeholder="Enter an origin location">
+               placeholder="Enter an origin location">
 
         <input id="destination-input" class="controls" type="text"
-            placeholder="Enter a destination location">
+               placeholder="Enter a destination location">
 
     </div>
 
@@ -20,7 +20,14 @@
         Ride Map:
     </div>
     <div id="ride_form" class="border-top bg-light">
-        <a href="/set_location/">
+        {% if historical == True %}
+            <div>
+        {% elif passenger == True %}
+            <div onclick="window.location.assign('/set_location')">
+        {% else %}
+            <div>
+        {% endif %}
+            <div id="ride_id" class="hidden">{{ id }}</div>
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -28,8 +35,11 @@
                     </div>
                 </div>
                 <input id="main_screen_start_address"
+                       {% if historical == True %}disabled="true"{% endif %}
+                       {% if passenger == False %}disabled="true"{% endif %}
                        type="text" class="form-control"
-                       placeholder="Start Address">
+                       placeholder="Start Address"
+                       value="{{ ride_request.start_address }}">
             </div>
             <div class="input-group input-group-sm mt-2">
                 <div class="input-group-prepend">
@@ -38,8 +48,11 @@
                     </div>
                 </div>
                 <input id="main_screen_end_address"
+                       {% if historical == True %}disabled="true"{% endif %}
+                       {% if passenger == False %}disabled="true"{% endif %}
                        type="text" class="form-control"
-                       placeholder="Destination Address">
+                       placeholder="Destination Address"
+                       value="{{ ride_request.end_address }}">
             </div>
             <div class="input-group input-group-sm mt-2">
                 <div class="input-group-prepend">
@@ -50,6 +63,8 @@
                     </div>
                 </div>
                 <input id="pickup_date"
+                       {% if historical == True %}disabled="true"{% endif %}
+                       {% if passenger == False %}disabled="true"{% endif %}
                        type="date" class="form-control"
                        name="pickup_date">
             </div>
@@ -62,18 +77,87 @@
                     </div>
                 </div>
                 <input id="pickup_time"
+                       {% if historical == True %}disabled="true"{% endif %}
+                       {% if passenger == False %}disabled="true"{% endif %}
                        type="time" class="form-control form-control-sm"
                        name="pickup_time">
             </div>
-        </a>
-        <div id="ajax_confirm_button_container">
-            <button
-                    id="ajax_confirm_ride_request"
-                    class="btn btn-primary btn-sm text-center mt-2 w-100"
-                    onclick="passenger_confirm_ride_request()">
-                Confirm
-            </button>
         </div>
+        <div class="row mt-2">
+            <div class="col-6 pr-1">
+                <div class="alert alert-primary m-0">
+                    <p class="small m-0 text-center">
+                        Passenger:
+                    </p>
+                    <p class="m-0 text-center small">
+                        <strong>
+                            <nobr>
+                                {% if passenger == True %}
+                                    YOU
+                                {% else %}
+                                    {{ ride_request.app_user }}
+                                {% endif %}
+                            </nobr>
+                        </strong>
+                    </p>
+                </div>
+            </div>
+            <div class="col-6 pl-1">
+                <div class="alert alert-primary m-0">
+                    <p class="small m-0 text-center">
+                        Driver:
+                    </p>
+                    <p class="m-0 text-center small">
+                        <strong>
+                            <nobr>
+                                {% if driver == True %}
+                                    YOU
+                                {% else %}
+                                    {{ ride_request.app_user_driver }}
+                                {% endif %}
+                            </nobr>
+                        </strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% if historical == True %}
+            HISTORICAL
+        {% else %}
+            {% if passenger == True %}
+                {% if ride_request.status == "REQ_X" %}
+                    <button
+                            class="btn btn-primary btn-sm text-center mt-2 w-100"
+                            onclick="passenger_undo_cancel_ride_request()">
+                        Un-Cancel Ride Request
+                    </button>
+                {% else %}
+                    <button
+                            class="btn btn-danger btn-sm text-center mt-2 w-100"
+                            onclick="passenger_cancel_ride_request()">
+                        Cancel Ride Request
+                    </button>
+                {% endif %}
+            {% elif driver == True %}
+                <button
+                        class="btn btn-danger btn-sm text-center mt-2 w-100"
+                        onclick="driver_cancel_pickup()">
+                    Cancel Pickup
+                </button>
+            {% elif app_user.driver_approved %}
+                <button
+                        class="btn btn-primary btn-sm text-center mt-2 w-100"
+                        onclick="driver_claim_pickup()">
+                    Claim Pickup
+                </button>
+            {% else %}
+                <button
+                        class="btn btn-primary btn-sm text-center mt-2 w-100"
+                        onclick="window.history.back()">
+                    Back
+                </button>
+            {% endif %}
+        {% endif %}
     </div>
 </div>
 <style>
@@ -100,10 +184,17 @@
 {% if in_setup == False %}
 clearDriverRideRequestCookies();
 {% else %}
-setCookie("start_address", "{{ start_address }}");
-setCookie("end_address", "{{ end_address }}");
-setCookie("originPlaceId", "{{ originPlaceId }}");
-setCookie("destinationPlaceId", "{{ destinationPlaceId }}");
+setCookie("start_address", "{{ ride_request.start_address }}");
+setCookie("end_address", "{{ ride_request.end_address }}");
+setCookie("originPlaceId", "{{ ride_request.start_place_id }}");
+setCookie("destinationPlaceId", "{{ ride_request.end_place_id }}");
+var pickup_timestamp_utc = {{ ride_request.epoch }};
+var local_offset = new Date().getTimezoneOffset() * 60;
+var pickup_timestamp = pickup_timestamp_utc - local_offset;
+var pickup_time = epoch_to_time(pickup_timestamp);
+var pickup_date = epoch_to_date(pickup_timestamp);
+setCookie("pickup_time", pickup_time);
+setCookie("pickup_date", pickup_date);
 {% endif %}
 </script>
 
@@ -296,6 +387,6 @@ window.addEventListener("load", function() {
 });
 
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&libraries=places&callback=initMap"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfwDp5KwMFKCXAvJGozoRRxcMGyfRsopo&libraries=places&callback=initMap"
         async defer></script>
 {% endblock %}

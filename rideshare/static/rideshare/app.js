@@ -58,3 +58,148 @@ function passenger_confirm_ride_request() {
         },
     });
 }
+
+function passenger_cancel_ride_request() {
+    console.log("passenger_cancel_ride_request")
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/passenger_cancel_ride_request/",
+        data: {
+            "id": id,
+        },
+        statusCode: {
+            302: function(resp) {
+                console.log("302");
+                window.location = resp.responseJSON.location;
+            },
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            window.location.href = "/upcoming_rides/";
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+        },
+    });
+}
+
+function passenger_undo_cancel_ride_request() {
+    console.log("passenger_undo_cancel_ride_request")
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/passenger_undo_cancel_ride_request/",
+        data: {
+            "id": id,
+        },
+        statusCode: {
+            302: function(resp) {
+                console.log("302");
+                window.location = resp.responseJSON.location;
+            },
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            window.location.href = "/upcoming_rides/";
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+        },
+    });
+}
+
+function driver_claim_pickup() {
+    console.log("driver_claim_pickup")
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/driver_claim_pickup/",
+        data: {
+            "id": id,
+        },
+        statusCode: {
+            302: function(resp) {
+                console.log("302");
+                window.location = resp.responseJSON.location;
+            },
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            window.location.href = "/driver/upcoming_rides/";
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+        },
+    });
+}
+
+function driver_cancel_pickup() {
+    console.log("driver_cancel_pickup")
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/driver_cancel_pickup/",
+        data: {
+            "id": id,
+        },
+        statusCode: {
+            302: function(resp) {
+                console.log("302");
+                window.location = resp.responseJSON.location;
+            },
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            window.location.href = "/driver/available_rides/";
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+        },
+    });
+}
+
+function epoch_to_time(seconds) {
+    var date = new Date(0);
+    date.setUTCSeconds(seconds);
+    var hours = date.getHours().toString();
+    var minutes = date.getMinutes().toString();
+    if (hours.length == 1) {
+        hours = "0" + hours;
+    }
+    if (minutes.length == 1) {
+        minutes = "0" + minutes;
+    }
+    var currentTime = hours + ':' + minutes;
+    return currentTime;
+}
+
+function epoch_to_date(seconds) {
+    console.log(seconds);
+    var date = new Date(0);
+    date.setUTCSeconds(seconds);
+    var parts = date.toLocaleDateString();
+    var year = parts.split("/")[2];
+    var month = parts.split("/")[1];
+    var day = parts.split("/")[0];
+    year = year.toString();
+    month = month.toString();
+    day = day.toString();
+    if (month.length == 1) {
+        month = "0" + month;
+    }
+    if (day.length == 1) {
+        day = "0" + day;
+    }
+    var format = year + "-" + day + "-" + month;
+    console.log(format);
+    return format;
+}
