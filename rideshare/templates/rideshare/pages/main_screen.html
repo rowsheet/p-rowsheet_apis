@@ -20,8 +20,11 @@
         Ride Map:
     </div>
     <div id="ride_form" class="border-top bg-light">
+
         <p>Total Distance: <span id="total"></span></p>
         <p>Suggested Donation: <span id="suggestion_value"></span></p>
+        <p>Estimated Duration: <span id="duration"></span></p>
+
         <a href="/set_location/">
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
@@ -159,6 +162,7 @@ directionsService.route(
     function(response, status) {
       if (status === 'OK') {
         directionsRenderer.setDirections(response);
+        console.log(response);
       } else {
         window.alert('Directions request failed due to ' + status);
       }
@@ -167,15 +171,20 @@ directionsService.route(
 
 function computeTotalDistance(result) {
         var total = 0;
+        var time = 0;
         var myroute = result.routes[0];
         for (var i = 0; i < myroute.legs.length; i++) {
           total += myroute.legs[i].distance.value;
+          time += myroute.legs[i].duration.value;
         }
         total = total / 1000;
+        time_min = time / 60
         document.getElementById('total').innerHTML = total + ' km';
         console.log(total+'km');
-        document.getElementById('suggestion_value').innerHTML = '$' + total*0.33;
+        document.getElementById('suggestion_value').innerHTML = '$' + total * 0.33;
         console.log('$'+total);
+        document.getElementById('duration').innerHTML = Math.round(time_min) + ' min';
+        console.log('$'+time_min);
       }
 
 /**
