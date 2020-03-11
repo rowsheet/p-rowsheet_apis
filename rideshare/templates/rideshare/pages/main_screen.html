@@ -171,6 +171,12 @@ directionsService.route(
     });
 }
 
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
+round(calculation, decimals); // 1.01
+
 function computeTotalDistance(result) {
         var total = 0;
         var time = 0;
@@ -181,11 +187,11 @@ function computeTotalDistance(result) {
         }
         total = total / 1000;
         time_min = time / 60
-        document.getElementById('total').innerHTML = total + ' km';
+        document.getElementById('total').innerHTML = round(total, 1) + ' km';
         console.log(total+'km');
-        document.getElementById('suggestion_value').innerHTML = '$' + total * 0.33;
+        document.getElementById('suggestion_value').innerHTML = '$' + round(total * 0.33, 2);
         console.log('$'+total);
-        document.getElementById('duration').innerHTML = Math.round(time_min) + ' min';
+        document.getElementById('duration').innerHTML = round(time_min, 0) + ' min';
         console.log('$'+time_min);
       }
 
