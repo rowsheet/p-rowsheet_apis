@@ -145,6 +145,8 @@ setCookie("destinationPlaceId", "{{ destinationPlaceId }}");
 // <script
 // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
+var directions;
+
 function initMap() {
 
     console.log("INIT MAP...");
@@ -157,8 +159,11 @@ function initMap() {
     );
     
     directionsRenderer.addListener('directions_changed', function() {
-          computeTotalDistance(directionsRenderer.getDirections());
-        });
+        directions = directionsRenderer.getDirections();
+        console.log(directions);
+        console.log(JSON.stringify(directions));
+        computeTotalDistance(directions);
+    });
 
     var map = new google.maps.Map(document.getElementById('map'), {
         mapTypeControl: false,
@@ -180,11 +185,12 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer, originPlaceId, destinationPlaceId) {
-directionsService.route(
+    directionsService.route(
     {
         // origin: {query: document.getElementById('start').value},
         // destination: {query: document.getElementById('end').value},
         origin: {'placeId': originPlaceId},
+        waypoints: [{"location":{"lat":39.65523837157736,"lng":-104.89735418381888},"stopover":false},{"location":{"lat":39.6574811,"lng":-104.9068971},"stopover":false}],
         destination: {'placeId': destinationPlaceId},
         travelMode: 'DRIVING'
     },
