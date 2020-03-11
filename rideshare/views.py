@@ -10,6 +10,7 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
+from rideshare.models import DonationSubscription
 from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
 
@@ -750,6 +751,21 @@ def donation_station(request):
         return user_redirect
 
     sidebar_info = RideRequest.rider_sidebar_info(app_user)
+    donation_subscriptions = DonationSubscription.objects.filter(
+        app_user=app_user,
+        success=True,
+    )
+
+    plans = {
+        "Recurring $5 Donation": "plan_GtHMSytV6dBI4w",
+        "Recurring $10 Donation": "plan_GtHNLR9qjsDA07",
+        "Recurring $20 Donation": "plan_GtHNDPdGf0CHXt",
+        "Recurring $50 Donation": "plan_GtHNIuvgQlTHAS",
+        "Recurring $75 Donation": "plan_GtHOA2kzudRbVC",
+        "Recurring $100 Donation": "plan_GtHOshLsz1TUVA",
+        "Recurring $500 Donation": "plan_GtHOHuR5L0c2DO",
+        "Recurring $1,000 Donation": "plan_GtHP6n00NgIpaf",
+    }
 
     context = {
         # Sidebar info.
@@ -757,6 +773,8 @@ def donation_station(request):
         "user_type": "rider",
         "sidebar_info": sidebar_info,
         # Page info.
+        "donation_subscriptions": donation_subscriptions,
+        "plans": plans,
     }
     return render(request, "rideshare/pages/donation_station.html", context)
 
@@ -1392,3 +1410,61 @@ def active_ride(request):
         # Page info.
     }
     return render(request, "rideshare/pages/active_ride.html", context)
+
+"""
+STRIPE
+"""
+def payment_success(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    session_id = request.GET.get("session_id")
+    if session_id is None or session_id == "":
+        return redirect("/error")
+
+    donation_subscription = DonationSubscription.find_by_checkout_session_id(
+        session_id)
+    if donation_subscription is not None:
+        import stripe_util
+        subscription_id = stripe_util.get_subscription_id_by_session_id(session_id)
+        donation_subscription.subscription_id = subscription_id
+        donation_subscription.success = True
+        donation_subscription.save()
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+        "donation_subscription": donation_subscription,
+    }
+
+    return render(request, "rideshare/pages/payment_success.html", context)
+
+
+def payment_canceled(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    session_id = request.GET.get("session_id")
+    if session_id is None or session_id == "":
+        return redirect("/error")
+
+    donation_subscription = DonationSubscription.find_by_checkout_session_id(
+        session_id)
+    if donation_subscription is not None:
+        donation_subscription.success = False
+        donation_subscription.save()
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
+
+    return render(request, "rideshare/pages/payment_canceled.html", context)

@@ -3,6 +3,7 @@ import django_heroku
 import dj_database_url
 import dotenv
 from rowsheet.env import PARSE_ENV
+import stripe
 
 ADMIN_SITE_HEADER = "Homobiles Admin Dashboard"
 
@@ -192,3 +193,12 @@ in the .env file.
 DEPLOYMENT_MODE = os.getenv("DEPLOYMENT_MODE")
 if DEPLOYMENT_MODE is None:
     DEPLOYMENT_MODE = "PRODUCTION"
+
+#-------------------------------------------------------------------------------
+# STRIPE 
+#-------------------------------------------------------------------------------
+# @DONTCOMMIT env
+STRIPE_API_PK = os.getenv("STRIPE_API_PK")
+STRIPE_API_SK = os.getenv("STRIPE_API_SK")
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL")

@@ -11,6 +11,7 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
+from rideshare.models import DonationSubscription
 from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
 
@@ -138,10 +139,44 @@ def driver_cancel_pickup(request):
         }, status=500)
 
 
+@csrf_exempt
+def stripe_checkout_session_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    import stripe_util
+    plan_id = request.POST.get("plan_id")
+    if plan_id is None:
+        raise Exception("Invalid plan_id: None.")
+    session = stripe_util.create_checkout_session(plan_id)
+    session_id = session["session_id"]
+    amount = session["amount"]
+    currency = session["currency"]
+    product_id = session["product_id"]
+    interval = session["interval"]
+
+    DonationSubscription.objects.create(
+        app_user=app_user,
+        plan_id=plan_id,
+        product_id=product_id,
+        checkout_session_id=session_id,
+        amount=amount,
+        currency=currency,
+        interval=interval,
+        success=None,
+    )
+
+    return JsonResponse({
+        "checkout_session_id": session_id,
+    })
+
 urlpatterns = [
     path("passenger_confirm_ride_request/", passenger_confirm_ride_request),
     path("passenger_cancel_ride_request/", passenger_cancel_ride_request),
     path("passenger_undo_cancel_ride_request/", passenger_undo_cancel_ride_request),
     path("driver_claim_pickup/", driver_claim_pickup),
     path("driver_cancel_pickup/", driver_cancel_pickup),
+    path("stripe_checkout_session_id", stripe_checkout_session_id),
 ]

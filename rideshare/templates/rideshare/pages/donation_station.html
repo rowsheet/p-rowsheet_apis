@@ -7,5 +7,28 @@
         <i class="fas fa-chevron-left"></i>
     </button>
     Donation Station
+    {% if donation_subscriptions|length == 0 %}
+    <div class="alert alert-warning text-center">
+        You don't have any recurring donations set up.
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        <small>
+            You have {{ donation_subscriptions|length }} recurring monthly donation(s) set up for this account.
+        </small>
+    </div>
+    {% endif %}
+    {% for ds in donation_subscriptions %}
+        {{ ds.print_summary|safe }}
+    {% endfor %}
+    <h3>
+        Make a donation
+    </h3>
+    {% for plan_name, plan_id in plans.items %}
+    <button class="btn btn-outline-primary btn-sm w-100 mb-2"
+            onclick="checkout('{{ plan_id }}')">
+        {{ plan_name }}
+    </button>
+    {% endfor %}
 </div>
 {% endblock %}

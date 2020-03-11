@@ -203,3 +203,36 @@ function epoch_to_date(seconds) {
     console.log(format);
     return format;
 }
+
+/*------------------------------------------------------------------------------
+STRIPE
+------------------------------------------------------------------------------*/
+function checkout(plan_id) {
+    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    $.ajax({
+        url: "/api/stripe_checkout_session_id",
+        method: "post",
+        data: {
+            plan_id: plan_id,
+        },
+        success: function(resp) {
+            console.log("200");
+            var checkout_session_id = resp.checkout_session_id;
+            stripe.redirectToCheckout({
+                // Make the id field from the Checkout Session creation API response
+                // available to this file, so you can provide it as parameter here
+                // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+                sessionId: checkout_session_id,
+            }).then(function (result) {
+                console.log("OK")
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, display the localized error message to your customer
+                // using `result.error.message`.
+            });
+        },
+        error: function(resp) {
+            console.log("500");
+            console.log(resp);
+        },
+    });
+}

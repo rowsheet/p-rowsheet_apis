@@ -113,6 +113,77 @@ class AppUser(models.Model):
         )
 
 
+class DonationSubscription(models.Model):
+    app_user = models.ForeignKey(
+        AppUser,
+        on_delete=models.PROTECT,
+        null=False, blank=False, default=None,
+    )
+    plan_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    product_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    checkout_session_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    subscription_id = models.CharField(
+        max_length=500,
+        null=True, blank=True, default=None,
+    )
+    amount = models.IntegerField(
+        null=True, blank=True, default=None
+    )
+    currency = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    interval = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    success = models.BooleanField(
+        null=True, blank=True, default=False
+    )
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)
+
+    def find_by_checkout_session_id(checkout_session_id):
+        donation_subscription = DonationSubscription.objects.get(
+            checkout_session_id=checkout_session_id,
+        )
+        return donation_subscription
+
+    def print_summary(self):
+        return """
+        <div class="alert alert-secondary text-center">
+            <p class="m-0">
+                <strong>
+                    Amount:
+                </strong> {amount}
+            </p>
+            <p class="m-0">
+                <strong>
+                    Currency:
+                </strong> {currency}
+            </p>
+            <p class="m-0">
+                <strong>
+                    Interval:
+                </strong> {interval}
+            </p>
+        </div>
+        """.format(
+            amount="%.2f" % (float(self.amount) / 100.0),
+            currency=self.currency,
+            interval=self.interval,
+        )
+
+
 class RideRequest(models.Model):
     class Meta:
         verbose_name = 'Rider Request (development)'
@@ -406,6 +477,9 @@ class RideRequest(models.Model):
         print(utc)
         return utc
 
+#-------------------------------------------------------------------------------
+# OLD
+#-------------------------------------------------------------------------------
 
 class OldRideRequest(models.Model):
     class Meta:
