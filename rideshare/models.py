@@ -365,6 +365,9 @@ class RideRequest(models.Model):
         return """
         <div class="alert alert-info">
             <p class="m-0">
+                <strong>ID:</strong> {id}
+            </p>
+            <p class="m-0">
                 <strong>Start:</strong> {start_address}
             </p>
             <p class="m-0">
@@ -374,16 +377,28 @@ class RideRequest(models.Model):
                 <strong>Timestamp:</strong> {pickup_timestamp}
             </p>
             <p class="m-0">
-                <strong>Status:</strong> {status}
+                <strong>Request Status:</strong> {status}
+            </p>
+            <p class="m-0">
+                <strong>Passenger Status:</strong> {passenger_status}
+            </p>
+            <p class="m-0">
+                <strong>Driver Status:</strong> {driver_status}
+            </p>
+            <p class="m-0">
+                <strong>In Setup:</strong> {in_setup}
             </p>
             <a href="/ride_details/?id={id}">Details</a>
         </div>
         """.format(
+            id=self.id,
             start_address=self.start_address,
             end_address=self.end_address,
             status=self.status,
-            id=self.id,
-            pickup_timestamp=self.pickup_timestamp
+            passenger_status=self.passenger_status,
+            driver_status=self.driver_status,
+            pickup_timestamp=self.pickup_timestamp,
+            in_setup=self.in_setup,
         )
 
     def epoch(self):
