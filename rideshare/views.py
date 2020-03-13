@@ -754,6 +754,7 @@ def donation_station(request):
     donation_subscriptions = DonationSubscription.objects.filter(
         app_user=app_user,
         success=True,
+        deleted=False,
     )
 
     plans = {

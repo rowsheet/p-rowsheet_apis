@@ -86,40 +86,20 @@ class RideRequestAdmin(admin.ModelAdmin):
         "creation_timestamp",
     )
 
-class DonationSubscriptionAdmin(admin.ModelAdmin):
-    fields = (
-        "start_address",
-        "start_place_id",
-        "end_address",
-        "end_place_id",
-        "app_user",
-        "app_user_driver",
-        "creation_timestamp",
-        "status",
-        "driver_status",
-        "passenger_status",
-        "pickup_timestamp",
-        "in_setup",
-    )
-    list_display = fields
-    search_fields = fields
-    readonly_fields = (
-        "creation_timestamp",
-    )
-    admin.site.register(RideRequest, RideRequestAdmin)
-
 
 class DonationSubscriptionAdmin(admin.ModelAdmin):
     fields = (
+        "success",
+        "creation_timestamp",
+        "subscription_id",
+        "deleted",
         "app_user",
         "plan_id",
         "product_id",
         "checkout_session_id",
-        "subscription_id",
         "amount",
         "currency",
         "interval",
-        "success",
     )
     list_display = fields
     search_fields = fields

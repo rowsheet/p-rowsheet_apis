@@ -149,6 +149,9 @@ class DonationSubscription(models.Model):
     success = models.BooleanField(
         null=True, blank=True, default=False
     )
+    deleted = models.BooleanField(
+        null=True, blank=True, default=False
+    )
     creation_timestamp = models.DateTimeField(
         auto_now=True)
 
@@ -160,27 +163,45 @@ class DonationSubscription(models.Model):
 
     def print_summary(self):
         return """
-        <div class="alert alert-secondary text-center">
-            <p class="m-0">
-                <strong>
-                    Amount:
-                </strong> {amount}
-            </p>
-            <p class="m-0">
-                <strong>
-                    Currency:
-                </strong> {currency}
-            </p>
-            <p class="m-0">
-                <strong>
-                    Interval:
-                </strong> {interval}
-            </p>
+        <div class="alert alert-secondary">
+            <div class="row">
+                <div class="col-6">
+                    <small>
+                        <p class="m-0">
+                            <strong>
+                                Amount:
+                            </strong> {amount}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                Currency:
+                            </strong> {currency}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                Interval:
+                            </strong> {interval}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                ID:
+                            </strong> {subscription_id}
+                        </p>
+                    </small>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn btn-sm btn-danger"
+                        onclick="cancel_subscription_by_subscription_id('{subscription_id}')">
+                        Delete Subscription
+                    </button>
+                </div>
+            </div>
         </div>
         """.format(
             amount="%.2f" % (float(self.amount) / 100.0),
             currency=self.currency,
             interval=self.interval,
+            subscription_id=self.subscription_id,
         )
 
 

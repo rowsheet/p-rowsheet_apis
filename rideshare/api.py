@@ -172,6 +172,40 @@ def stripe_checkout_session_id(request):
         "checkout_session_id": session_id,
     })
 
+
+@csrf_exempt
+def stripe_cancel_subscription_by_subscription_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        subscription_id = request.POST.get("subscription_id")
+        if subscription_id is None:
+            raise Exception("Missing subscription_id argument.")
+        donation_subscription = DonationSubscription.objects.get(
+            app_user=app_user,
+            subscription_id=subscription_id,
+        )
+        if donation_subscription is None:
+            raise Exception("Subscription doesn't exist this user.")
+        import stripe_util
+        # stripe_util.cancel_subscription_by_subscription_id(subscription_id)
+        donation_subscription.deleted = True
+        import pprint as pp
+        print("------------------ DEBUG ")
+        print(donation_subscription.subscription_id)
+        print(donation_subscription.deleted)
+        donation_subscription.save()
+        return JsonResponse({}, status=200)
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "error": "Unable to cancel subscription",
+        }, status=500)
+    return None
+
 urlpatterns = [
     path("passenger_confirm_ride_request/", passenger_confirm_ride_request),
     path("passenger_cancel_ride_request/", passenger_cancel_ride_request),
@@ -179,4 +213,5 @@ urlpatterns = [
     path("driver_claim_pickup/", driver_claim_pickup),
     path("driver_cancel_pickup/", driver_cancel_pickup),
     path("stripe_checkout_session_id", stripe_checkout_session_id),
+    path("strip_cancel_subscription_by_subscription_id", stripe_cancel_subscription_by_subscription_id),
 ]

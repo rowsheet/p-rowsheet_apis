@@ -21,8 +21,6 @@ def create_checkout_session(plan_id):
         success_url=settings.STRIPE_SUCCESS_URL,
         cancel_url=settings.STRIPE_CANCEL_URL,
     )
-    import json
-    print(json.dumps(session, indent=4, sort_keys=True))
     return {
         "session_id": session.id,
         "amount": session.display_items[0].amount,
@@ -34,3 +32,10 @@ def create_checkout_session(plan_id):
 def get_subscription_id_by_session_id(session_id):
     session = stripe.checkout.Session.retrieve(session_id)
     return session.subscription
+
+def cancel_subscription_by_subscription_id(subscription_id):
+    result = stripe.Subscription.delete(subscription_id)
+    return {
+        "start_timestamp": result.get("current_period_start"),
+        "end_timestamp": result.get("current_period_end"),
+    }

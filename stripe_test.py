@@ -26,10 +26,18 @@ def test_get_subscription_id_by_session_id():
     import pprint as pp
     pp.pprint(subscription_id)
 
+def test_cancel_subscription_by_subscription_id():
+    # subscription_id = "sub_GtrOJPCYww308f"
+    subscription_id = "sub_GtuwuOjF80CaUn"
+    result = stripe_util.cancel_subscription_by_subscription_id(subscription_id)
+    import pprint as pp
+    pp.pprint(result)
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     print(settings.ADMIN_SITE_HEADER)
     import stripe_util
     # test_basic()
     # test_create_session_id()
-    test_get_subscription_id_by_session_id()
+    # test_get_subscription_id_by_session_id()
+    test_cancel_subscription_by_subscription_id()

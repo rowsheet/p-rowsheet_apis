@@ -236,3 +236,24 @@ function checkout(plan_id) {
         },
     });
 }
+
+function cancel_subscription_by_subscription_id(subscription_id) {
+    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    $.ajax({
+        url: "/api/strip_cancel_subscription_by_subscription_id",
+        method: "post",
+        data: {
+            subscription_id: subscription_id,
+        },
+        success: function(resp) {
+            console.log("200");
+            alert("Your subscription has been canceled.");
+            location.reload();
+        },
+        error: function(resp) {
+            console.log("500");
+            console.log(resp);
+            alert("There was a problem canceling your subscription.");
+        },
+    });
+}
