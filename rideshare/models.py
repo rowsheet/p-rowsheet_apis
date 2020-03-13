@@ -192,7 +192,7 @@ class DonationSubscription(models.Model):
                 <div class="col-6 text-right">
                     <button class="btn btn-sm btn-danger"
                         onclick="cancel_subscription_by_subscription_id('{subscription_id}')">
-                        Delete Subscription
+                        Cancel Subscription
                     </button>
                 </div>
             </div>
