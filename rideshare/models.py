@@ -6,6 +6,8 @@ from django.core.validators import RegexValidator
 
 import rowsheet.utils as rs_utils
 
+from datetime import datetime
+
 
 class Pronoun(models.Model):
     class Meta:
@@ -113,22 +115,22 @@ class RideRequest(models.Model):
         verbose_name_plural = 'Rider Requests (development)'
         unique_together = ("app_user", "in_setup")
     start_address = models.CharField(
-        unique=True,
+        unique=False,
         max_length=128,
         null=False, blank=False, default=None,
     )
     start_place_id = models.CharField(
-        unique=True,
+        unique=False,
         max_length=256,
         null=False, blank=False, default=None,
     )
     end_address = models.CharField(
-        unique=True,
+        unique=False,
         max_length=128,
         null=False, blank=False, default=None,
     )
     end_place_id = models.CharField(
-        unique=True,
+        unique=False,
         max_length=256,
         null=False, blank=False, default=None,
     )
@@ -142,6 +144,12 @@ class RideRequest(models.Model):
         # will be impossible until that batch is run.
         # unique=True,
     )
+    app_user_driver = models.ForeignKey(
+        AppUser,
+        on_delete=models.PROTECT,
+        null=True, blank=True, default=None,
+        related_name="app_user_driver",
+    )
     creation_timestamp = models.DateTimeField(
         auto_now=True,
     )
@@ -149,19 +157,19 @@ class RideRequest(models.Model):
     """
     Ride Request Status
     """
-    PENDING_CONFIRM = "PENDING_CONFIRM"
-    PENDING_DRIVER = "PENDING_DRIVER"
-    PENDING_PICKUP = "PENDING_PICKUP"
-    PENDING_DROPOFF = "PENDING_DROPOFF"
-    CANCELED = "CANCELED"
-    DONE = "DONE" # Note: Consider NULL => DONE
+    REQ_1 = "REQ_1"
+    REQ_2 = "REQ_2"
+    REQ_3 = "REQ_3"
+    REQ_4 = "REQ_4"
+    REQ_5 = "REQ_5"
+    REQ_X = "REQ_X"
     STATUS = (
-        (PENDING_CONFIRM, "PENDING_CONFIRM"),
-        (PENDING_DRIVER, "PENDING_DRIVER"),
-        (PENDING_PICKUP, "PENDING_PICKUP"),
-        (PENDING_DROPOFF, "PENDING_DROPOFF"),
-        (CANCELED, "CANCELED"),
-        (DONE, "DONE"), # Note: Consider NULL => DONE
+        (REQ_1, "REQ_1"),
+        (REQ_2, "REQ_2"),
+        (REQ_3, "REQ_3"),
+        (REQ_4, "REQ_4"),
+        (REQ_5, "REQ_5"),
+        (REQ_X, "REQ_X"),
     )
     status = models.CharField(
         max_length=32,
@@ -224,9 +232,85 @@ class RideRequest(models.Model):
     # we should toggle this off. Every app user should only be able to have one
     # ride request that is "in_setup", therefore the unique together constraint.
     in_setup = models.BooleanField(
-        null=False, blank=False, default=None,
+        null=True, blank=True, default=None,
     )
 
+    @staticmethod
+    def all():
+        return RideRequest.objects.all()
+
+    def passenger_upcoming_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user=app_user,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def passenger_past_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user=app_user,
+            pickup_timestamp__lte=datetime.now(),
+        )
+
+    def driver_past_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=app_user,
+            pickup_timestamp__lte=datetime.now(),
+        )
+
+    def driver_upcoming_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=app_user,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def driver_availible_rides(app_user):
+        return RideRequest.objects.filter(
+            app_user_driver=None,
+            pickup_timestamp__gte=datetime.now(),
+        )
+
+    def driver_sidebar_info(app_user):
+        return {
+            "available_rides_count": RideRequest.objects.filter(
+                app_user_driver=None,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "upcoming_rides_count": RideRequest.objects.filter(
+                app_user_driver=app_user,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "past_rides_count": RideRequest.objects.filter(
+                app_user_driver=app_user,
+                pickup_timestamp__lte=datetime.now(),
+            ).count(),
+        }
+
+    def rider_sidebar_info(app_user):
+        return {
+            "upcoming_rides_count": RideRequest.objects.filter(
+                app_user=app_user,
+                pickup_timestamp__gte=datetime.now(),
+            ).count(),
+            "past_rides_count": RideRequest.objects.filter(
+                app_user=app_user,
+                pickup_timestamp__lte=datetime.now(),
+            ).count(),
+        }
+
+    def ride_summary(self):
+        return """
+        <div class="alert alert-info">
+            <p class="m-0">
+                <strong>Start:</strong> {start_address}
+            </p>
+            <p class="m-0">
+                <strong>End:</strong> {end_address}
+            </p>
+        </div>
+        """.format(
+            start_address=self.start_address,
+            end_address=self.end_address,
+        )
 
 class OldRideRequest(models.Model):
     class Meta:

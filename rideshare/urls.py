@@ -2,6 +2,7 @@ import os
 from django.urls import path
 from rideshare import views
 from django.conf import settings
+from django.urls import path, include
 
 if settings.DEPLOYMENT_MODE == "PRODUCTION":
     """
@@ -34,6 +35,7 @@ else:
         path("profile/", views.profile),
         # Sidebar pages
         path("past_rides/", views.past_rides),
+        path("upcoming_rides/", views.upcoming_rides),
         path("donation_station/", views.donation_station),
         path("settings/", views._settings),
         path("driver/", views.driver),
@@ -61,12 +63,19 @@ else:
         #-----------------------------------------------------------------------
         #   DRIVER
         #-----------------------------------------------------------------------
-        path("driver/past_rides", views.driver_past_rides),
-        path("driver/upcoming_rides", views.driver_upcoming_rides),
-        path("driver/available_rides", views.driver_available_rides),
-        path("driver/notifications", views.driver_notifications),
+        path("driver/past_rides/", views.driver_past_rides),
+        path("driver/upcoming_rides/", views.driver_upcoming_rides),
+        path("driver/available_rides/", views.driver_available_rides),
+        path("driver/notifications/", views.driver_notifications),
+        path("driver/account/", views.driver_account),
+        path("driver/settings/", views.driver_settings),
+        path("driver/about/", views.driver_about),
+        path("driver/help/", views.driver_help),
+        # Driver /account/
+        path("driver/payment_methods/", views.driver_payment_methods),
         #-----------TEMP-----------
         # DEMO
         path("demo_google_maps/", views.demo_google_maps),
         path("geocode/", views.geocode),
+        path("api/", include("rideshare.api")),
     ]

@@ -1,12 +1,12 @@
 {% extends "rideshare/layout.html" %}
 
 {% block content %}
-<div id="page_past_rides" class="p-2">
+<div id="page_upcoming_rides" class="p-2">
     <button class="btn btn-round"
             onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
-    Driver Past Rides
+    Upcoming Rides
     {% for ride in rides %}
         {{ ride.ride_summary | safe }}
     {% endfor %}

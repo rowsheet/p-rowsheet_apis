@@ -12,9 +12,9 @@
 }
 </style>
 <div id="page_account">
-    <button class="btn btn-light btn-round"
+    <button class="btn btn-round m-2"
             onclick="$('#main_sidebar_trigger').click()">
-        <i class="fas fa-chevron-left"></i>
+        <i class="fas fa-bars"></i>
     </button>
     <h3>
         Account
@@ -31,7 +31,7 @@
         </h4>
     </a>
     <hr>
-    <a href="/payment_methods">
+    <a href="{% if user_type == 'driver' %}/driver{% endif %}/payment_methods">
         <h4>
             <i class="fas fa-credit-card"></i>
             Payment Methods

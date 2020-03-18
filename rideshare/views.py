@@ -21,33 +21,33 @@ import googlemaps
 from datetime import datetime
 import time
 
-
-ROWSHEET_EMAILER_KEY = "BfpKNjGwMOsC67DDfuzUQqQPnMLAP2l"
-RECAPTCHA_SECRET = "6LeoZbYUAAAAAJAN7NGGbFuT8qNKGPdKyqG6IgRR"
-RECAPTCHA_MIN_SCORE = "0.7"
-
 from twilio.rest import Client
+
 
 def send_text_message(body):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    auth_token = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
-    # num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
-    num=['+15404540846', '+17203643760'] #DEV ONLY
-    for i in range(0,len(num)):
+    if settings.DEPLOYMENT_MODE != "DEVELOPMENT":
+        num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
+    else:
+        num = ['+15404540846', '+17203643760'];  # DEV ONLY
+    for i in range(0, len(num)):
         message = client.messages.create(
-        num[i],
-        from_="+14159939395",
-        body=body)
+            num[i],
+            from_="+14159939395",
+            body=body)
+
 
 def send_confirmation_text_message(body, to):
     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    auth_token = "08da7fc65a1b8163f17aa324ddef479d"
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         to=to,
         from_="+14159939395",
         body=body)
+
 
 # def send_phone_verification_text(body, to):
 #     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
@@ -64,7 +64,7 @@ def send_confirmation_text_message(body, to):
 
 
 def str2bool(v):
-  return v.lower() in ("yes", "true", "t", "1")
+    return v.lower() in ("yes", "true", "t", "1")
 
 
 def send_email(email_to, body, api_key):
@@ -118,12 +118,15 @@ def validate_ajax_post(request):
 
     return command, request.POST
 
+
 """-----------------------------------------------------------------------------
 DEMO
 -----------------------------------------------------------------------------"""
 
+
 def demo_google_maps(request):
     return render(request, "rideshare/demo/google_maps.html")
+
 
 """-----------------------------------------------------------------------------
 PAGES
@@ -154,25 +157,26 @@ Pick up: %s
 Drop off: %s
 Phone: %s
 """ % (
-                str(data.get("pickup_date")),
-                str(data.get("pickup_time")),
-                str(data.get("start_location")),
-                str(data.get("end_location")),
-                str(data.get("phone_number")),
+                    str(data.get("pickup_date")),
+                    str(data.get("pickup_time")),
+                    str(data.get("start_location")),
+                    str(data.get("end_location")),
+                    str(data.get("phone_number")),
                 ))
             except Exception as ex:
                 print(str(ex))
 
             try:
-                send_confirmation_text_message("We have received your request for a ride to %s from %s on %s at %s. Please contact us at 14155745023 for assistance." % (
-                    str(data.get("end_location")),
-                    str(data.get("start_location")),
-                    str(data.get("pickup_date")),
-                    str(data.get("pickup_time")),
-                 )              
-                 ,
-                 ("+1" + str(data.get("phone_number")
-                )))
+                send_confirmation_text_message(
+                    "We have received your request for a ride to %s from %s on %s at %s. Please contact us at 14155745023 for assistance." % (
+                        str(data.get("end_location")),
+                        str(data.get("start_location")),
+                        str(data.get("pickup_date")),
+                        str(data.get("pickup_time")),
+                    )
+                    ,
+                    ("+1" + str(data.get("phone_number")
+                                )))
             except Exception as ex:
                 print(str(ex))
 
@@ -230,6 +234,7 @@ def why_homobiles(request):
 def signup(request):
     return render(request, "rideshare/site/signup.html")
 
+
 """-----------------------------------------------------------------------------
 Common Helper Functions
 -----------------------------------------------------------------------------"""
@@ -251,7 +256,6 @@ def load_app_user(request):
 
 @csrf_exempt
 def geocode(request):
-    print("geocode")
     try:
         if not request.POST:
             return JsonResponse({
@@ -305,6 +309,7 @@ def geocode(request):
             "error": "Unknown error occurred",
         }, status=500)
 
+
 """-----------------------------------------------------------------------------
 PAGES (Public and On-boarding)
 -----------------------------------------------------------------------------"""
@@ -348,7 +353,6 @@ def phone_verification(request):
             app_user.phone_number = phone_number
             app_user.save()
             return redirect("/code_verification")
-
 
     context = {
         # Form info.
@@ -428,10 +432,6 @@ def main_screen(request):
             app_user=app_user,
             in_setup=True,
         )
-        if ride_request is not None:
-            print("GOT RIDE REQUEST")
-        else:
-            print("NO RIDE REQUEST")
     except Exception as ex:
         ride_request = None
 
@@ -442,10 +442,13 @@ def main_screen(request):
         end_address = ride_request.end_address
         end_place_id = ride_request.end_place_id
 
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "in_setup": in_setup,
         "start_address": start_address,
@@ -458,7 +461,6 @@ def main_screen(request):
 
 @csrf_exempt
 def set_location(request):
-
     # Check basic user info (logged in and valid phone)
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
@@ -477,6 +479,7 @@ def set_location(request):
     end_lat = ""
     end_lng = ""
     pickup_timestamp = ""
+
     try:
         ride_request = RideRequest.objects.get(
             app_user=app_user,
@@ -550,7 +553,7 @@ def set_location(request):
             print("pickup_timestamp (raw epoch):           " + str(timestamp_string_epoch))
             print(timestamp_string_epoch)
             print(timezone_offset)
-            pickup_timestamp = int(timestamp_string_epoch) + int(timezone_offset) # <!-- this is what we need.
+            pickup_timestamp = int(timestamp_string_epoch) + int(timezone_offset)  # <!-- this is what we need.
             django_pickup_timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pickup_timestamp))
 
             """
@@ -576,7 +579,7 @@ def set_location(request):
                     end_address=end_address,
                     end_place_id=end_place_id,
                     app_user=app_user,
-                    status="PENDING_CONFIRM",
+                    status="REQ_1",
                     pickup_timestamp=str(django_pickup_timestamp),
                     in_setup=True,
                 )
@@ -586,7 +589,9 @@ def set_location(request):
                 ride_request.end_address = end_address
                 ride_request.end_place_id = end_place_id
                 ride_request.app_user = app_user
-                ride_request.status = "PENDING_CONFIRM"
+                # REQ_1 is the status for an initiated ride request
+                # that has not yet been "confirmed" by a passenger.
+                ride_request.status = "REQ_1"
                 ride_request.pickup_timestamp = str(django_pickup_timestamp)
                 ride_request.in_setup = True
                 ride_request.save()
@@ -597,12 +602,15 @@ def set_location(request):
             if error == "":
                 return redirect("/main_screen")
 
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Form info.
         "error": error,
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
         "ride_request": ride_request,
         "start_address": start_address,
@@ -612,22 +620,26 @@ def set_location(request):
     return render(request, "rideshare/pages/set_location.html", context)
 
 
-def account(request):
+def account(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    if sidebar_info is None:
+        sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "phone_number": app_user.phone_number,
     }
     return render(request, "rideshare/pages/account.html", context)
 
 
-def profile(request):
+def profile(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -675,7 +687,8 @@ def profile(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # User info.
         "username": username,
         "pronoun": pronoun,
@@ -692,13 +705,37 @@ def past_rides(request):
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.passenger_past_rides(app_user)
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
+        "rides": rides,
     }
     return render(request, "rideshare/pages/past_rides.html", context)
+
+
+def upcoming_rides(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    rides = RideRequest.passenger_upcoming_rides(app_user)
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        "sidebar_info": sidebar_info,
+        # Page info.
+        "rides": rides,
+    }
+    return render(request, "rideshare/pages/upcoming_rides.html", context)
 
 
 def donation_station(request):
@@ -706,52 +743,67 @@ def donation_station(request):
     if user_redirect is not None:
         return user_redirect
 
+    sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "rider",
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/donation_station.html", context)
 
 
-def _settings(request):
+def _settings(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    if sidebar_info is None:
+        sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/settings.html", context)
 
 
-def about(request):
+def about(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    if sidebar_info is None:
+        sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/about.html", context)
 
 
-def help(request):
+def help(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    if sidebar_info is None:
+        sidebar_info = RideRequest.rider_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
     }
     return render(request, "rideshare/pages/help.html", context)
@@ -771,7 +823,7 @@ def payment_methods(request):
     return render(request, "rideshare/pages/payment_methods.html", context)
 
 
-def email_address(request):
+def email_address(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -814,14 +866,16 @@ def email_address(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "email_address": email_address,
         "email_verified": email_verified,
     }
     return render(request, "rideshare/pages/email_address.html", context)
 
-def phone_number(request):
+
+def phone_number(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -861,7 +915,8 @@ def phone_number(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Page info.
         "phone_number": phone_number,
         "phone_verified": phone_verified,
@@ -874,7 +929,7 @@ Settings pages.
 -----------------------------------------------------------------------------"""
 
 
-def services(request):
+def services(request, user_type="rider", sidebar_info=None):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
@@ -907,7 +962,8 @@ def services(request):
         "error": error,
         # Sidebar info.
         "app_user": app_user,
-        "user_type": "rider",
+        "user_type": user_type,
+        "sidebar_info": sidebar_info,
         # Paga info.
         "accommodations": accommodations,
         # Form info.
@@ -1088,71 +1144,167 @@ def legal(request):
     }
     return render(request, "rideshare/pages/legal.html", context)
 
+
 """-----------------------------------------------------------------------------
 Driver pages.
 -----------------------------------------------------------------------------"""
+
 
 def driver(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver.html", context)
+
 
 def driver_past_rides(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_past_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_past_rides.html", context)
+
 
 def driver_upcoming_rides(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_upcoming_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_upcoming_rides.html", context)
+
 
 def driver_available_rides(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    rides = RideRequest.driver_availible_rides(app_user)
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "rides": rides,
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_available_rides.html", context)
+
 
 def driver_notifications(request):
     app_user, user_redirect = load_app_user(request)
     if user_redirect is not None:
         return user_redirect
 
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
     context = {
         # Sidebar info.
         "app_user": app_user,
         "user_type": "driver",
         # Page info.
+        "sidebar_info": sidebar_info,
     }
     return render(request, "rideshare/pages/driver_notifications.html", context)
+
+
+def driver_account(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return account(request, user_type="driver",
+                   sidebar_info=sidebar_info)
+
+
+def driver_settings(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return _settings(request, user_type="driver",
+                     sidebar_info = sidebar_info)
+
+
+def driver_about(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return about(request, user_type="driver",
+                 sidebar_info=sidebar_info)
+
+
+def driver_help(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    return help(request, user_type="driver",
+                sidebar_info=sidebar_info)
+
+
+"""
+Driver /account/
+"""
+
+def driver_payment_methods(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    sidebar_info = RideRequest.driver_sidebar_info(app_user)
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "driver",
+        # Page info.
+        "sidebar_info": sidebar_info,
+    }
+    return render(request, "rideshare/pages/driver_payment_methods.html", context)

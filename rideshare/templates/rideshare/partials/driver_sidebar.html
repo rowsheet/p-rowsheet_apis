@@ -3,18 +3,33 @@
         <a href="/driver/available_rides" class="text-dark">
             <i class="material-icons">stars</i>
             available rides
+            {% if sidebar_info.available_rides_count > 0 %}
+            <span class="badge bg-warning text-light float-right mr-2">
+                {{ sidebar_info.available_rides_count }}
+            </span>
+            {% endif %}
         </a>
     </p>
     <p class="pl-3">
         <a href="/driver/upcoming_rides" class="text-dark">
             <i class="material-icons">departure_board</i>
             upcoming rides
+            {% if sidebar_info.upcoming_rides_count > 0 %}
+            <span class="badge bg-success text-light float-right mr-2">
+                {{ sidebar_info.upcoming_rides_count }}
+            </span>
+            {% endif %}
         </a>
     </p>
     <p class="pl-3">
         <a href="/driver/past_rides" class="text-dark">
             <i class="material-icons">history</i>
             past rides
+            {% if sidebar_info.past_rides_count > 0 %}
+            <span class="badge bg-secondary text-light float-right mr-2">
+                {{ sidebar_info.past_rides_count }}
+            </span>
+            {% endif %}
         </a>
     </p>
     <p class="pl-3">
@@ -25,26 +40,26 @@
     </p>
     <hr class="border-bottom">
     <p class="pl-3">
-        <a href="/account" class="text-dark">
+        <a href="/driver/account" class="text-dark">
             <i class="fas fa-user-circle pr-2"></i>
             my account
         </a>
     </p>
     <p class="pl-3">
-        <a href="/settings" class="text-dark">
+        <a href="/driver/settings" class="text-dark">
             <i class="fas fa-cog pr-2"></i>
             settings
         </a>
     </p>
     <hr class="border-bottom">
     <p class="pl-3">
-        <a href="/about" class="text-dark">
+        <a href="/driver/about" class="text-dark">
             <i class="fas fa-info-circle pr-2"></i>
             about homobiles
         </a>
     </p>
     <p class="pl-3">
-        <a href="/help" class="text-dark">
+        <a href="/driver/help" class="text-dark">
             <i class="fas fa-question-circle pr-2"></i>
             help
         </a>
