@@ -1,5 +1,9 @@
 # RowSheet API Manager.
 
+make make_local_migrations
+make migrate_local_db
+make run_local
+
 Add this to your `.vimrc` to get syntax highlighting for the API spec `yaml` files!
 
     " API Spec Syntax
