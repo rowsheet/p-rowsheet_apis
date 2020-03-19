@@ -11,6 +11,7 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
+from rideshare.models import RideDonation
 from rideshare.models import DonationSubscription
 from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
@@ -174,6 +175,50 @@ def stripe_checkout_session_id(request):
 
 
 @csrf_exempt
+def stripe_create_driver_donation_checkout_session_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    ride_request_id = request.POST.get("ride_request_id")
+    if ride_request_id is None:
+        raise Exception("Invalid ride_request_id: None.")
+    amount = request.POST.get("amount")
+    if amount is None:
+        raise Exception("Invalid amount: None.")
+
+    print("AMOUNT:")
+    print(amount)
+
+    import stripe_util
+    session = stripe_util.create_driver_donation_checkout_session_id(
+        "ride_request_" + str(ride_request_id), amount)
+
+    import pprint as pp
+    pp.pprint(session)
+
+    session_id = session["session_id"]
+    amount = session["amount"]
+    currency = session["currency"]
+    donation_id = session["donation_id"]
+    ride_request = RideRequest.objects.get(id=ride_request_id)
+
+    RideDonation.objects.create(
+        ride_request=ride_request,
+        checkout_session_id=session_id,
+        donation_id=donation_id,
+        amount=amount,
+        currency=currency,
+        success=None,
+    )
+
+    return JsonResponse({
+        "checkout_session_id": session_id,
+    })
+
+
+@csrf_exempt
 def stripe_cancel_subscription_by_subscription_id(request):
 
     app_user, user_redirect = load_app_user(request)
@@ -207,11 +252,20 @@ def stripe_cancel_subscription_by_subscription_id(request):
     return None
 
 urlpatterns = [
-    path("passenger_confirm_ride_request/", passenger_confirm_ride_request),
-    path("passenger_cancel_ride_request/", passenger_cancel_ride_request),
-    path("passenger_undo_cancel_ride_request/", passenger_undo_cancel_ride_request),
-    path("driver_claim_pickup/", driver_claim_pickup),
-    path("driver_cancel_pickup/", driver_cancel_pickup),
-    path("stripe_checkout_session_id", stripe_checkout_session_id),
-    path("strip_cancel_subscription_by_subscription_id", stripe_cancel_subscription_by_subscription_id),
+    path("passenger_confirm_ride_request/",
+         passenger_confirm_ride_request),
+    path("passenger_cancel_ride_request/",
+         passenger_cancel_ride_request),
+    path("passenger_undo_cancel_ride_request/",
+         passenger_undo_cancel_ride_request),
+    path("driver_claim_pickup/",
+         driver_claim_pickup),
+    path("driver_cancel_pickup/",
+         driver_cancel_pickup),
+    path("stripe_checkout_session_id",
+         stripe_checkout_session_id),
+    path("stripe_create_driver_donation_checkout_session_id",
+         stripe_create_driver_donation_checkout_session_id),
+    path("strip_cancel_subscription_by_subscription_id",
+         stripe_cancel_subscription_by_subscription_id),
 ]

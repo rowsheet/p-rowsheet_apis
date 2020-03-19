@@ -240,7 +240,7 @@ function checkout(plan_id) {
 function cancel_subscription_by_subscription_id(subscription_id) {
     var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
     $.ajax({
-        url: "/api/strip_cancel_subscription_by_subscription_id",
+        url: "/api/stripe_cancel_subscription_by_subscription_id",
         method: "post",
         data: {
             subscription_id: subscription_id,
@@ -254,6 +254,42 @@ function cancel_subscription_by_subscription_id(subscription_id) {
             console.log("500");
             console.log(resp);
             alert("There was a problem canceling your subscription.");
+        },
+    });
+}
+
+function stripe_create_driver_donation_checkout_session_id() {
+    console.log("stripe_create_driver_donation_checkout_session_id");
+    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    var ride_request_id = $("#ride_request_id").val();
+    var amount = $("#amount").val();
+    console.log(ride_request_id);
+    console.log(amount);
+    $.ajax({
+        url: "/api/stripe_create_driver_donation_checkout_session_id",
+        method: "post",
+        data: {
+            ride_request_id: ride_request_id,
+            amount: amount,
+        },
+        success: function(resp) {
+            console.log("200");
+            var checkout_session_id = resp.checkout_session_id;
+            stripe.redirectToCheckout({
+                // Make the id field from the Checkout Session creation API response
+                // available to this file, so you can provide it as parameter here
+                // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+                sessionId: checkout_session_id,
+            }).then(function (result) {
+                console.log("OK")
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, display the localized error message to your customer
+                // using `result.error.message`.
+            });
+        },
+        error: function(resp) {
+            console.log("500");
+            console.log(resp);
         },
     });
 }

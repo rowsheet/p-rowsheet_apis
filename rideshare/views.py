@@ -10,6 +10,7 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
+from rideshare.models import RideDonation
 from rideshare.models import DonationSubscription
 from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
@@ -1354,6 +1355,10 @@ def ride_details(request):
         if ride_request.app_user_driver is not None:
             if ride_request.app_user_driver != app_user:
                 raise Exception("You don't have permission to view this ride.")
+    ride_donation = RideDonation.objects.filter(
+        ride_request=ride_request,
+        success=True,
+    ).first()
 
     historical = False
     print(ride_request.pickup_timestamp)
@@ -1376,6 +1381,7 @@ def ride_details(request):
         # Page info.
         "id": id,
         "ride_request": ride_request,
+        "ride_donation": ride_donation,
         "historical": historical,
         "passenger": passenger,
         "driver": driver,
@@ -1425,24 +1431,36 @@ def payment_success(request):
     if session_id is None or session_id == "":
         return redirect("/error")
 
-    donation_subscription = DonationSubscription.find_by_checkout_session_id(
-        session_id)
-    if donation_subscription is not None:
-        import stripe_util
-        subscription_id = stripe_util.get_subscription_id_by_session_id(session_id)
-        donation_subscription.subscription_id = subscription_id
-        donation_subscription.success = True
-        donation_subscription.save()
+    try:
+        donation_subscription = DonationSubscription.find_by_checkout_session_id(
+            session_id)
+        if donation_subscription is not None:
+            import stripe_util
+            subscription_id = stripe_util.get_subscription_id_by_session_id(session_id)
+            donation_subscription.subscription_id = subscription_id
+            donation_subscription.success = True
+            donation_subscription.save()
 
-    context = {
-        # Sidebar info.
-        "app_user": app_user,
-        "user_type": "rider",
-        # Page info.
-        "donation_subscription": donation_subscription,
-    }
+        context = {
+            # Sidebar info.
+            "app_user": app_user,
+            "user_type": "rider",
+            # Page info.
+            "donation_subscription": donation_subscription,
+        }
 
-    return render(request, "rideshare/pages/payment_success.html", context)
+        return render(request, "rideshare/pages/payment_success.html", context)
+    except Exception as ex:
+        ride_donation = RideDonation.objects.get(
+            checkout_session_id=session_id,
+        )
+        if ride_donation is not None:
+            ride_donation.success = True
+            ride_donation.save()
+
+        ride_request_id = ride_donation.ride_request.id
+
+        return redirect("ride_details/?id=%s" % ride_request_id, status=302)
 
 
 def payment_canceled(request):

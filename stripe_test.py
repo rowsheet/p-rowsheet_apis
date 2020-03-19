@@ -33,6 +33,15 @@ def test_cancel_subscription_by_subscription_id():
     import pprint as pp
     pp.pprint(result)
 
+
+def test_create_driver_donation_checkout_session_id():
+    name = "test_name"
+    amount = 1000
+    result = stripe_util.create_driver_donation_checkout_session_id(name, amount)
+    import pprint as pp
+    pp.pprint(result)
+	
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     print(settings.ADMIN_SITE_HEADER)
@@ -40,4 +49,5 @@ if __name__ == "__main__":
     # test_basic()
     # test_create_session_id()
     # test_get_subscription_id_by_session_id()
-    test_cancel_subscription_by_subscription_id()
+    # test_cancel_subscription_by_subscription_id()
+    test_create_driver_donation_checkout_session_id()

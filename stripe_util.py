@@ -29,6 +29,27 @@ def create_checkout_session(plan_id):
         "interval": session.display_items[0].plan.interval,
     }
 
+def create_driver_donation_checkout_session_id(name, amount):
+    session = stripe.checkout.Session.create(
+	payment_method_types=['card'],
+	line_items=[{
+	    'name': name,
+	    # 'description': 'Comfortable cotton t-shirt',
+	    # 'images': ['https://example.com/t-shirt.png'],
+	    'amount': int(float(amount) * 100),
+	    'currency': 'usd',
+	    'quantity': 1,
+	}],
+        success_url=settings.STRIPE_SUCCESS_URL,
+        cancel_url=settings.STRIPE_CANCEL_URL,
+    )
+    return {
+        "session_id": session.id,
+        "amount": session.display_items[0].amount,
+        "currency": session.display_items[0].currency,
+	"donation_id": session.payment_intent,
+    }
+
 def get_subscription_id_by_session_id(session_id):
     session = stripe.checkout.Session.retrieve(session_id)
     return session.subscription

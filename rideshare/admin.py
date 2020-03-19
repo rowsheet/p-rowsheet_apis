@@ -4,6 +4,7 @@ from .models import AppUser
 from .models import Pronoun
 from .models import Accommodation
 from .models import RideRequest
+from .models import RideDonation
 from .models import DonationSubscription
 from .models import OldRideRequest
 from .models import OldDriverSignup
@@ -85,6 +86,24 @@ class RideRequestAdmin(admin.ModelAdmin):
     readonly_fields = (
         "creation_timestamp",
     )
+admin.site.register(RideRequest, RideRequestAdmin)
+
+
+class RideDonationAdmin(admin.ModelAdmin):
+    fields = (
+        "donation_id",
+        "checkout_session_id",
+        "amount",
+        "currency",
+        "success",
+        "creation_timestamp",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+admin.site.register(RideDonation, RideDonationAdmin)
 
 
 class DonationSubscriptionAdmin(admin.ModelAdmin):

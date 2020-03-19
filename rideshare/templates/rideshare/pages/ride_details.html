@@ -122,7 +122,81 @@
             </div>
         </div>
         {% if historical == True %}
-            HISTORICAL
+            <div class="row mt-2">
+                <!--
+                <div class="col-6 pr-1">
+                -->
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary btn-sm w-100" data-toggle="modal" data-target="#donationModal">
+                        {% if ride_donation is not None %}
+                            You donated: {{ ride_donation.print_amount }}
+                        {% else %}
+                            Add Donation
+                        {% endif %}
+                    </button>
+                </div>
+                <!--
+                <div class="col-6 pl-1">
+                    <button type="button" class="btn btn-primary btn-sm w-100" data-toggle="modal" data-target="#tipModal">
+                        Add Tip
+                    </button>
+                </div>
+                -->
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="donationModal" tabindex="-1" role="dialog" aria-labelledby="donationModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="donationModalLabel">
+                                Ride Donation
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% if ride_donation is not None %}
+                                {{ ride_donation.print_summary | safe }}
+                            {% else %}
+                                <input id="ride_request_id" value="{{ ride_request.id }}" class="hidden">
+                                <input id="amount" value="10" class="form-control" type="number">
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            {% if ride_donation is not None %}
+                            {% else %}
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="stripe_create_driver_donation_checkout_session_id()">Save changes</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="tipModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tipModalLabel">
+                                Ride Tip
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Ride Tip
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                onclick="stripe_create_driver_donation_checkout_session_id()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% else %}
             {% if passenger == True %}
                 {% if ride_request.status == "REQ_X" %}

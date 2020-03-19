@@ -498,6 +498,61 @@ class RideRequest(models.Model):
         print(utc)
         return utc
 
+    def __str__(self):
+        return "%s (%s)" % (
+            str(self.app_user.name),
+            str(self.creation_timestamp),
+        )
+
+
+class RideDonation(models.Model):
+    ride_request = models.ForeignKey(
+        RideRequest,
+        on_delete=models.PROTECT,
+        null=False, blank=False, default=None,
+    )
+    donation_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    checkout_session_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    amount = models.IntegerField(
+        null=True, blank=True, default=None
+    )
+    currency = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    success = models.BooleanField(
+        null=True, blank=True, default=False
+    )
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)
+
+    def initialize(self, checkout_session_id, ride_request_id, amount, currency):
+        pass
+
+    def print_summary(self):
+        return """
+        <h5 class="m-0 text-center">
+            Your Donation:
+        </h5>
+        <p class="m-0 text-center">
+            <strong>
+                ${amount}
+            </strong>
+        </p>
+        """.format(
+            amount="%.2f" % (self.amount / 100),
+        )
+
+    def print_amount(self):
+        return "$%.2f" % (self.amount / 100)
+
+
 #-------------------------------------------------------------------------------
 # OLD
 #-------------------------------------------------------------------------------
