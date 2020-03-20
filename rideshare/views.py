@@ -1369,7 +1369,7 @@ def ride_details(request):
     from datetime import timezone
     print(datetime.now(timezone.utc))
     print(type(datetime.now(timezone.utc)))
-    if ride_request.pickup_timestamp < datetime.now(timezone.utc):
+    if ride_request.status in ["REQ_5", "REQ_X"]:
         historical = True
     passenger = False
     if ride_request.app_user == app_user:
