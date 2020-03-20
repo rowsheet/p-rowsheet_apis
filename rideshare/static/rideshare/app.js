@@ -55,6 +55,7 @@ function passenger_confirm_ride_request() {
             console.log(resp.msg);
             $("#ajax_confirm_ride_request").removeClass("btn-primary");
             $("#ajax_confirm_ride_request").addClass("btn-success");
+            $("#ajax_confirm_ride_request").addClass("disabled");
             $("#ajax_confirm_ride_request").html(resp.msg);
         },
         error: function(resp) {
