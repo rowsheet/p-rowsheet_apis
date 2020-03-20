@@ -240,6 +240,9 @@ def signup(request):
 def press(request):
     return render(request, "rideshare/site/press.html")
 
+def beta_app(request):
+    return render(request, "rideshare/pages/beta-app.html")
+
 
 """-----------------------------------------------------------------------------
 Common Helper Functions

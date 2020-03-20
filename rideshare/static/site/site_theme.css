@@ -173,6 +173,19 @@ a.nav-link {
     font-weight: 300 !important;
     color: #907fae !important;
 }
+a.btn.beta-link {
+    color: #ffffff !important;
+    background-image: linear-gradient(to bottom right, #ffd900, #ff6600);
+    border-width: 2px;
+    border-color: #f300df;
+    border-radius: 100px;
+    font-weight: 500 !important;
+}
+.btn.beta-link:hover {
+    background-image: linear-gradient(to bottom right, #ffd900, #f300df);
+    /* color: #ffffff !important; */
+    border-color: #ff6600 !important;
+}
 /*------------------------------------------------------------------------------
 Standard Theme Logo
 ------------------------------------------------------------------------------*/
@@ -214,6 +227,7 @@ Standard Theme Buttons
     color: #907fae;
     border-color: #907fae;
 }
+
 /*------------------------------------------------------------------------------
 Standard Theme Footer
 ------------------------------------------------------------------------------*/
