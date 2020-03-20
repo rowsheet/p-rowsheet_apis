@@ -99,7 +99,7 @@ else:
     """
     urlpatterns = [
         # On-boarding pages.
-        path("get_started", views.get_started),
+        path("/", views.get_started),
         path("phone_verification/", views.phone_verification),
         path("code_verification/", views.code_verification),
         #-----------------------------------------------------------------------
