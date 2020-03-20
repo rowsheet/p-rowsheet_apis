@@ -173,6 +173,22 @@ start_app: ; $(info $(M) Adding new app...)
 		TIMES=$(TIMES) \
 	python3 manage.py startapp $(app_name)
 
+stripe_test: ; $(info $(M) Adding new app...)
+	env \
+		DATABASE_URL=$(DATABASE_URL) \
+		DEBUG=$(DEBUG) \
+		ALL_AUTH_EMAIL_USE_TLS=$(ALL_AUTH_EMAIL_USE_TLS) \
+		ALL_AUTH_EMAIL_HOST=$(ALL_AUTH_EMAIL_HOST) \
+		ALL_AUTH_EMAIL_PORT=$(ALL_AUTH_EMAIL_PORT) \
+		ALL_AUTH_DEFAULT_FROM_EMAIL=$(ALL_AUTH_DEFAULT_FROM_EMAIL) \
+		ALL_AUTH_EMAIL_HOST_USER=$(ALL_AUTH_EMAIL_HOST_USER) \
+		ALL_AUTH_EMAIL_HOST_PASSWORD=$(ALL_AUTH_EMAIL_HOST_PASSWORD) \
+		DISABLE_COLLECTSTATIC=$(DISABLE_COLLECTSTATIC) \
+		SECRET_KEY=$(SECRET_KEY) \
+		WEBAPP_URL=$(WEBAPP_URL) \
+		TIMES=$(TIMES) \
+	python3 stripe_test.py
+
 
 #-------------------------------------------------------------------------------
 # PSQL (Database Command Line) 

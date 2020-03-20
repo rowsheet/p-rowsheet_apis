@@ -2,11 +2,10 @@
 
 {% block content %}
 <div id="page_set_location" class="p-2" class="p-2">
-    <a href="/main_screen">
-        <button class="btn btn-light btn-round">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-    </a>
+    <button id="menu_button" class="btn btn-primary btn-round"
+            onclick="window.history.back()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
     <h3>
         Where can we take you?
     </h3>
@@ -309,10 +308,10 @@ window.addEventListener("load", function() {
     if (pickup_time != null) {
         if (pickup_time == "") {
             // Set to cookie value.
-            document.getElementById('pickup_time').value = pickup_time;
+            document.getElementById('pickup_time').value = currentTime;
         } else {
             // Set to now().
-            document.getElementById('pickup_time').value = currentTime;
+            document.getElementById('pickup_time').value = pickup_time;
         }
     } else {
         // Set to now().

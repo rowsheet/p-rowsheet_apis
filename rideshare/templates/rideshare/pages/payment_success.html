@@ -1,0 +1,25 @@
+{% extends "rideshare/layout.html" %}
+
+{% block content %}
+<div id="page_donation_station" class="p-2">
+    <button class="btn btn-round"
+            onclick="$('#main_sidebar_trigger').click()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="alert alert-success text-center">
+        <h5>Payment Success!</h5>
+        <p class="m-0">
+            <strong>Amount: </strong> {{ donation_subscription.amount }}
+        </p>
+        <p class="m-0">
+            <strong>Currency: </strong> {{ donation_subscription.currency }}
+        </p>
+        <p class="m-0">
+            <strong>Interval: </strong> {{ donation_subscription.interval }}
+        </p>
+        <br>
+        <a class="btn btn-primary btn-sm" href="/main_screen">Home</a>
+        <a class="btn btn-primary btn-sm" href="/donation_station">Your Donations</a>
+    </div>
+</div>
+{% endblock %}

@@ -15,6 +15,8 @@ if settings.DEPLOYMENT_MODE == "PRODUCTION":
         path("for-riders/", views.for_riders),
         path("why-homobiles/", views.why_homobiles),
         path("signup/", views.signup),
+        path("press/", views.press),
+        path("beta-app/", views.beta_app),
     ]
 else:
     """
@@ -73,9 +75,22 @@ else:
         path("driver/help/", views.driver_help),
         # Driver /account/
         path("driver/payment_methods/", views.driver_payment_methods),
-        #-----------TEMP-----------
-        # DEMO
-        path("demo_google_maps/", views.demo_google_maps),
+        #-----------------------------------------------------------------------
+        #   UTILS
+        #-----------------------------------------------------------------------
+        path("ride_details/", views.ride_details),
+        path("driver/active_ride/", views.driver_active_ride),
+        path("active_rides/", views.active_ride),
+        #-----------------------------------------------------------------------
+        #   API
+        #-----------------------------------------------------------------------
         path("geocode/", views.geocode),
         path("api/", include("rideshare.api")),
+        #-----------------------------------------------------------------------
+        #   STRIPE
+        #-----------------------------------------------------------------------
+        path("payment_success", views.payment_success),
+        path("payment_canceled", views.payment_canceled),
+        # DEMO
+        path("demo_google_maps/", views.demo_google_maps),
     ]

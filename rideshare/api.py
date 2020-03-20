@@ -11,6 +11,8 @@ from rideshare.models import AppUser
 from rideshare.models import Pronoun
 from rideshare.models import Accommodation
 from rideshare.models import RideRequest
+from rideshare.models import RideDonation
+from rideshare.models import DonationSubscription
 from rideshare.models import OldRideRequest
 from rideshare.models import OldDriverSignup
 
@@ -49,6 +51,9 @@ def passenger_confirm_ride_request(request):
         )
         ride_request.status = "REQ_2"
         ride_request.in_setup = None
+        ride_request.total_distance = request.POST.get("total_distance")
+        ride_request.suggested_donation = float(request.POST.get("suggested_value")) * 100
+        ride_request.estimated_duration = request.POST.get("estimated_duration")
         ride_request.save()
         return JsonResponse({
             "msg": "Successfully confirmed this ride request.",
@@ -57,9 +62,213 @@ def passenger_confirm_ride_request(request):
         print(str(ex))
         return JsonResponse({
             "location": "/set_location",
-        }, status=302)
+        }, status=500)
 
+@csrf_exempt
+def passenger_cancel_ride_request(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.passenger_cancel_ride_request(app_user, id)
+        return JsonResponse({
+            "msg": "Passenger ride request canceled.",
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+@csrf_exempt
+def passenger_undo_cancel_ride_request(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.passenger_undo_cancel_ride_request(app_user, id)
+        return JsonResponse({
+            "msg": "Passenger ride request un-canceled.",
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+
+@csrf_exempt
+def driver_claim_pickup(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.driver_claim_pickup(app_user, id)
+        return JsonResponse({
+            "msg": "Claimed ride request for pickup."
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+
+@csrf_exempt
+def driver_cancel_pickup(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        id = int(request.POST.get("id"))
+        RideRequest.driver_cancel_pickup(app_user, id)
+        return JsonResponse({
+            "msg": "Cancled pickup ride request."
+        })
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "location": "/set_location",
+        }, status=500)
+
+
+@csrf_exempt
+def stripe_checkout_session_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    import stripe_util
+    plan_id = request.POST.get("plan_id")
+    if plan_id is None:
+        raise Exception("Invalid plan_id: None.")
+    session = stripe_util.create_checkout_session(plan_id)
+    session_id = session["session_id"]
+    amount = session["amount"]
+    currency = session["currency"]
+    product_id = session["product_id"]
+    interval = session["interval"]
+
+    DonationSubscription.objects.create(
+        app_user=app_user,
+        plan_id=plan_id,
+        product_id=product_id,
+        checkout_session_id=session_id,
+        amount=amount,
+        currency=currency,
+        interval=interval,
+        success=None,
+    )
+
+    return JsonResponse({
+        "checkout_session_id": session_id,
+    })
+
+
+@csrf_exempt
+def stripe_create_driver_donation_checkout_session_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    ride_request_id = request.POST.get("ride_request_id")
+    if ride_request_id is None:
+        raise Exception("Invalid ride_request_id: None.")
+    amount = request.POST.get("amount")
+    if amount is None:
+        raise Exception("Invalid amount: None.")
+
+    print("AMOUNT:")
+    print(amount)
+
+    import stripe_util
+    session = stripe_util.create_driver_donation_checkout_session_id(
+        "ride_request_" + str(ride_request_id), amount)
+
+    import pprint as pp
+    pp.pprint(session)
+
+    session_id = session["session_id"]
+    amount = session["amount"]
+    currency = session["currency"]
+    donation_id = session["donation_id"]
+    ride_request = RideRequest.objects.get(id=ride_request_id)
+
+    RideDonation.objects.create(
+        ride_request=ride_request,
+        checkout_session_id=session_id,
+        donation_id=donation_id,
+        amount=amount,
+        currency=currency,
+        success=None,
+    )
+
+    return JsonResponse({
+        "checkout_session_id": session_id,
+    })
+
+
+@csrf_exempt
+def stripe_cancel_subscription_by_subscription_id(request):
+
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    try:
+        subscription_id = request.POST.get("subscription_id")
+        if subscription_id is None:
+            raise Exception("Missing subscription_id argument.")
+        donation_subscription = DonationSubscription.objects.get(
+            app_user=app_user,
+            subscription_id=subscription_id,
+        )
+        if donation_subscription is None:
+            raise Exception("Subscription doesn't exist this user.")
+        import stripe_util
+        # stripe_util.cancel_subscription_by_subscription_id(subscription_id)
+        donation_subscription.deleted = True
+        import pprint as pp
+        print("------------------ DEBUG ")
+        print(donation_subscription.subscription_id)
+        print(donation_subscription.deleted)
+        donation_subscription.save()
+        return JsonResponse({}, status=200)
+    except Exception as ex:
+        print(str(ex))
+        return JsonResponse({
+            "error": "Unable to cancel subscription",
+        }, status=500)
+    return None
 
 urlpatterns = [
-    path("passenger_confirm_ride_request/", passenger_confirm_ride_request),
+    path("passenger_confirm_ride_request/",
+         passenger_confirm_ride_request),
+    path("passenger_cancel_ride_request/",
+         passenger_cancel_ride_request),
+    path("passenger_undo_cancel_ride_request/",
+         passenger_undo_cancel_ride_request),
+    path("driver_claim_pickup/",
+         driver_claim_pickup),
+    path("driver_cancel_pickup/",
+         driver_cancel_pickup),
+    path("stripe_checkout_session_id",
+         stripe_checkout_session_id),
+    path("stripe_create_driver_donation_checkout_session_id",
+         stripe_create_driver_donation_checkout_session_id),
+    path("strip_cancel_subscription_by_subscription_id",
+         stripe_cancel_subscription_by_subscription_id),
 ]

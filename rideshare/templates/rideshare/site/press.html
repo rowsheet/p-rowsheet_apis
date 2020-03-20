@@ -1,0 +1,120 @@
+{% extends "rideshare/site_layout.html" %}
+{% block "main" %}
+<style>
+    #sharing_email .sharing_send,
+    .sd-content ul li .option a.share-ustom,
+    .sd-content ul li a.sd-button,
+    .sd-content ul li.advanced a.share-more,
+    .sd-content ul li.preview-item div.option.option-smart-off a,
+    .sd-social-icon .sd-content ul li a.sd-button,
+    .sd-social-icon-text .sd-content ul li a.sd-button,
+    .sd-social-official .sd-content>ul>li .digg_button>a,
+    .sd-social-official .sd-content>ul>li>a.sd-button,
+    .sd-social-text .sd-content ul li a.sd-button {
+        text-decoration: none !important;
+        display: inline-block;
+        margin: 0 5px 5px 0;
+        font-size: 12px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 400;
+        border-radius: 3px;
+        color: #777 !important;
+        background: #f8f8f8;
+        border: 1px solid #ccc;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+        text-shadow: none;
+        line-height: 23px;
+        padding: 1px 8px 0 5px;
+    }
+
+    .sd-content ul li {
+    display: inline-block;
+    }
+    
+    .media-iframe {
+        margin-top: 40px;
+    }
+
+</style>
+<main class="press_page">
+
+    <div>
+        <h3 class="media_title"></h3>
+        <iframe id="media-1" class="press-media media-iframe" frameborder="0" height="200" width="100%"
+            src="https://play.prx.org/e?uf=http%3A%2F%2Ffeeds.fugitivewaves.org%2Ffugitivewaves&ge=https%3A%2F%2Ffugitivewaves.prx.org%2F%3Fp%3D92&tt=FUGITIVE%20WAVES%3A%20THE%20MAKING%20OF%20THE%20HOMOBILE&ts=A%20Story%20of%20Transportation%2C%20Civil%20Rights%20%26%20Glitter%20%28and%20further%20stories%20of%20making%E2%80%A6%29&gs=_blank"></iframe>
+        <br>
+        <p class="media_description" style="margin: 10px;">In this episode of Fugitive Waves, The Kitchen Sisters ride
+            the nightshift with The Homobile. Homobiles is a non-commercial, volunteer, 24/7 ride service created by
+            Lynnee Breedlove for the LGBTQ and transgender community and others around San Francisco who feel the need
+            for safe, dependable rides, outside traditional services. “Moes getting hoes where they needs to goes,” is
+            their motto. Homobiles is for people who feel at risk because they don’t conform to sexual or gender norms
+            and have been targets of rudeness or shame or violence, says Lynne. Homobiles is a network of independent
+            drivers who pilot their own cars, a non-profit organization that caters to this underserved, and sometimes
+            harassed community in the Bay Area. This community car service operates on donations. No one is turned away
+            for lack of funds. Homobiles has been called “Uber for Drag Queens,” but with a mission that is social, not
+            financial.</p>
+        <p style=" margin: 10px; font-size: 12px;">
+            Produced by The Kitchen Sisters <br>
+            With Nathan Dalton & Julia DeWitt <br>
+            Mixed by Jim McKee
+        </p>
+        <br>
+
+        <h5 class="sd-title">Share this story:</h5>
+
+        <script type="text/javascript">
+            var windowOpen;
+            jQuery(document).on('ready post-load', function () {
+                jQuery('a.share-facebook').on('click', function () {
+                    if ('undefined' !== typeof windowOpen) { // If there's another sharing window open, close it.
+                        windowOpen.close();
+                    }
+                    windowOpen = window.open(jQuery(this).attr('href'), 'menubar=1,resizable=1,width=600,height=400');
+                    return false;
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            var windowOpen;
+            jQuery(document).on('ready post-load', function () {
+                jQuery('a.share-google-plus-1').on('click', function () {
+                    if ('undefined' !== typeof windowOpen) { // If there's another sharing window open, close it.
+                        windowOpen.close();
+                    }
+                    windowOpen = window.open(jQuery(this).attr('href'), 'menubar=1,resizable=1,width=480,height=550');
+                    return false;
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            var windowOpen;
+            jQuery(document).on('ready post-load', function () {
+                jQuery('a.share-twitter').on('click', function () {
+                    if ('undefined' !== typeof windowOpen) { // If there's another sharing window open, close it.
+                        windowOpen.close();
+                    }
+                    windowOpen = window.open(jQuery(this).attr('href'), 'menubar=1,resizable=1,width=600,height=350');
+                    return false;
+                });
+            });
+        </script>
+        <div class="sd-content">
+            <ul style="list-style: none" id="media-1-share-links">
+                <li class="share-facebook"><a rel="nofollow" class="share-facebook sd-button share-icon"
+                        href="http://www.kitchensisters.org/fugitivewaves/episode-5/?share=facebook&amp;nb=1"
+                        target="_blank" title="Share on Facebook"><span>Facebook</span></a></li>
+                <li class="share-pinterest"><a rel="nofollow" class="share-pinterest sd-button share-icon"
+                        href="http://www.kitchensisters.org/fugitivewaves/episode-5/?share=pinterest&amp;nb=1"
+                        target="_blank" title="Click to share on Pinterest"><span>Pinterest</span></a></li>
+                <li class="share-twitter"><a rel="nofollow" class="share-twitter sd-button share-icon"
+                        href="http://www.kitchensisters.org/fugitivewaves/episode-5/?share=twitter&amp;nb=1"
+                        target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li>
+                <li class="share-end"></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- https://www.wendygarrettux.com/homobiles -->
+
+</main>
+{% endblock %}
