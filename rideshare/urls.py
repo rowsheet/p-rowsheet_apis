@@ -16,6 +16,7 @@ if settings.DEPLOYMENT_MODE == "PRODUCTION":
         path("why-homobiles/", views.why_homobiles),
         path("signup/", views.signup),
         path("press/", views.press),
+        path("beta-app/", views.beta_app),
     ]
 else:
     """
