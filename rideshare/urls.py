@@ -17,6 +17,81 @@ if settings.DEPLOYMENT_MODE == "PRODUCTION":
         path("signup/", views.signup),
         path("press/", views.press),
         path("beta-app/", views.beta_app),
+
+    # """
+    # This is the new fancy app.
+    # """
+
+        # On-boarding pages.
+        path("get_started", views.get_started),
+        path("phone_verification/", views.phone_verification),
+        path("code_verification/", views.code_verification),
+        #-----------------------------------------------------------------------
+        #   PASSENGER
+        #-----------------------------------------------------------------------
+        # Main pages.
+        path("main_screen/", views.main_screen),
+        path("set_location/", views.set_location),
+        path("account/", views.account),
+        path("profile/", views.profile),
+        # Sidebar pages
+        path("past_rides/", views.past_rides),
+        path("upcoming_rides/", views.upcoming_rides),
+        path("donation_station/", views.donation_station),
+        path("settings/", views._settings),
+        path("driver/", views.driver),
+        path("about/", views.about),
+        path("help/", views.help),
+        # Account pages.
+        path("payment_methods/", views.payment_methods),
+        path("email_address/", views.email_address),
+        path("phone_number/", views.phone_number),
+        # Settings pages.
+        path("services/", views.services),
+        path("location/", views.location),
+        path("notifications/", views.notifications),
+        path("emergency/", views.emergency),
+        path("trusted_contacts/", views.trusted_contacts),
+        path("delete_account/", views.delete_account),
+        # Help pages.
+        path("report_a_recent_ride/", views.report_a_recent_ride),
+        path("report_a_lost_item/", views.report_a_lost_item),
+        path("how_ride_payment_works/", views.how_ride_payment_works),
+        path("free_rides/", views.free_rides),
+        path("saftey/", views.saftey),
+        path("policies/", views.policies),
+        path("legal/", views.legal),
+        #-----------------------------------------------------------------------
+        #   DRIVER
+        #-----------------------------------------------------------------------
+        path("driver/past_rides/", views.driver_past_rides),
+        path("driver/upcoming_rides/", views.driver_upcoming_rides),
+        path("driver/available_rides/", views.driver_available_rides),
+        path("driver/notifications/", views.driver_notifications),
+        path("driver/account/", views.driver_account),
+        path("driver/settings/", views.driver_settings),
+        path("driver/about/", views.driver_about),
+        path("driver/help/", views.driver_help),
+        # Driver /account/
+        path("driver/payment_methods/", views.driver_payment_methods),
+        #-----------------------------------------------------------------------
+        #   UTILS
+        #-----------------------------------------------------------------------
+        path("ride_details/", views.ride_details),
+        path("driver/active_ride/", views.driver_active_ride),
+        path("active_rides/", views.active_ride),
+        #-----------------------------------------------------------------------
+        #   API
+        #-----------------------------------------------------------------------
+        path("geocode/", views.geocode),
+        path("api/", include("rideshare.api")),
+        #-----------------------------------------------------------------------
+        #   STRIPE
+        #-----------------------------------------------------------------------
+        path("payment_success", views.payment_success),
+        path("payment_canceled", views.payment_canceled),
+        # DEMO
+        path("demo_google_maps/", views.demo_google_maps),
     ]
 else:
     """
@@ -24,7 +99,7 @@ else:
     """
     urlpatterns = [
         # On-boarding pages.
-        path("", views.get_started),
+        path("get_started", views.get_started),
         path("phone_verification/", views.phone_verification),
         path("code_verification/", views.code_verification),
         #-----------------------------------------------------------------------
