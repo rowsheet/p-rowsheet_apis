@@ -20,13 +20,7 @@
         Ride Map:
     </div>
     <div id="ride_form" class="border-top bg-light">
-        {% if historical == True %}
-            <div>
-        {% elif passenger == True %}
-            <div onclick="window.location.assign('/set_location')">
-        {% else %}
-            <div>
-        {% endif %}
+        <div>
             <div id="ride_id" class="hidden">{{ id }}</div>
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
@@ -35,8 +29,7 @@
                     </div>
                 </div>
                 <input id="main_screen_start_address"
-                       {% if historical == True %}disabled="true"{% endif %}
-                       {% if passenger == False %}disabled="true"{% endif %}
+                       disabled="true"
                        type="text" class="form-control"
                        placeholder="Start Address"
                        value="{{ ride_request.start_address }}">
@@ -48,8 +41,7 @@
                     </div>
                 </div>
                 <input id="main_screen_end_address"
-                       {% if historical == True %}disabled="true"{% endif %}
-                       {% if passenger == False %}disabled="true"{% endif %}
+                       disabled="true"
                        type="text" class="form-control"
                        placeholder="Destination Address"
                        value="{{ ride_request.end_address }}">
@@ -63,8 +55,7 @@
                     </div>
                 </div>
                 <input id="pickup_date"
-                       {% if historical == True %}disabled="true"{% endif %}
-                       {% if passenger == False %}disabled="true"{% endif %}
+                       disabled="true"
                        type="date" class="form-control"
                        name="pickup_date">
             </div>
@@ -77,8 +68,7 @@
                     </div>
                 </div>
                 <input id="pickup_time"
-                       {% if historical == True %}disabled="true"{% endif %}
-                       {% if passenger == False %}disabled="true"{% endif %}
+                       disabled="true"
                        type="time" class="form-control form-control-sm"
                        name="pickup_time">
             </div>
