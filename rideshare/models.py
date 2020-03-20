@@ -347,15 +347,14 @@ class RideRequest(models.Model):
     def passenger_upcoming_rides(app_user):
         return RideRequest.objects.filter(
             app_user=app_user,
-            pickup_timestamp__gte=datetime.now(),
-
-        ).order_by("-pickup_timestamp")
-
+            status="REQ_2",
+        )
 
     def passenger_past_rides(app_user):
         return RideRequest.objects.filter(
             app_user=app_user,
-            pickup_timestamp__lte=datetime.now(),
+            in_setup=None,
+            status="REQ_5",
         )
 
 
@@ -444,10 +443,7 @@ class RideRequest(models.Model):
                 app_user_driver=app_user,
                 pickup_timestamp__gte=datetime.now(),
             ).count(),
-            "past_rides_count": RideRequest.objects.filter(
-                app_user_driver=app_user,
-                pickup_timestamp__lte=datetime.now(),
-            ).count(),
+            "past_rides_count": len(RideRequest.driver_past_rides(app_user)),
         }
 
     def rider_sidebar_info(app_user):
@@ -456,10 +452,7 @@ class RideRequest(models.Model):
                 app_user=app_user,
                 pickup_timestamp__gte=datetime.now(),
             ).count(),
-            "past_rides_count": RideRequest.objects.filter(
-                app_user=app_user,
-                pickup_timestamp__lte=datetime.now(),
-            ).count(),
+            "past_rides_count": len(RideRequest.passenger_past_rides(app_user)),
         }
 
     def ride_summary(self):
