@@ -1239,7 +1239,7 @@ def driver_available_rides(request):
     if user_redirect is not None:
         return user_redirect
 
-    rides = RideRequest.driver_availible_rides(app_user)
+    rides = RideRequest.driver_availible_rides()
     sidebar_info = RideRequest.driver_sidebar_info(app_user)
 
     context = {
