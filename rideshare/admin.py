@@ -4,6 +4,8 @@ from .models import AppUser
 from .models import Pronoun
 from .models import Accommodation
 from .models import RideRequest
+from .models import RideDonation
+from .models import DonationSubscription
 from .models import OldRideRequest
 from .models import OldDriverSignup
 
@@ -47,6 +49,7 @@ class AppUserAdmin(admin.ModelAdmin):
         "email_verified",
         # Synthetic
         "get_accommodations",
+        "driver_approved",
     )
     search_fields = (
         "django_account",
@@ -56,6 +59,7 @@ class AppUserAdmin(admin.ModelAdmin):
         "phone_verified",
         "email_address",
         "email_verified",
+        "driver_approved",
     )
 
 
@@ -82,9 +86,46 @@ class RideRequestAdmin(admin.ModelAdmin):
     readonly_fields = (
         "creation_timestamp",
     )
-
-
 admin.site.register(RideRequest, RideRequestAdmin)
+
+
+class RideDonationAdmin(admin.ModelAdmin):
+    fields = (
+        "donation_id",
+        "checkout_session_id",
+        "amount",
+        "currency",
+        "success",
+        "creation_timestamp",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+admin.site.register(RideDonation, RideDonationAdmin)
+
+
+class DonationSubscriptionAdmin(admin.ModelAdmin):
+    fields = (
+        "success",
+        "creation_timestamp",
+        "subscription_id",
+        "deleted",
+        "app_user",
+        "plan_id",
+        "product_id",
+        "checkout_session_id",
+        "amount",
+        "currency",
+        "interval",
+    )
+    list_display = fields
+    search_fields = fields
+    readonly_fields = (
+        "creation_timestamp",
+    )
+admin.site.register(DonationSubscription, DonationSubscriptionAdmin)
 
 
 class OldRideRequestAdmin(admin.ModelAdmin):

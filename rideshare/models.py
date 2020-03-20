@@ -98,6 +98,10 @@ class AppUser(models.Model):
         default=False,
         null=False, blank=False,
     )
+    driver_approved = models.BooleanField(
+        default=False,
+        null=False, blank=False,
+    )
 
     def get_accommodations(self):
         return ",".join([str(acc) for acc in self.accommodations.all()])
@@ -106,6 +110,98 @@ class AppUser(models.Model):
         return "%s (%s) " % (
                 str(self.django_account),
                 str(self.username),
+        )
+
+
+class DonationSubscription(models.Model):
+    app_user = models.ForeignKey(
+        AppUser,
+        on_delete=models.PROTECT,
+        null=False, blank=False, default=None,
+    )
+    plan_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    product_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    checkout_session_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    subscription_id = models.CharField(
+        max_length=500,
+        null=True, blank=True, default=None,
+    )
+    amount = models.IntegerField(
+        null=True, blank=True, default=None
+    )
+    currency = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    interval = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    success = models.BooleanField(
+        null=True, blank=True, default=False
+    )
+    deleted = models.BooleanField(
+        null=True, blank=True, default=False
+    )
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)
+
+    def find_by_checkout_session_id(checkout_session_id):
+        donation_subscription = DonationSubscription.objects.get(
+            checkout_session_id=checkout_session_id,
+        )
+        return donation_subscription
+
+    def print_summary(self):
+        return """
+        <div class="alert alert-secondary">
+            <div class="row">
+                <div class="col-6">
+                    <small>
+                        <p class="m-0">
+                            <strong>
+                                Amount:
+                            </strong> {amount}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                Currency:
+                            </strong> {currency}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                Interval:
+                            </strong> {interval}
+                        </p>
+                        <p class="m-0">
+                            <strong>
+                                ID:
+                            </strong> {subscription_id}
+                        </p>
+                    </small>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn btn-sm btn-danger"
+                        onclick="cancel_subscription_by_subscription_id('{subscription_id}')">
+                        Cancel Subscription
+                    </button>
+                </div>
+            </div>
+        </div>
+        """.format(
+            amount="%.2f" % (float(self.amount) / 100.0),
+            currency=self.currency,
+            interval=self.interval,
+            subscription_id=self.subscription_id,
         )
 
 
@@ -243,13 +339,43 @@ class RideRequest(models.Model):
         return RideRequest.objects.filter(
             app_user=app_user,
             pickup_timestamp__gte=datetime.now(),
-        )
+
+        ).order_by("-pickup_timestamp")
+
 
     def passenger_past_rides(app_user):
         return RideRequest.objects.filter(
             app_user=app_user,
             pickup_timestamp__lte=datetime.now(),
         )
+
+
+    def passenger_cancel_ride_request(app_user, id):
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            ride_request.status = "REQ_X"
+            ride_request.save()
+
+
+    def passenger_undo_cancel_ride_request(app_user, id):
+        ride_request = RideRequest.objects.get(
+            app_user=app_user,
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver is None:
+                ride_request.status = "REQ_2"
+            else:
+                ride_request.status = "REQ_3"
+            ride_request.save()
+
 
     def driver_past_rides(app_user):
         return RideRequest.objects.filter(
@@ -267,13 +393,43 @@ class RideRequest(models.Model):
         return RideRequest.objects.filter(
             app_user_driver=None,
             pickup_timestamp__gte=datetime.now(),
+            status="REQ_2",
+        ).order_by("-pickup_timestamp")
+
+    def driver_claim_pickup(app_user, id):
+        ride_request = RideRequest.objects.get(
+            id=id,
         )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver is not None:
+                raise Exception("This ride has already been claimed by a driver.")
+            else:
+                ride_request.app_user_driver = app_user
+                ride_request.status = "REQ_3"
+            ride_request.save()
+
+    def driver_cancel_pickup(app_user, id):
+        ride_request = RideRequest.objects.get(
+            id=id,
+        )
+        if ride_request is None:
+            raise Exception("No matching ride request found.")
+        else:
+            if ride_request.app_user_driver != app_user:
+                raise Exception("You don't have permission to cancel this ride.")
+            else:
+                ride_request.app_user_driver = None
+                ride_request.status = "REQ_2"
+            ride_request.save()
 
     def driver_sidebar_info(app_user):
         return {
             "available_rides_count": RideRequest.objects.filter(
                 app_user_driver=None,
                 pickup_timestamp__gte=datetime.now(),
+                status="REQ_2",
             ).count(),
             "upcoming_rides_count": RideRequest.objects.filter(
                 app_user_driver=app_user,
@@ -301,16 +457,105 @@ class RideRequest(models.Model):
         return """
         <div class="alert alert-info">
             <p class="m-0">
+                <strong>ID:</strong> {id}
+            </p>
+            <p class="m-0">
                 <strong>Start:</strong> {start_address}
             </p>
             <p class="m-0">
                 <strong>End:</strong> {end_address}
             </p>
+            <p class="m-0">
+                <strong>Timestamp:</strong> {pickup_timestamp}
+            </p>
+            <p class="m-0">
+                <strong>Request Status:</strong> {status}
+            </p>
+            <p class="m-0">
+                <strong>Passenger Status:</strong> {passenger_status}
+            </p>
+            <p class="m-0">
+                <strong>Driver Status:</strong> {driver_status}
+            </p>
+            <p class="m-0">
+                <strong>In Setup:</strong> {in_setup}
+            </p>
+            <a href="/ride_details/?id={id}">Details</a>
         </div>
         """.format(
+            id=self.id,
             start_address=self.start_address,
             end_address=self.end_address,
+            status=self.status,
+            passenger_status=self.passenger_status,
+            driver_status=self.driver_status,
+            pickup_timestamp=self.pickup_timestamp,
+            in_setup=self.in_setup,
         )
+
+    def epoch(self):
+        utc = self.pickup_timestamp.timestamp()
+        print(utc)
+        return utc
+
+    def __str__(self):
+        return "%s (%s)" % (
+            str(self.app_user.name),
+            str(self.creation_timestamp),
+        )
+
+
+class RideDonation(models.Model):
+    ride_request = models.ForeignKey(
+        RideRequest,
+        on_delete=models.PROTECT,
+        null=False, blank=False, default=None,
+    )
+    donation_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    checkout_session_id = models.CharField(
+        max_length=500,
+        null=False, blank=False, default=None,
+    )
+    amount = models.IntegerField(
+        null=True, blank=True, default=None
+    )
+    currency = models.CharField(
+        max_length=32,
+        null=True, blank=True, default=None
+    )
+    success = models.BooleanField(
+        null=True, blank=True, default=False
+    )
+    creation_timestamp = models.DateTimeField(
+        auto_now=True)
+
+    def initialize(self, checkout_session_id, ride_request_id, amount, currency):
+        pass
+
+    def print_summary(self):
+        return """
+        <h5 class="m-0 text-center">
+            Your Donation:
+        </h5>
+        <p class="m-0 text-center">
+            <strong>
+                ${amount}
+            </strong>
+        </p>
+        """.format(
+            amount="%.2f" % (self.amount / 100),
+        )
+
+    def print_amount(self):
+        return "$%.2f" % (self.amount / 100)
+
+
+#-------------------------------------------------------------------------------
+# OLD
+#-------------------------------------------------------------------------------
 
 class OldRideRequest(models.Model):
     class Meta:

@@ -21,9 +21,36 @@
     </div>
     <div id="ride_form" class="border-top bg-light">
 
-        <p>Total Distance: <span id="total"></span></p>
-        <p>Suggested Donation: <span id="suggestion_value"></span></p>
-        <p>Estimated Duration: <span id="duration"></span></p>
+        <div class="row mb-2">
+            <div class="col-6">
+                <p class="m-0">
+                    <small>
+                        Total Distance:
+                    </small>
+                </p>
+                <p class="m-0">
+                    <small>
+                        Suggested Donation:
+                    </small>
+                </p>
+                <p class="m-0">
+                    <small>
+                        Estimated Duration:
+                    </small>
+                </p>
+            </div>
+            <div class="col-6">
+                <p class="m-0">
+                    <span id="total"></span>
+                </p>
+                <p class="m-0">
+                    <span id="suggestion_value"></span>
+                </p>
+                <p class="m-0">
+                    <span id="duration"></span>
+                </p>
+            </div>
+        </div>
 
         <a href="/set_location/">
             <div class="input-group input-group-sm">
@@ -71,12 +98,14 @@
                        name="pickup_time">
             </div>
         </a>
-        <button
-                id="ajax_confirm_ride_request"
-                class="btn btn-primary btn-sm text-center mt-2 w-100"
-                onclick="passenger_confirm_ride_request()">
-            Confirm
-        </button>
+        <div id="ajax_confirm_button_container">
+            <button
+                    id="ajax_confirm_ride_request"
+                    class="btn btn-primary btn-sm text-center mt-2 w-100"
+                    onclick="passenger_confirm_ride_request()">
+                Confirm
+            </button>
+        </div>
     </div>
 </div>
 <style>
@@ -116,6 +145,8 @@ setCookie("destinationPlaceId", "{{ destinationPlaceId }}");
 // <script
 // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
+var directions;
+
 function initMap() {
 
     console.log("INIT MAP...");
@@ -124,12 +155,16 @@ function initMap() {
     var directionsRenderer = new google.maps.DirectionsRenderer({
         draggable: true,
         // map: map,
+        // directions: DirectionsResult,
         }
     );
     
     directionsRenderer.addListener('directions_changed', function() {
-          computeTotalDistance(directionsRenderer.getDirections());
-        });
+        directions = directionsRenderer.getDirections();
+        console.log(directions);
+        console.log(JSON.stringify(directions));
+        computeTotalDistance(directions);
+    });
 
     var map = new google.maps.Map(document.getElementById('map'), {
         mapTypeControl: false,
@@ -137,6 +172,9 @@ function initMap() {
         zoom: 13
     });
 
+    var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+        
     directionsRenderer.setMap(map);
 
     var start_address = getCookie("start_address");
@@ -148,14 +186,16 @@ function initMap() {
     );
 
     new AutocompleteDirectionsHandler(map);
+
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer, originPlaceId, destinationPlaceId) {
-directionsService.route(
+    directionsService.route(
     {
         // origin: {query: document.getElementById('start').value},
         // destination: {query: document.getElementById('end').value},
         origin: {'placeId': originPlaceId},
+        waypoints: [{"location":{"lat":39.65523837157736,"lng":-104.89735418381888},"stopover":false},{"location":{"lat":39.6574811,"lng":-104.9068971},"stopover":false}],
         destination: {'placeId': destinationPlaceId},
         travelMode: 'DRIVING'
     },
@@ -169,22 +209,34 @@ directionsService.route(
     });
 }
 
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
 function computeTotalDistance(result) {
         var total = 0;
         var time = 0;
         var myroute = result.routes[0];
+        var origin_address = "";
+        var destination_address = "";
         for (var i = 0; i < myroute.legs.length; i++) {
           total += myroute.legs[i].distance.value;
           time += myroute.legs[i].duration.value;
+          origin_address += myroute.legs[i].start_address;
+          destination_address += myroute.legs[i].end_address;
         }
         total = total / 1000;
         time_min = time / 60
-        document.getElementById('total').innerHTML = total + ' km';
+        document.getElementById('total').innerHTML = round(total, 1) + ' km';
         console.log(total+'km');
-        document.getElementById('suggestion_value').innerHTML = '$' + total * 0.33;
+        document.getElementById('suggestion_value').innerHTML = '$' + round(total * 0.33, 2);
         console.log('$'+total);
-        document.getElementById('duration').innerHTML = Math.round(time_min) + ' min';
+        document.getElementById('duration').innerHTML = round(time_min, 0) + ' min';
         console.log('$'+time_min);
+        document.getElementById('main_screen_start_address').innerHTML = origin_address;
+        console.log(origin_address);
+        document.getElementById('main_screen_end_address').innerHTML = destination_address;
+        console.log(destination_address);
       }
 
 /**
