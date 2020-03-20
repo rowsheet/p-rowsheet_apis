@@ -1174,6 +1174,20 @@ def legal(request):
     return render(request, "rideshare/pages/legal.html", context)
 
 
+def contact_us(request):
+    app_user, user_redirect = load_app_user(request)
+    if user_redirect is not None:
+        return user_redirect
+
+    context = {
+        # Sidebar info.
+        "app_user": app_user,
+        "user_type": "rider",
+        # Page info.
+    }
+    return render(request, "rideshare/pages/contact.html", context)
+
+
 """-----------------------------------------------------------------------------
 Driver pages.
 -----------------------------------------------------------------------------"""

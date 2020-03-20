@@ -1,0 +1,31 @@
+{% extends "rideshare/layout.html" %}
+
+{% block content %}
+<div id="contact_us" class="p-2">
+    <button class="btn btn-round" onclick="window.history.back()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="col-12 text-center">
+        <h1>
+            Contact Us
+        </h1>
+        <div style="background-color: rgba(119, 136, 153, 0.158); margin: 8px; border-radius: 5px; padding: 10px;">
+            <p>
+                <h4>Having trouble getting in touch with your driver?</h4>
+                <a href="sms:+1(415)993-9395" class="btn btn-primary">
+                    Text Us
+                </a>
+            </p>
+        </div>
+        <br>
+        <div style="background-color: rgba(119, 136, 153, 0.158); margin: 8px; border-radius: 5px; padding: 10px;">
+            <p>
+                <h4>Have a bug/issue to report?</h4>
+                <a href="mailto:support@homobiles.org" class="btn btn-primary">
+                    Email Us
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

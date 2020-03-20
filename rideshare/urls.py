@@ -61,6 +61,7 @@ if settings.DEPLOYMENT_MODE == "PRODUCTION":
         path("saftey/", views.saftey),
         path("policies/", views.policies),
         path("legal/", views.legal),
+        path("contact/", views.contact_us),
         #-----------------------------------------------------------------------
         #   DRIVER
         #-----------------------------------------------------------------------
