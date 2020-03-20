@@ -51,6 +51,9 @@ def passenger_confirm_ride_request(request):
         )
         ride_request.status = "REQ_2"
         ride_request.in_setup = None
+        ride_request.total_distance = request.POST.get("total_distance")
+        ride_request.suggested_donation = float(request.POST.get("suggested_value")) * 100
+        ride_request.estimated_duration = request.POST.get("estimated_duration")
         ride_request.save()
         return JsonResponse({
             "msg": "Successfully confirmed this ride request.",
@@ -59,7 +62,7 @@ def passenger_confirm_ride_request(request):
         print(str(ex))
         return JsonResponse({
             "location": "/set_location",
-        }, status=302)
+        }, status=500)
 
 @csrf_exempt
 def passenger_cancel_ride_request(request):

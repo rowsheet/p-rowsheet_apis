@@ -609,8 +609,8 @@ def set_location(request):
                 return redirect("/main_screen")
 
     sidebar_info = RideRequest.rider_sidebar_info(app_user)
-    print("FOO")
-    print(ride_request)
+    # print("FOO")
+    # print(ride_request)
 
     context = {
         # Form info.

@@ -246,6 +246,15 @@ class RideRequest(models.Model):
         null=True, blank=True, default=None,
         related_name="app_user_driver",
     )
+    total_distance = models.FloatField(
+        null=True, blank=True, default=None,
+    )
+    suggested_donation = models.IntegerField(
+        null=True, blank=True, default=None,
+    )
+    estimated_duration = models.FloatField(
+        null=True, blank=True, default=None,
+    )
     creation_timestamp = models.DateTimeField(
         auto_now=True,
     )
@@ -498,11 +507,13 @@ class RideRequest(models.Model):
         print(utc)
         return utc
 
+    """
     def __str__(self):
         return "%s (%s)" % (
             str(self.app_user.name),
             str(self.creation_timestamp),
         )
+    """
 
 
 class RideDonation(models.Model):

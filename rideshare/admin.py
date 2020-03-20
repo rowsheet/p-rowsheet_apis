@@ -80,6 +80,9 @@ class RideRequestAdmin(admin.ModelAdmin):
         "passenger_status",
         "pickup_timestamp",
         "in_setup",
+        "total_distance",
+        "suggested_donation",
+        "estimated_duration",
     )
     list_display = fields
     search_fields = fields

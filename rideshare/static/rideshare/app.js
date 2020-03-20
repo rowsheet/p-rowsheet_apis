@@ -44,6 +44,11 @@ function passenger_confirm_ride_request() {
                 window.location = resp.responseJSON.location;
             },
         },
+        data: {
+            "total_distance": parseFloat($("#total").html().split(" ")[0]),
+            "suggested_value": parseFloat($("#suggestion_value").html().replace("$","")),
+            "estimated_duration": parseFloat($("#duration").html().split(" ")[0]),
+        },
         success: function(resp, status) {
             console.log("success");
             console.log(status);
