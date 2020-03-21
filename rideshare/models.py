@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 import rowsheet.utils as rs_utils
+from random import randrange
 
 from datetime import datetime
 
@@ -330,6 +331,28 @@ class RideRequest(models.Model):
         null=True, blank=True, default=None,
     )
 
+    RED = "RED"
+    YELLOW = "YELLOW"
+    ORANGE = "ORANGE"
+    GREEN = "GREEN"
+    BLUE = "BLUE"
+    COLOR_CODE = (
+        (RED, "RED"),
+        (YELLOW, "YELLOW"),
+        (ORANGE, "ORANGE"),
+        (GREEN, "GREEN"),
+        (BLUE, "BLUE"),
+    )
+    color_code = models.CharField(
+        max_length=32,
+        choices=COLOR_CODE,
+        null=True, blank=True, default=None,
+    )
+
+    number_code = models.IntegerField(
+        null=True, blank=True, default=None,
+    )
+
     # When we load the "set_location" page for a ride request, the user may
     # have other ride requests waiting to be assigned, completed, etc. If
     # the user want's to set up another ride, we should only pre-fetch the
@@ -415,6 +438,8 @@ class RideRequest(models.Model):
             else:
                 ride_request.app_user_driver = app_user
                 ride_request.status = "REQ_3"
+                ride_request.color_code = ["RED", "YELLOW", "ORANGE", "GREEN", "BLUE", "ORANGE"][randrange(4)]
+                ride_request.number_code = randrange(10, 99)
             ride_request.save()
 
     def driver_cancel_pickup(app_user, id):

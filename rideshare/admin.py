@@ -83,6 +83,8 @@ class RideRequestAdmin(admin.ModelAdmin):
         "total_distance",
         "suggested_donation",
         "estimated_duration",
+        "color_code",
+        "number_code",
     )
     list_display = fields
     search_fields = fields
