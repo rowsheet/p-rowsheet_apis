@@ -370,7 +370,7 @@ class RideRequest(models.Model):
     def passenger_upcoming_rides(app_user):
         return RideRequest.objects.filter(
             app_user=app_user,
-            status="REQ_2",
+            status__in=["REQ_2","REQ_3"],
         )
 
     def passenger_past_rides(app_user):
