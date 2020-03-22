@@ -1,15 +1,21 @@
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Bootstrap JS and jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
     <!-- Bootstrap Sticky Footer CSS -->
     <link href="/static/site/sticky-footer.css" rel="stylesheet">
@@ -35,12 +41,12 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPZG9Y7VE6"></script>
     <script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-		gtag('config', 'G-QPZG9Y7VE6');
-	</script>
+        gtag('config', 'G-QPZG9Y7VE6');
+    </script>
 
     <!-- reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js?render=6LeoZbYUAAAAAP3yjdxMcf4uLfxFDiE_razm0koU"></script>
@@ -51,141 +57,152 @@
     <!-- Main Application JS Library -->
     <script src="/static/site/applib.js" crossorigin="anonymous"></script>
     <script>
-    $(document).ready(function() {
-        applib.init();
-    });
+        $(document).ready(function () {
+            applib.init();
+        });
     </script>
     <meta name="google-site-verification" content="jT0IaZwj9l-Rzy8AHnNVd3ZIcsWspF2o36QW7eB47PE" />
 
 </head>
 
 <body class="d-flex flex-column details_page">
-<div class="bg-white border-bottom shadow-sm" id="main_nav">
-    <div class="container">
-        <a href="/" id="logo">
-            Homobiles
-        </a>
-        <div class="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="Beta">
-                <a class="btn btn-outline-success nav-link beta-link" href="/beta-app">Try our NEW Mobile Web App!</a>
-            </div>
-
-            <a class="p-2 nav-link" href="/for-drivers">For Drivers</a>
-            <a class="p-2 nav-link" href="/for-riders">For Riders</a>
-            <a class="p-2 nav-link" href="/why-homobiles">Why Homobiles</a>
-            <a class="p-2 nav-link" href="/press">Press</a>
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-                <a class="btn btn-outline-secondary nav-link" href="/signup">Sign up</a>
-            </div>
-            <!--
+    <div class="bg-white border-bottom shadow-sm" id="main_nav">
+        <div class="container">
+            <a href="/" id="logo">
+                Homobiles
+            </a>
+            <div class="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2 justify-content-between" role="group" aria-label="First group">
+                    <a class="p-2 nav-link" href="/for-drivers">For Drivers</a>
+                    <a class="p-2 nav-link" href="/for-riders">For Riders</a>
+                    <a class="p-2 nav-link" href="/why-homobiles">Why Homobiles</a>
+                    <a class="p-2 nav-link" href="/press">Press</a>
+                </div>
+                <div class="btn-group mr-2 justify-content-between" role="group" aria-label="Second group">
+                    <a class="p-2 btn btn-outline-success nav-link beta-link" href="/beta-app">Try our NEW Mobile Web App!</a>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <a class="p-2 btn btn-outline-secondary nav-link" href="/signup">Sign up</a>
+                </div>
+                <!--
 			<div class="btn-group mr-2" role="group" aria-label="Second group">
 				<a class="btn btn-outline-secondary nav-link" href="/login">Log in</a>
 			</div>
             -->
+            </div>
         </div>
     </div>
-</div>
 
-{% block "main" %}
-{% endblock %}
+    {% block "main" %}
+    {% endblock %}
 
-<footer class="footer mt-auto py-3">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <h5 class="purple">Make a Recurring Donation</h5>
-                <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="hosted_button_id" value="VCTZGUXQB7KV4">
-                    <input type="hidden" name="on0" value="Recurring Monthly Donation">
-                    <select name="os0" class="form-control">
-                        <option value="Good Puppy">Good Puppy : $5.00 USD - monthly</option>
-                        <option value="Main Squeeze">Main Squeeze : $10.00 USD - monthly</option>
-                        <option value="Friend with Benefits">Friend with Benefits : $25.00 USD - monthly</option>
-                        <option value="Homobile Faithful">Homobile Faithful : $50.00 USD - monthly</option>
-                        <option value="Dyed in the Wool">Dyed in the Wool : $75.00 USD - monthly</option>
-                        <option value="Gold Star Booty Call">Gold Star Booty Call : $100.00 USD - monthly</option>
-                        <option value="Platinum Queer">Platinum Queer : $500.00 USD - monthly</option>
-                        <option value="Sister Religious Experience">Sister Religious Experience : $1,000.00 USD - monthly</option>
-                    </select>
-                    <input type="hidden" name="currency_code" value="USD">
+    <footer class="footer mt-auto py-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5 class="purple">Make a Recurring Donation</h5>
+                    <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="VCTZGUXQB7KV4">
+                        <input type="hidden" name="on0" value="Recurring Monthly Donation">
+                        <select name="os0" class="form-control">
+                            <option value="Good Puppy">Good Puppy : $5.00 USD - monthly</option>
+                            <option value="Main Squeeze">Main Squeeze : $10.00 USD - monthly</option>
+                            <option value="Friend with Benefits">Friend with Benefits : $25.00 USD - monthly</option>
+                            <option value="Homobile Faithful">Homobile Faithful : $50.00 USD - monthly</option>
+                            <option value="Dyed in the Wool">Dyed in the Wool : $75.00 USD - monthly</option>
+                            <option value="Gold Star Booty Call">Gold Star Booty Call : $100.00 USD - monthly</option>
+                            <option value="Platinum Queer">Platinum Queer : $500.00 USD - monthly</option>
+                            <option value="Sister Religious Experience">Sister Religious Experience : $1,000.00 USD -
+                                monthly</option>
+                        </select>
+                        <input type="hidden" name="currency_code" value="USD">
+                        <br>
+                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif"
+                            border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"
+                            height="1">
+                    </form>
+                    <h5 class="purple">Make a Single Donation</h5>
+                    <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="BTRKTYT9YRFEC">
+                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                            name="submit" alt="PayPal - The safer, easier way to pay online!">
+                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"
+                            height="1">
+                    </form>
+
+                </div>
+                <div class="col-md-3">
+                    <h5 class="purple">Terms of Service</h5>
+                    <p>We are not for hire. Donation is not a requirement of service. We are here to provide emotional
+                        safety to underserved communities who experience stress or discrimination on various forms of
+                        transportation due to their gender or sexual identity. Please direct any questions to Homobiles
+                        at homobiles@gmail.com</p>
+
+                </div>
+                <div class="col-md-3">
+                    <h5 class="purple">Site Map</h5>
+                    <p class="footer_sitemap_item">
+                        <a href="/for-drivers">For Drivers</a>
+                    </p>
+                    <p class="footer_sitemap_item">
+                        <a href="/for-riders">For Riders</a>
+                    </p>
+                    <p class="footer_sitemap_item">
+                        <a href="/why-homobiles">Why Homobiles</a>
+                    </p>
+                    <p class="footer_sitemap_item">
+                        <a href="/press">Press</a>
+                    </p>
                     <br>
-                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                </form>
-                <h5 class="purple">Make a Single Donation</h5>
-                <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="hosted_button_id" value="BTRKTYT9YRFEC">
-                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                </form>
+                    <p class="footer_sitemap_item">
+                        <a href="/signup">Sign Up</a>
+                    </p>
+                    <p class="footer_sitemap_item">
+                        <a href="/login">Log In</a>
+                    </p>
 
+                    <br>
+                    <h5 class="purple">Find us on Social Media</h5>
+                    <a href="https://www.facebook.com/pages/HOmobiles/119693954760427" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://twitter.com/homobiles" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UC2Z6q_dQpssw26C9NyE0fuw" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="purple">
+                        About
+                    </h5>
+                    <p>
+                        Homobiles is a California NPO 501c3 committed to providing secure and reliable transit to the SF
+                        Bay Area LGBTIQQ community and its allies.
+                    </p>
+
+                    <div id="illustration">
+                        <img src="/static/site/splash.png" />
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3">
-                <h5 class="purple">Terms of Service</h5>
-                <p>We are not for hire. Donation is not a requirement of service. We are here to provide emotional safety to underserved communities who experience stress or discrimination on various forms of transportation due to their gender or sexual identity. Please direct any questions to Homobiles at homobiles@gmail.com</p>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>
+                        <span class="text-muted text-center" id="copyright">
+                            © 2019 Homobiles
+                        </span>
+                    </p>
 
-            </div>
-            <div class="col-md-3">
-                <h5 class="purple">Site Map</h5>
-                <p class="footer_sitemap_item">
-                    <a href="/for-drivers">For Drivers</a>
-                </p>
-                <p class="footer_sitemap_item">
-                    <a href="/for-riders">For Riders</a>
-                </p>
-                <p class="footer_sitemap_item">
-                    <a href="/why-homobiles">Why Homobiles</a>
-                </p>
-                <p class="footer_sitemap_item">
-                    <a href="/press">Press</a>
-                </p>
-                <br>
-                <p class="footer_sitemap_item">
-                    <a href="/signup">Sign Up</a>
-                </p>
-                <p class="footer_sitemap_item">
-                    <a href="/login">Log In</a>
-                </p>
-
-                <br>
-                <h5 class="purple">Find us on Social Media</h5>
-                <a href="https://www.facebook.com/pages/HOmobiles/119693954760427" target="_blank">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="https://twitter.com/homobiles" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com/channel/UC2Z6q_dQpssw26C9NyE0fuw" target="_blank">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
-            <div class="col-md-3">
-                <h5 class="purple">
-                    About
-                </h5>
-                <p>
-                    Homobiles is a California NPO 501c3 committed to providing secure and reliable transit to the SF Bay Area LGBTIQQ community and its allies.
-                </p>
-
-                <div id="illustration">
-                    <img src="/static/site/splash.png" />
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>
-    <span class="text-muted text-center" id="copyright">
-        © 2019 Homobiles
-    </span>
-                </p>
-
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 
 </body>
+
 </html>
