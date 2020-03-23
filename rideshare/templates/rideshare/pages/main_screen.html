@@ -229,16 +229,16 @@ function computeTotalDistance(result) {
                 }
                 total = total / 1000;
                 time_min = time / 60
-                document.getElementById('total').innerHTML = round(total, 1) + ' km';
-                console.log(total + 'km');
-                document.getElementById('suggestion_value').innerHTML = '$' + round(total * 0.33, 2);
-                console.log('$' + total);
+                document.getElementById('total').innerHTML = round((total*1.609), 0) + ' mi';
+                console.log('estimate mileage: ' + round((total*1.609), 0) + ' mi');
+                document.getElementById('suggestion_value').innerHTML = '$' + round(time_min * 1, 2);
+                console.log('estimate donation suggested: $' + round(time_min * 1, 2));
                 document.getElementById('duration').innerHTML = round(time_min, 0) + ' min';
-                console.log('$' + time_min);
+                console.log('estimate duration: ' + round(time_min, 0) + ' min');
                 document.getElementById('main_screen_start_address').innerHTML = origin_address;
-                console.log(origin_address);
+                console.log('pickup: ' + origin_address);
                 document.getElementById('main_screen_end_address').innerHTML = destination_address;
-                console.log(destination_address);
+                console.log('dropoff: ' + destination_address);
             }
 
 /**
@@ -261,10 +261,16 @@ function AutocompleteDirectionsHandler(map) {
                 // Specify just the place data fields that you need.
                 originAutocomplete.setFields(['place_id']);
 
+                // Bind the map's bounds (viewport) property to the autocomplete object,
+                // so that the autocomplete requests use the current map bounds for the
+                // bounds option in the request.
+                originAutocomplete.bindTo('bounds', map);
+                
                 var destinationAutocomplete =
-                    new google.maps.places.Autocomplete(destinationInput);
+                new google.maps.places.Autocomplete(destinationInput);
                 // Specify just the place data fields that you need.
                 destinationAutocomplete.setFields(['place_id']);
+                destinationAutocomplete.bindTo('bounds', map);
 
 
                 this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
