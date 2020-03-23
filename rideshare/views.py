@@ -923,7 +923,10 @@ def phone_number(request, user_type="rider", sidebar_info=None):
 
             if phone_number is not None and phone_number != "":
                 app_user = AppUser.objects.get(django_account=request.user)
-                app_user.phone_verified = False
+                # app_user.phone_verified = False
+                # @TODO Fix and verify.
+                # app_user.phone_verified = False
+                app_user.phone_verified = True
                 app_user.phone_number = phone_number
                 app_user.phone_verification_code = rs_utils.random_phone_code()
                 # print("verification code assigned")
