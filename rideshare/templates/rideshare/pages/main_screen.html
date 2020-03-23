@@ -229,7 +229,7 @@ function computeTotalDistance(result) {
                 }
                 total = total / 1000;
                 time_min = time / 60
-                document.getElementById('total').innerHTML = round((total*1.609), 0) + ' mi';
+                document.getElementById('total').innerHTML = round((total*0.621371), 0) + ' mi';
                 console.log('estimate mileage: ' + round((total*1.609), 0) + ' mi');
                 document.getElementById('suggestion_value').innerHTML = '$' + round(time_min * 1, 2);
                 console.log('estimate donation suggested: $' + round(time_min * 1, 2));
