@@ -173,6 +173,50 @@ function driver_cancel_pickup() {
     });
 }
 
+function driver_start_ride() {
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/driver_finish_ride/",
+        data: {
+            "id": id,
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            alert("Ride finished");
+            window.location.reload();
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+            alert("There was a problem finishing this ride.");
+        },
+    });
+}
+
+function driver_start_ride() {
+    var id = parseInt($("#ride_id").html());
+    $.ajax({
+        method: "post",
+        url: "/api/driver_start_ride/",
+        data: {
+            "id": id,
+        },
+        success: function(resp, status) {
+            console.log("success");
+            console.log(resp);
+            alert("Ride started");
+            window.location.reload();
+        },
+        error: function(resp) {
+            console.log("error");
+            console.log(resp);
+            alert("There was a problem starting this ride.");
+        },
+    });
+}
+
 function epoch_to_time(seconds) {
     var date = new Date(0);
     date.setUTCSeconds(seconds);

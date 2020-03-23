@@ -1392,6 +1392,11 @@ def ride_details(request):
     if ride_request.app_user_driver == app_user:
         driver = True
 
+    user_type = "rider"
+    if driver == True:
+        user_type = "driver"
+
+
     context = {
         # Sidebar info.
         "app_user": app_user,
@@ -1402,6 +1407,7 @@ def ride_details(request):
         "historical": historical,
         "passenger": passenger,
         "driver": driver,
+        "user_type": user_type,
     }
     return render(request, "rideshare/pages/ride_details.html", context)
 

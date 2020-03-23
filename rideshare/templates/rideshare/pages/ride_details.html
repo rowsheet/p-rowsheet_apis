@@ -3,7 +3,7 @@
 {% block content %}
 <div id="page_main_screen">
     <button id="menu_button" class="btn btn-primary btn-round"
-            onclick="window.history.back()">
+            onclick="$('#main_sidebar_trigger').click()">
         <i class="fas fa-chevron-left"></i>
     </button>
 
@@ -247,6 +247,19 @@
             {% elif driver == True %}
                 <div class="row">
                     <div class="col-6 pr-1">
+                        <!--
+                        {% if ride_request.status == "REQ_3" %}
+                            <button class="btn btn-success btn-sm w-100"
+                                    onclick="driver_start_ride()">
+                                Start Ride
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary btn-sm w-100"
+                                    onclick="driver_finish_ride()">
+                                Finish Ride
+                            </button>
+                        {% endif %}
+                        -->
                         <button
                                 class="btn btn-danger btn-sm text-center mt-2 w-100"
                                 onclick="driver_cancel_pickup()">
