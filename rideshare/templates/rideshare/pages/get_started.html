@@ -1,9 +1,101 @@
 {% extends "rideshare/layout.html" %}
 
 {% block content %}
+<style>
+    a#logo {
+        font-size: 27px;
+        font-weight: bold !important;
+    }
+
+    div#text_break_circle {
+        width: 225px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div#text_break_no_circle {
+        width: 225px;
+        margin-top: 200px;
+        margin-bottom: 40px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div#text_break_circle img {
+        border-radius: 50%;
+        background-color: 201668;
+        border: 0px;
+        max-height: 225px;
+        max-width: 225px;
+        width: 225px;
+        object-fit: scale-down;
+        /* box-shadow: 0px 0px 25px rgb(233, 188, 233), 0px 0px 25px white; */
+    }
+
+    div#text_break_no_circle img {
+        /* border-radius: 50%; */
+        /* background-color: 201668; */
+        border: 0px;
+        max-height: 225px;
+        max-width: 225px;
+        width: 225px;
+        object-fit: scale-down;
+    }
+
+    div#text_break_circle #starlogo {
+        position: relative;
+        display: inline-block;
+    }
+
+    div#starlogo {
+        left: 0px;
+        position: relative;
+    }
+
+    div#star p {
+        font-family: 'Nunito', sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        position: absolute;
+        display: block;
+        font-size: 71px;
+        /* font-weight: 700; */
+        color: #C3F9FE !important;
+        text-align: center;
+        z-index: 1;
+        top: 48px;
+        left: 84px;
+        padding-left: 0px;
+    }
+a#get-started-btn {
+    color: #ffffff !important;
+    background-image: linear-gradient(to bottom right, #ffd900, #f300df);
+    border-width: 2px;
+    border-radius: 100px;
+    border-color: #ff4800;
+    font-family: 'Josefin Sans';
+}
+#get-started-btn:hover {
+    background-image: linear-gradient(to bottom right, #ffd900, #ff4800);
+    /* color: #ffffff !important; */
+    border-color: #f300df !important;
+}
+</style>
 <div id="page_index" class="row" class="p-2">
     <div class="col-12 text-center">
-        <a href="/main_screen" class="btn btn-primary">
+
+        <div id="text_break_no_circle">
+            <div id="starlogo">
+                <div id="star" class="overlapping-shape">
+                    <img src="/static/site/star-glow.png">
+                    <p>H</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/main_screen" class="btn btn-primary" id="get-started-btn">
             Get Started
         </a>
     </div>
