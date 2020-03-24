@@ -4,6 +4,17 @@ make make_local_migrations
 make migrate_local_db
 make run_local
 
+------------------------------------------------------------------------------
+
+manifest.json notes: (https://blog.betapage.co/how-to-add-add-to-homescreen-popup-in-web-app-99d5237fabff)
+//   short_name: this name is visible on Homescreen along app icon.
+//   name: Full name of application
+//   theme_color: this color code will change the color of addresser in chrome.
+//   background_color: set background color for splash screen.
+//   icons: set different size icons for different screen sizes
+
+------------------------------------------------------------------------------
+
 Add this to your `.vimrc` to get syntax highlighting for the API spec `yaml` files!
 
     " API Spec Syntax
