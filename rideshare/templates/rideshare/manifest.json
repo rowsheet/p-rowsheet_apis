@@ -1,0 +1,30 @@
+{
+    "short_name": "Homobiles",
+    "name": "Homobiles",
+    "icons": [
+      {
+        "src": "/rideshare/static/site/star-glow.png",
+        "type": "image/png",
+        "sizes": "48x48"
+      },
+      {
+        "src": "/rideshare/static/site/star-glow.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "/rideshare/static/site/star-glow.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      },
+      {
+        "src": "/rideshare/static/site/star-glow.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      }
+    ],
+    "start_url": "/?utm_source=homescreen",
+    "background_color": "#F7F8F9",
+    "theme_color": "#4A90E2",
+    "display": "standalone"
+  }

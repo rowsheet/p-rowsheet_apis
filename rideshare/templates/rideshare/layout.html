@@ -3,15 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title></title>
+        <title>Homobiles</title>
         <link rel="stylesheet" href="/static/rowsheet/bootstrap.min.css">
         <link rel="stylesheet" href="/static/rideshare/uikit.min.css">
         <link rel="stylesheet" href="/static/rideshare/main.css">
         <link rel="stylesheet" href="/static/rideshare/bootstrap-datetimepicker.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-        <!-- Save to Home Screen as App on iPhone -->
-        <link rel="manifest" href="/manifest.json">
         <script src="/static/rowsheet/jquery.min.js"></script>
         <script src="/static/rowsheet/bootstrap.min.js"></script>
         <script src="/static/rowsheet/popper.min.js"></script>
@@ -26,6 +24,8 @@
         <style>@keyframes hidePreloader{0%{width:100%;height:100%}100%{width:0;height:0}}body>div.preloader{position:fixed;background:#fff;width:100%;height:100%;z-index:1071;opacity:0;transition:opacity .5s ease;overflow:hidden;pointer-events:none;display:flex;align-items:center;justify-content:center}body:not(.loaded)>div.preloader{opacity:1}body:not(.loaded){overflow:hidden}body.loaded>div.preloader{animation:hidePreloader .5s linear .5s forwards}</style>
         <script>window.addEventListener("load",function(){setTimeout(function(){document.querySelector("body").classList.add("loaded")},300)})</script>
         <script src="https://js.stripe.com/v3/"></script>
+        <!-- Save to Home Screen as App on iPhone -->
+        <!-- <link rel="manifest" href="/manifest.json"> -->
 <script>
 /*
 window.addEventListener("load", function() {
@@ -78,15 +78,16 @@ window.addEventListener("load", function() {
             </div>
         </div>
     </body>
-    <script>
+
+    <!-- <script>
         if ('serviceWorker' in navigator) {
-           console.log("Will the service worker register?");
-           navigator.serviceWorker.register('service-worker.js')
-             .then(function(reg){
-               console.log("Yes, it did.");
-            }).catch(function(err) {
-               console.log("No it didn't. This happened:", err)
-           });
+          console.log("Will service worker register?");
+          navigator.serviceWorker.register('service-worker.js').then(function(reg){
+            console.log("Yes it did.");
+          }).catch(function(err) {
+            console.log("No it didn't. This happened: ", err)
+          });
         }
-       </script>
+      </script> -->
+
 </html>

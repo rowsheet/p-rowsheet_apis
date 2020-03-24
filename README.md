@@ -12,6 +12,7 @@ manifest.json notes: (https://blog.betapage.co/how-to-add-add-to-homescreen-popu
 //   theme_color: this color code will change the color of addresser in chrome.
 //   background_color: set background color for splash screen.
 //   icons: set different size icons for different screen sizes
+validate manifest here: https://manifest-validator.appspot.com/
 
 ------------------------------------------------------------------------------
 
