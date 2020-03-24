@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="/static/rideshare/bootstrap-datetimepicker.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+        <!-- Save to Home Screen as App on iPhone -->
+        <link rel="manifest" href="/manifest.json">
         <script src="/static/rowsheet/jquery.min.js"></script>
         <script src="/static/rowsheet/bootstrap.min.js"></script>
         <script src="/static/rowsheet/popper.min.js"></script>
@@ -76,4 +78,15 @@ window.addEventListener("load", function() {
             </div>
         </div>
     </body>
+    <script>
+        if ('serviceWorker' in navigator) {
+           console.log("Will the service worker register?");
+           navigator.serviceWorker.register('service-worker.js')
+             .then(function(reg){
+               console.log("Yes, it did.");
+            }).catch(function(err) {
+               console.log("No it didn't. This happened:", err)
+           });
+        }
+       </script>
 </html>
