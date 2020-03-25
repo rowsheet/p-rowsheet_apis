@@ -111,6 +111,14 @@
     </div>
 
     <script>
+
+$('form input:not([type="submit"])').keydown(function(e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        return false;
+    }
+});
+
 function preload_place_info() {
 
     /*
