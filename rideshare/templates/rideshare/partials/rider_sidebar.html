@@ -1,3 +1,8 @@
+<style>
+    .rider-icon {
+        color: #302367 !important;
+}
+</style>
 <div class="sidebar py-3">
     <p class="pl-3">
         <a href="/main_screen" class="text-dark">
@@ -7,7 +12,7 @@
     </p>
     <p class="pl-3">
         <a href="/upcoming_rides" class="text-dark">
-            <i class="material-icons">departure_board</i>
+            <i class="material-icons rider-icon">departure_board</i>
             upcoming rides
             {% if sidebar_info.upcoming_rides_count > 0 %}
             <span class="badge bg-success text-light float-right mr-2">
@@ -18,7 +23,7 @@
     </p>
     <p class="pl-3">
         <a href="/past_rides" class="text-dark">
-            <i class="fas fa-car-side pr-2"></i>
+            <i class="fas fa-car-side pr-2 rider-icon"></i>
             past rides
             {% if sidebar_info.past_rides_count > 0 %}
             <span class="badge bg-secondary text-light float-right mr-2">
@@ -29,44 +34,44 @@
     </p>
     <p class="pl-3">
         <a href="/account" class="text-dark">
-            <i class="fas fa-user-circle pr-2"></i>
+            <i class="fas fa-user-circle pr-2 rider-icon"></i>
             my account
         </a>
     </p>
     <p class="pl-3">
         <a href="/donation_station" class="text-dark">
-            <i class="fas fa-hand-holding-usd pr-2"></i>
+            <i class="fas fa-hand-holding-usd pr-2 rider-icon"></i>
             donation station
         </a>
     </p>
     <p class="pl-3">
         <a href="/settings" class="text-dark">
-            <i class="fas fa-cog pr-2"></i>
+            <i class="fas fa-cog pr-2 rider-icon"></i>
             settings
         </a>
     </p>
     <p class="pl-3">
         <a href="/driver" class="text-dark">
-            <i class="fas fa-car pr-2"></i>
+            <i class="fas fa-car pr-2 rider-icon"></i>
             become a driver
         </a>
     </p>
     <p class="pl-3">
         <a href="/about" class="text-dark">
-            <i class="fas fa-info-circle pr-2"></i>
+            <i class="fas fa-info-circle pr-2 rider-icon"></i>
             about homobiles
         </a>
     </p>
     <p class="pl-3">
         <a href="/help" class="text-dark">
-            <i class="fas fa-question-circle pr-2"></i>
+            <i class="fas fa-question-circle pr-2 rider-icon"></i>
             help
         </a>
     </p>
     <p class="pl-3" style="position: absolute; bottom: 0px;">
         <a href="/driver" class="text-dark">
-            <i class="fas fa-road pr-2"></i>
-            Switch to driving
+            <i class="fas fa-road pr-2 rider-icon"></i>
+            switch to driving
         </a>
     </p>
 </div>

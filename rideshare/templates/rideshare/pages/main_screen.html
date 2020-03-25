@@ -137,10 +137,10 @@
     var directions;
     var map;
     var BAY_AREA_BOUNDS = {
-        north: 37.999244,
-        south: 37.510792,
-        west: -122.608045,
-        east: -122.054187,
+        north: 37.999244, // fairfax
+        south: 37.510538, // san mateo
+        west: -122.608045, // ...fairfax
+        east: -122.061514, // hayward
     };
     var SAN_FRAN = { lat: 37.761469, lng: -122.432732 };
 
@@ -171,7 +171,7 @@ function initMap() {
                         strictBounds: true,
                         // The Strict Bounds option restricts the search to the area within the current viewport. If this option is not checked, then the API biases the search to the current viewport, but it does not restrict it.
                     },
-                    zoom: 13,
+                    zoom: 7,
                 });
 
                 var trafficLayer = new google.maps.TrafficLayer();
