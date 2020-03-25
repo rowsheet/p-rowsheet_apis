@@ -497,6 +497,9 @@ class RideRequest(models.Model):
                 <strong>In Setup:</strong> {in_setup}
             </p>
             <a href="/ride_details/?id={id}">Details</a>
+            <a href="/set_location" onclick="repeatRideRequest()"><span class="material-icons" style="float:right;">
+                replay
+            </span></a>
         </div>
         """.format(
             id=self.id,
