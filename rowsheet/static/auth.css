@@ -1,3 +1,6 @@
+body.loaded {
+    background: #eeeeee;
+}
 body {
     margin: 0px;
 }
@@ -53,10 +56,10 @@ ul#auth_menu li:nth-child(1) {
     border-right: 1px solid #eee;
 }
 a {
-    color: #8bcb8d;
+    color: #ee8ec0;
 }
 .socialaccount_provider, .button, button, input[type=submit] {
-    background: #8bcb8d;
+    background: #ee8ec0;
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -124,10 +127,10 @@ input[type=checkbox] {
     display: block;
 }
 .secondaryAction {
-    background: #8bcb8d;
+    background: #ee8ec0;
 }
 .primaryAction {
-    background: #8bcb8d;
+    background: #ee8ec0;
 }
 div#messages {
     background: #2196F3;
