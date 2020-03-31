@@ -135,7 +135,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "https://homobiles.org/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/logout_callback"
 SITE_ID = 1
 WEBAPP_URL = os.getenv("WEBAPP_URL")
