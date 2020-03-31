@@ -51,14 +51,14 @@ def send_confirmation_text_message(body, to):
         body=body)
 
 
-# def send_phone_verification_text(body, to):
-#     account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-#     auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
-#     client = Client(account_sid, auth_token)
-#     message = client.messages.create(
-#         to=to,
-#         from_="+14159939395",
-#         body=body)
+def send_phone_verification_text(body, to):
+    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
+    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        to=to,
+        from_="+14159939395",
+        body=body)
 
 """-----------------------------------------------------------------------------
 "SITE" (Old Site Pages)
@@ -357,11 +357,24 @@ def phone_verification(request):
                 error += "Phone number required. "
 
         if error == "":
+
+            # Create a random verification code.
+            verification_code = rs_utils.random_phone_code()
+
+            # Update the app_user.
             app_user = AppUser.objects.get(
                 django_account=request.user)
             app_user.phone_number = phone_number
+            app_user.phone_verification_code = verification_code
             app_user.save()
+
+            # Send the verification code.
+            body = "Your verification code is: " + str(verification_code)
+            to = "+1" + str(phone_number)
+            send_phone_verification_text(body, to)
+
             return redirect("/code_verification")
+
 
     context = {
         # Form info.
@@ -923,18 +936,15 @@ def phone_number(request, user_type="rider", sidebar_info=None):
 
             if phone_number is not None and phone_number != "":
                 app_user = AppUser.objects.get(django_account=request.user)
-                # app_user.phone_verified = False
-                # @TODO Fix and verify.
-                # app_user.phone_verified = False
-                app_user.phone_verified = True
+                app_user.phone_verified = False
                 app_user.phone_number = phone_number
                 app_user.phone_verification_code = rs_utils.random_phone_code()
-                # print("verification code assigned")
+                print("verification code assigned")
                 # @TODO Twillio send this code to the phone number.
-                # body = "example"
-                # to = "+15404540846"
+                body = "example"
+                to = "+" + str(phone_number)
 
-                # send_phone_verification_text(body, to)
+                send_phone_verification_text(body, to)
 
                 app_user.save()
                 info = "Please enter the code we sent you to verify your new number."

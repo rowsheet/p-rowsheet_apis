@@ -1,3 +1,18 @@
+body {
+    background: #dee2e6;
+}
+
+div#main_content {
+    background: white;
+}
+
+div#main_content {
+    height: 100vh;
+    overflow: scroll;
+}
+
+/*----------------------------------------------------------------------------*/
+
 #ride_form * {
     text-decoration: none !important;
 }
