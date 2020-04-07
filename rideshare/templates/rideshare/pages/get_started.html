@@ -9,18 +9,12 @@
 
     div#text_break_circle {
         width: 225px;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        margin-left: auto;
-        margin-right: auto;
+        margin: auto;
     }
 
     div#text_break_no_circle {
         width: 225px;
-        margin-top: 200px;
-        margin-bottom: 40px;
-        margin-left: auto;
-        margin-right: auto;
+        margin: auto;
     }
 
     div#text_break_circle img {
@@ -38,6 +32,7 @@
         /* border-radius: 50%; */
         /* background-color: 201668; */
         border: 0px;
+        height: 15%;
         max-height: 225px;
         max-width: 225px;
         width: 225px;
@@ -52,51 +47,103 @@
     div#starlogo {
         left: 0px;
         position: relative;
+        /* text-align: center; */
     }
 
     div#star p {
-        font-family: 'Nunito', sans-serif;
-        font-style: normal;
-        font-weight: bold;
         position: absolute;
-        display: block;
-        font-size: 71px;
-        /* font-weight: 700; */
-        color: #C3F9FE !important;
         text-align: center;
+        font-size: 20px;
+        color: #C3F9FE !important;
         z-index: 1;
-        top: 48px;
-        left: 84px;
-        padding-left: 0px;
+        top: 54%;
+        left: 50%;
+        margin: 0px !important;
+        transform: translate(-50%, -50%);
     }
-a#get-started-btn {
-    color: #ffffff !important;
-    background-image: linear-gradient(to bottom right, #ffd900, #f300df);
-    border-width: 2px;
-    border-radius: 100px;
-    border-color: #ff4800;
-    font-family: 'Josefin Sans';
-}
-#get-started-btn:hover {
-    background-image: linear-gradient(to bottom right, #ffd900, #ff4800);
-    /* color: #ffffff !important; */
-    border-color: #f300df !important;
-}
+
+    div#star img {
+        width: 40%;
+        height: auto;
+    }
+
+    a#get-started-btn {
+        color: #ffffff !important;
+        background-image: linear-gradient(to bottom right, #ffd900, #f300df);
+        border-width: 2px;
+        border-radius: 100px;
+        border-color: #ff4800;
+        font-family: 'Josefin Sans';
+    }
+
+    #get-started-btn:hover {
+        background-image: linear-gradient(to bottom right, #ffd900, #ff4800);
+        /* color: #ffffff !important; */
+        border-color: #f300df !important;
+    }
+
+    .disclaimer-scroll {
+        height: 70%;
+        margin: 8px;
+        padding: 8px;
+        overflow-y: scroll;
+        scrollbar-color: #f300df;
+        vertical-align: auto;
+        background-color: rgba(119, 136, 153, 0.158);
+        border-radius: 5px;
+        text-align: justify;
+    }
+    .disclaimer-scroll p {
+        margin-bottom: 10px;
+        margin-top: 5px;
+        font-size: 13px !important;
+        font-weight: 300 !important;
+        line-height: 20px;
+    }
 </style>
+
 <div id="page_index" class="row" class="p-2">
     <div class="col-12 text-center">
 
         <div id="text_break_no_circle">
             <div id="starlogo">
-                <div id="star" class="overlapping-shape">
+                <div id="star" class="overlapping-shape text-center">
                     <img src="/static/site/star-glow.png">
                     <p>H</p>
                 </div>
             </div>
         </div>
+        <h3 style="margin: 3px;">Disclaimer:</h3>
 
-        <a href="/main_screen" class="btn btn-primary" id="get-started-btn">
-            Get Started
+        <div class="disclaimer-scroll">
+            <small>
+                <p>
+                    Please note that this is a beta version of the Homobiles platform which is
+                    still undergoing final testing before its official release. The
+                    platform, its software and all content found on it are provided on an
+                    “as is” and “as available” basis. Homobiles does not give any warranties,
+                    whether express or implied, as to the suitability or usability of the
+                    website, its software or any of its content.
+                </p>
+                <p>
+                    Homobiles will not be liable for any loss, whether such loss is direct,
+                    indirect, special or consequential, suffered by any party as a result
+                    of their use of the Homobiles platform, its software or content. Any
+                    downloading or uploading of material to the website is done at the
+                    user’s own risk and the user will be solely responsible for any
+                    damage to any computer system or loss of data that results from such
+                    activities.
+                </p>
+                <p>
+                    Should you encounter any bugs, glitches, lack of functionality or
+                    other problems on the website, please let us know immediately so we
+                    can rectify these accordingly. Your help in this regard is greatly
+                    appreciated! You can write to us at this address support@homobiles.org.
+                </p>
+            </small>
+        </div>
+        <a href="/main_screen" id="get-started-btn" class="btn btn-primary" aria-disabled="true">
+            Accept and Continue
         </a>
     </div>
 </div>
