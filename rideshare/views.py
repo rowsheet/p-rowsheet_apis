@@ -27,8 +27,8 @@ from twilio.rest import Client
 
 
 def send_text_message(body):
-    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-    auth_token = "08da7fc65a1b8163f17aa324ddef479d"
+    account_sid = settings.TWILIO_ACCOUNT_SID
+    auth_token = settings.TWILIO_AUTH_TOKEN
     client = Client(account_sid, auth_token)
     if settings.DEPLOYMENT_MODE != "DEVELOPMENT":
         num=['+14155745023','+15404540846', '+14158672671', '+16464138190', '+17203643760']
@@ -42,8 +42,8 @@ def send_text_message(body):
 
 
 def send_confirmation_text_message(body, to):
-    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-    auth_token = "08da7fc65a1b8163f17aa324ddef479d"
+    account_sid = settings.TWILIO_ACCOUNT_SID
+    auth_token = settings.TWILIO_AUTH_TOKEN
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         to=to,
@@ -52,8 +52,8 @@ def send_confirmation_text_message(body, to):
 
 
 def send_phone_verification_text(body, to):
-    account_sid = "AC24fc9ac27dee145f04d855b99b666ab8"
-    auth_token  = "08da7fc65a1b8163f17aa324ddef479d"
+    account_sid = settings.TWILIO_ACCOUNT_SID
+    auth_token = settings.TWILIO_AUTH_TOKEN
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         to=to,
@@ -774,7 +774,7 @@ def donation_station(request):
         deleted=False,
     )
 
-    plans = {
+    test_plans = {
         "Recurring $5 Donation": "plan_GtHMSytV6dBI4w",
         "Recurring $10 Donation": "plan_GtHNLR9qjsDA07",
         "Recurring $20 Donation": "plan_GtHNDPdGf0CHXt",
@@ -783,6 +783,17 @@ def donation_station(request):
         "Recurring $100 Donation": "plan_GtHOshLsz1TUVA",
         "Recurring $500 Donation": "plan_GtHOHuR5L0c2DO",
         "Recurring $1,000 Donation": "plan_GtHP6n00NgIpaf",
+    }
+
+    plans = {
+        "Recurring $5 Donation": "plan_HjrpuV8hEbRHw0",
+        "Recurring $10 Donation": "prod_HjroHnFPcgY3bc",
+        "Recurring $20 Donation": "plan_Hjro6WJG0GP2Zb",
+        "Recurring $50 Donation": "plan_HjrnHbA4VmARe1",
+        "Recurring $75 Donation": "prod_HjrnEuuWqHJieQ",
+        "Recurring $100 Donation": "prod_Hjrn1RdAGRwbWy",
+        "Recurring $500 Donation": "prod_HjrnwspqLckNFv",
+        "Recurring $1,000 Donation": "prod_Hjrm8hgqBFKq5P",
     }
 
     context = {

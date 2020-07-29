@@ -258,7 +258,7 @@ function epoch_to_date(seconds) {
 STRIPE
 ------------------------------------------------------------------------------*/
 function checkout(plan_id) {
-    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    var stripe = Stripe("pk_live_I3zmvRYMl552SWskzQEjqpre00KHTUBahz")
     $.ajax({
         url: "/api/stripe_checkout_session_id",
         method: "post",
@@ -288,7 +288,7 @@ function checkout(plan_id) {
 }
 
 function cancel_subscription_by_subscription_id(subscription_id) {
-    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    var stripe = Stripe("pk_live_I3zmvRYMl552SWskzQEjqpre00KHTUBahz")
     $.ajax({
         url: "/api/stripe_cancel_subscription_by_subscription_id",
         method: "post",
@@ -310,7 +310,7 @@ function cancel_subscription_by_subscription_id(subscription_id) {
 
 function stripe_create_driver_donation_checkout_session_id() {
     console.log("stripe_create_driver_donation_checkout_session_id");
-    var stripe = Stripe("pk_test_QqesTZpsPOaT7vzdYMJ0kP6C00MGYz6SSf")
+    var stripe = Stripe("pk_live_I3zmvRYMl552SWskzQEjqpre00KHTUBahz")
     var ride_request_id = $("#ride_request_id").val();
     var amount = $("#amount").val();
     console.log(ride_request_id);
