@@ -774,16 +774,16 @@ def donation_station(request):
         deleted=False,
     )
 
-    test_plans = {
-        "Recurring $5 Donation": "plan_GtHMSytV6dBI4w",
-        "Recurring $10 Donation": "plan_GtHNLR9qjsDA07",
-        "Recurring $20 Donation": "plan_GtHNDPdGf0CHXt",
-        "Recurring $50 Donation": "plan_GtHNIuvgQlTHAS",
-        "Recurring $75 Donation": "plan_GtHOA2kzudRbVC",
-        "Recurring $100 Donation": "plan_GtHOshLsz1TUVA",
-        "Recurring $500 Donation": "plan_GtHOHuR5L0c2DO",
-        "Recurring $1,000 Donation": "plan_GtHP6n00NgIpaf",
-    }
+    # test_plans = {
+    #     "Recurring $5 Donation": "plan_GtHMSytV6dBI4w",
+    #     "Recurring $10 Donation": "plan_GtHNLR9qjsDA07",
+    #     "Recurring $20 Donation": "plan_GtHNDPdGf0CHXt",
+    #     "Recurring $50 Donation": "plan_GtHNIuvgQlTHAS",
+    #     "Recurring $75 Donation": "plan_GtHOA2kzudRbVC",
+    #     "Recurring $100 Donation": "plan_GtHOshLsz1TUVA",
+    #     "Recurring $500 Donation": "plan_GtHOHuR5L0c2DO",
+    #     "Recurring $1,000 Donation": "plan_GtHP6n00NgIpaf",
+    # }
 
     plans = {
         "Recurring $5 Donation": "plan_HjrpuV8hEbRHw0",
