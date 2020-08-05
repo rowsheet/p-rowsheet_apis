@@ -787,13 +787,13 @@ def donation_station(request):
 
     plans = {
         "Recurring $5 Donation": "plan_HjrpuV8hEbRHw0",
-        "Recurring $10 Donation": "prod_HjroHnFPcgY3bc",
+        "Recurring $10 Donation": "plan_HjroA7NNJiSjoM",
         "Recurring $20 Donation": "plan_Hjro6WJG0GP2Zb",
         "Recurring $50 Donation": "plan_HjrnHbA4VmARe1",
-        "Recurring $75 Donation": "prod_HjrnEuuWqHJieQ",
-        "Recurring $100 Donation": "prod_Hjrn1RdAGRwbWy",
-        "Recurring $500 Donation": "prod_HjrnwspqLckNFv",
-        "Recurring $1,000 Donation": "prod_Hjrm8hgqBFKq5P",
+        "Recurring $75 Donation": "plan_Hjrn9f28v9Hv8i",
+        "Recurring $100 Donation": "plan_HjrnMZph6Ycblq",
+        "Recurring $500 Donation": "plan_HjrnAzCd0Rplam",
+        "Recurring $1,000 Donation": "plan_HjrmRwAtdKq8hW",
     }
 
     context = {
